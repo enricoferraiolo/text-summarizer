@@ -13,6 +13,7 @@ from tensorflow.keras.layers import (
 )
 from tensorflow.keras.models import Model
 
+
 class Seq2SeqLSTM:
     def __init__(self, x_voc, y_voc, max_text_len, max_summary_len, name="Seq2SeqLSTM"):
         self.x_voc = x_voc
@@ -21,15 +22,20 @@ class Seq2SeqLSTM:
         self.max_summary_len = max_summary_len
         self.latent_dim = 300
         self.embedding_dim = 100
-        self.model = None,
-        self.name=name
+        self.name = name
+        self.model = self.build_model()
+
+    def get_model(self):
+        return self.model
 
     def build_model(self):
         # Encoder
         encoder_inputs = Input(shape=(self.max_text_len,))
 
         # embedding layer
-        enc_emb = Embedding(self.x_voc, self.embedding_dim, trainable=True)(encoder_inputs)
+        enc_emb = Embedding(self.x_voc, self.embedding_dim, trainable=True)(
+            encoder_inputs
+        )
 
         # encoder lstm 1
         encoder_lstm1 = LSTM(
@@ -91,6 +97,6 @@ class Seq2SeqLSTM:
         # dense layer
         decoder_dense = TimeDistributed(Dense(self.y_voc, activation="softmax"))
         decoder_outputs = decoder_dense(decoder_concat_input)
-        
+
         # Return the model
         return Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
