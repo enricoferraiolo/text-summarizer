@@ -65,7 +65,7 @@ class bohmodel(BaseModel):
 
         decoder_state_input_h = Input(shape=(self.lstm_units,), name="State-H-Input")
         decoder_state_input_c = Input(shape=(self.lstm_units,), name="State-C-Input")
-        decoder_states_inputs = [decoder_state_input_h, decoder_state_input_c]
+        decoder_states_inputs = [state_h, state_c]
 
         decoder_lstm_outputs, state_h, state_c = decoder_lstm(
             decoder_embedding, initial_state=decoder_states_inputs
@@ -83,6 +83,8 @@ class bohmodel(BaseModel):
         decoder_inputs, decoder_outputs = self.build_decoder(
             encoder_outputs=encoder_lstm, state_h=state_h, state_c=state_c
         )
+
+        
 
         # Build the model
         model = Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
