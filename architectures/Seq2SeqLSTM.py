@@ -14,14 +14,15 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 
 class Seq2SeqLSTM:
-    def __init__(self, x_voc, y_voc, max_text_len, max_summary_len):
+    def __init__(self, x_voc, y_voc, max_text_len, max_summary_len, name="Seq2SeqLSTM"):
         self.x_voc = x_voc
         self.y_voc = y_voc
         self.max_text_len = max_text_len
         self.max_summary_len = max_summary_len
         self.latent_dim = 300
         self.embedding_dim = 100
-        self.model = None
+        self.model = None,
+        self.name=name
 
     def build_model(self):
         # Encoder
@@ -92,4 +93,4 @@ class Seq2SeqLSTM:
         decoder_outputs = decoder_dense(decoder_concat_input)
         
         # Return the model
-        return Model([encoder_inputs, decoder_inputs], decoder_outputs)
+        return Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
