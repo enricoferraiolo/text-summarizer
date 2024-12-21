@@ -18,13 +18,27 @@ from tensorflow.keras.models import Model
 
 
 class BaseModel(ABC):
-    def __init__(self, x_voc, y_voc, max_text_len, max_summary_len, name="BaseModel"):
+    def __init__(
+        self,
+        x_voc,
+        y_voc,
+        max_text_len,
+        max_summary_len,
+        x_tokenizer,
+        y_tokenizer,
+        name="BaseModel",
+    ):
         self.x_voc = x_voc
         self.y_voc = y_voc
         self.max_text_len = max_text_len
         self.max_summary_len = max_summary_len
         self.latent_dim = 300
         self.embedding_dim = 100
+        self.y_tokenizer = y_tokenizer
+        self.x_tokenizer = x_tokenizer
+        self.reverse_target_word_index = self.y_tokenizer.index_word
+        self.reverse_source_word_index = self.x_tokenizer.index_word
+        self.target_word_index = self.y_tokenizer.word_index
         self.name = name
         self.encoder_inputs, self.encoder_outputs, self.state_h, self.state_c = (
             self.build_encoder()
@@ -59,4 +73,6 @@ class BaseModel(ABC):
     def build_model(self):
         pass
 
-# TODO: implement modular inference
+    @abstractmethod
+    def build_inference(self):
+        pass
