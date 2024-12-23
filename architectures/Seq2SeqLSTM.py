@@ -229,3 +229,19 @@ class Seq2SeqLSTM(BaseModel):
             e_h, e_c = h, c
 
         return decoded_sentence
+
+    def seq2summary(self, input_seq):
+        newString = ""
+        for i in input_seq:
+            if (
+                i != 0 and i != self.target_word_index["sostok"]
+            ) and i != self.target_word_index["eostok"]:
+                newString = newString + self.reverse_target_word_index[i] + " "
+        return newString
+
+    def seq2text(self,input_seq):
+        newString = ""
+        for i in input_seq:
+            if i != 0:
+                newString = newString + self.reverse_source_word_index[i] + " "
+        return newString
