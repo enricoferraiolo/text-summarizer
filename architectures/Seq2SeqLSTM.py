@@ -16,6 +16,9 @@ from tensorflow.keras.models import Model
 
 from architectures.BaseModel import BaseModel
 
+# FIXME:
+# devo provare a costruire encoder_model e decoder_model quando faccio l'init dell'istanza della classe
+# e provare a fare inferenza da li
 
 class Seq2SeqLSTM(BaseModel):
     def __init__(
