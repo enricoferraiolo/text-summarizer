@@ -115,9 +115,7 @@ class Seq2SeqLSTM(BaseModel):
 
         decoder_outputs, _, _ = self.decoder_lstm(dec_emb, initial_state=encoder_states)
 
-        attn_out, attn_states = self.attention_layer(
-            [encoder_outputs, decoder_outputs]
-        )
+        attn_out, attn_states = self.attention_layer([encoder_outputs, decoder_outputs])
         decoder_concat_input = Concatenate(axis=-1)([decoder_outputs, attn_out])
 
         decoder_outputs = self.decoder_dense(decoder_concat_input)
@@ -126,7 +124,9 @@ class Seq2SeqLSTM(BaseModel):
 
     def build_model(self):
         encoder_inputs, encoder_outputs, state_h, state_c = self.build_encoder()
-        decoder_inputs, decoder_outputs = self.build_decoder(encoder_outputs, [state_h, state_c])
+        decoder_inputs, decoder_outputs = self.build_decoder(
+            encoder_outputs, [state_h, state_c]
+        )
 
         model = Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
         return model
