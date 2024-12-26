@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 from attention import AttentionLayer
 from keras import backend as K
 
+import numpy as np
+
 K.clear_session()
 
 from tensorflow.keras.layers import (
