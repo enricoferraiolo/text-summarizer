@@ -54,6 +54,56 @@ class BaseModel(ABC):
     def save_decoder(self, path):
         self.decoder_model.save(path)
 
+    # Sequence to summary
+    def seq2summary(self, input_seq):
+        return " ".join(
+            [
+                self.reverse_target_word_index[i]
+                for i in input_seq
+                if i != 0
+                and i != self.target_word_index["sostok"]
+                and i != self.target_word_index["eostok"]
+            ]
+        )
+
+    # Sequence to text
+    def seq2text(self, input_seq):
+        return " ".join(
+            [self.reverse_source_word_index[i] for i in input_seq if i != 0]
+        )
+
+    # Inference the input sequence
+    def decode_sequence(self, input_seq):
+        e_out, e_h, e_c = self.encoder_model.predict(input_seq)
+
+        target_seq = np.zeros((1, 1))
+        target_seq[0, 0] = self.target_word_index["sostok"]
+
+        stop_condition = False
+        decoded_sentence = ""
+        while not stop_condition:
+            output_tokens, h, c = self.decoder_model.predict(
+                [target_seq] + [e_out, e_h, e_c]
+            )
+
+            sampled_token_index = np.argmax(output_tokens[0, -1, :])
+            sampled_token = self.reverse_target_word_index[sampled_token_index]
+
+            if sampled_token != "eostok":
+                decoded_sentence += " " + sampled_token
+
+            if sampled_token == "eostok" or len(decoded_sentence.split()) >= (
+                self.max_summary_len - 1
+            ):
+                stop_condition = True
+
+            target_seq = np.zeros((1, 1))
+            target_seq[0, 0] = sampled_token_index
+
+            e_h, e_c = h, c
+
+        return decoded_sentence
+
     @abstractmethod
     def build_encoder(self):
         pass
