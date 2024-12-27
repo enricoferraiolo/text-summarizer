@@ -177,7 +177,7 @@ Di seguito, nella figura \ref{fig:model_architecture}, possiamo vedere un diagra
 L'addestramento del modello è stato effettuato utilizzando il dataset preprocessato.\\
 Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
 A questo punto ho definito una funzione di early stopping per monitorare la loss sul validation set e fermare l'addestramento quando la loss non diminuisce per un certo numero di epoche, ciò per evitare l'overfitting.\\
-Dopodiché sono passato alla fase effettiva di training del modello, utilizzando l'ottimizzatore \texttt{Adam} e la loss function \texttt{categorical crossentropy}.\\
+Dopodiché sono passato alla fase effettiva di training del modello, utilizzando l'ottimizzatore \texttt{rmsprop} e la loss function \texttt{categorical crossentropy}.\\
 
 \subsection{Loss}
 Alla fine dell'addestramento, la loss sul training set è scesa a circa , mentre la loss sul validation set è arrivata a .\\
