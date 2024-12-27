@@ -36,9 +36,7 @@ class Seq2SeqBiLSTM(BaseModel):
         self.decoder_embedding = Embedding(
             y_voc, self.embedding_dim, trainable=True, name="decoder_embedding"
         )
-        self.encoder_bilstm1, self.encoder_bilstm2, self.encoder_bilstm3 = (
-            self.get_encoder_bilstm_layers()
-        )
+        self.encoder_bilstm = self.get_encoder_bilstm_layer()
         self.decoder_lstm = self.get_decoder_lstm_layer()
         self.attention_layer = AttentionLayer(name="attention_layer")
         self.decoder_dense = TimeDistributed(
@@ -60,43 +58,21 @@ class Seq2SeqBiLSTM(BaseModel):
         self.model = self.build_model()
         self.encoder_model, self.decoder_model = self.build_inference()
 
-    def get_encoder_bilstm_layers(self):
-        return (
-            Bidirectional(
-                LSTM(
-                    self.latent_dim,
-                    return_sequences=True,
-                    return_state=True,
-                    dropout=0.4,
-                    recurrent_dropout=0.4,
-                    name="encoder_bilstm1",
-                )
-            ),
-            Bidirectional(
-                LSTM(
-                    self.latent_dim,
-                    return_sequences=True,
-                    return_state=True,
-                    dropout=0.4,
-                    recurrent_dropout=0.4,
-                    name="encoder_bilstm2",
-                )
-            ),
-            Bidirectional(
-                LSTM(
-                    self.latent_dim,
-                    return_sequences=True,
-                    return_state=True,
-                    dropout=0.4,
-                    recurrent_dropout=0.4,
-                    name="encoder_bilstm3",
-                )
-            ),
+    def get_encoder_bilstm_layer(self):
+        return Bidirectional(
+            LSTM(
+                self.latent_dim,
+                return_sequences=True,
+                return_state=True,
+                dropout=0.4,
+                recurrent_dropout=0.4,
+                name="encoder_bilstm",
+            )
         )
 
     def get_decoder_lstm_layer(self):
         return LSTM(
-            self.latent_dim,
+            self.latent_dim * 2,  # Double the size to match BiLSTM output
             return_sequences=True,
             return_state=True,
             dropout=0.4,
@@ -108,24 +84,14 @@ class Seq2SeqBiLSTM(BaseModel):
         encoder_inputs = Input(shape=(self.max_text_len,), name="encoder_inputs")
         enc_emb = self.encoder_embedding(encoder_inputs)
 
-        # Bidirectional LSTM layers
-        encoder_output1, forward_h1, forward_c1, backward_h1, backward_c1 = (
-            self.encoder_bilstm1(enc_emb)
-        )
-        encoder_output2, forward_h2, forward_c2, backward_h2, backward_c2 = (
-            self.encoder_bilstm2(encoder_output1)
-        )
+        # Bidirectional LSTM layer
         encoder_outputs, forward_h, forward_c, backward_h, backward_c = (
-            self.encoder_bilstm3(encoder_output2)
+            self.encoder_bilstm(enc_emb)
         )
 
-        # Combine the states from both directions (forward and backward)
+        # Concatenate states from both directions
         state_h = Concatenate()([forward_h, backward_h])
         state_c = Concatenate()([forward_c, backward_c])
-
-        # Since the decoder is not bidirectional, we have to reshape the states, so they can be used in the decoder
-        state_h_dense = Dense(self.latent_dim, activation="tanh", name="state_h_dense")(state_h)
-        state_c_dense = Dense(self.latent_dim, activation="tanh", name="state_c_dense")(state_c)
 
         return encoder_inputs, encoder_outputs, state_h, state_c
 
@@ -155,9 +121,11 @@ class Seq2SeqBiLSTM(BaseModel):
         encoder_inputs, encoder_outputs, state_h, state_c = self.build_encoder()
         encoder_model = Model(encoder_inputs, [encoder_outputs, state_h, state_c])
 
-        decoder_state_input_h = Input(shape=(self.latent_dim,))
-        decoder_state_input_c = Input(shape=(self.latent_dim,))
-        decoder_hidden_state_input = Input(shape=(self.max_text_len, self.latent_dim))
+        decoder_state_input_h = Input(shape=(self.latent_dim * 2,))
+        decoder_state_input_c = Input(shape=(self.latent_dim * 2,))
+        decoder_hidden_state_input = Input(
+            shape=(self.max_text_len, self.latent_dim * 2)
+        )
 
         decoder_inputs = Input(shape=(None,), name="decoder_inputs")
         dec_emb = self.decoder_embedding(decoder_inputs)
