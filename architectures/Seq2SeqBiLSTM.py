@@ -72,7 +72,7 @@ class Seq2SeqBiLSTM(BaseModel):
 
     def get_decoder_lstm_layer(self):
         return LSTM(
-            self.latent_dim * 2,  # Double the size to match BiLSTM output
+            self.latent_dim * 2,  # Double the size to match BiLSTM output, since we are using BiLSTM
             return_sequences=True,
             return_state=True,
             dropout=0.4,

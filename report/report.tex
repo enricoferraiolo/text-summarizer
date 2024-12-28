@@ -123,7 +123,7 @@ Inoltre, ho effettuato la tokenizzazione separata per le recensioni (testo di in
 I due tokenizer servono a creare il vocabolario per le recensioni e per i riassunti, in modo da poter convertire i testi in sequenze di token.
 
 \section{Architettura del Modello}
-L'implementazione del modello è stata effettuata attraverso una classe astratta \texttt{BaseModel} e una classe derivata \texttt{   LSTM}.\\
+L'implementazione dei modelli è stata effettuata attraverso una classe astratta \texttt{BaseModel} e una classe derivata \texttt{   LSTM}.\\
 Questo permette di definire un'interfaccia comune per tutti i modelli di summarization e di estendere facilmente l'architettura in futuro.\\
 
 \subsection{Classe Base Astratta}
@@ -134,7 +134,7 @@ La classe \texttt{BaseModel} fornisce l'interfaccia base per tutti i modelli di 
     \item Conversione tra sequenze e testo tramite i tokenizzatori.
 \end{itemize}
 
-\subsection{Implementazione Seq2SeqLSTM}
+\subsection{Seq2SeqLSTM}
 La classe \texttt{Seq2SeqLSTM} implementa l'architettura specifica per il modello di summarization Sequence to Sequence con layer LSTM.\\
 Vediamo di seguito le caratteristiche principali dell'architettura, composta da encoder e decoder:
 
@@ -165,204 +165,106 @@ Il decoder include:
     Utilizza la funzione di attivazione softmax per la normalizzazione delle probabilità.
 \end{itemize}
 
-Di seguito, nella figura \ref{fig:model_architecture}, possiamo vedere un diagramma dell'architettura del modello:
+Di seguito, nella figura \ref{fig:seq2seqlstm_model_architecture}, possiamo vedere un diagramma dell'architettura del modello:
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{media/Seq2SeqLSTM_originale_image.png}
-    \caption{Diagramma dell'architettura del modello}
-    \label{fig:model_architecture}
+    \caption{Diagramma dell'architettura del modello Seq2SeqLSTM}
+    \label{fig:seq2seqlstm_model_architecture}
 \end{figure}
 
-\section{Training del Modello}
+\subsection{Training del Modello}
 L'addestramento del modello è stato effettuato utilizzando il dataset preprocessato.\\
 Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
 A questo punto ho definito una funzione di early stopping per monitorare la loss sul validation set e fermare l'addestramento quando la loss non diminuisce per un certo numero di epoche, ciò per evitare l'overfitting.\\
 Dopodiché sono passato alla fase effettiva di training del modello, utilizzando l'ottimizzatore \texttt{rmsprop} e la loss function \texttt{categorical crossentropy}.\\
 
-\subsection{Loss}
+\subsubsection{Loss}
 Alla fine dell'addestramento, la loss sul training set è scesa a circa , mentre la loss sul validation set è arrivata a .\\
 Possiamo verifcare l'andamento delle loss durante l'addestramento nella figura \ref{fig:loss_plot}.
 \begin{figure}[H]
     \centering
     %TODO: Aggiungere immagine traingin loss
-    \includegraphics[width=1\textwidth]{media/Seq2SeqLSTM_originale_image.png}
+    \includegraphics[width=0.75\textwidth]{media/Seq2SeqLSTM_wer_scores.png}
     \caption{Andamento delle loss durante l'addestramento}
     \label{fig:loss_plot}
 \end{figure}
 
-\section{Metriche di Valutazione}
-Per valutare le performance del modello sono state utilizzate diverse metriche, utili per valutare la qualità dei riassunti generati rispetto a quelli di riferimento.\\
-Per eseguire queste valutazioni ho utilizzato il dataset di test, che non è stato utilizzato durante l'addestramento del modello e ho fatto inferenza sui dati di test per generare i riassunti, per la precisione ho generato 1000 riassunti.\\
 
-\subsection{ROUGE (Recall-Oriented Understudy for Gisting Evaluation)}
-Sono state calcolate tre varianti di ROUGE:
-\begin{itemize}
-    \item ROUGE-1: confronta unigrammi tra il riassunto generato e quello di riferimento, \ref{fig:rouge_1}
-    \item ROUGE-2: considera bigrammi per valutare la similarità tra i due testi, \ref{fig:rouge_2}
-    \item ROUGE-L: confronta la sottosequenza più lunga comune tra i due testi, \ref{fig:rouge_l}
-\end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_rouge1_scores.png}
-        \caption{ROUGE-1}
-        \label{fig:rouge_1}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_rouge2_scores.png}
-        \caption{ROUGE-2}
-        \label{fig:rouge_2}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_rougeL_scores.png}
-        \caption{ROUGE-L}
-        \label{fig:rouge_l}
-    \end{subfigure}
-    \caption{Valori ROUGE per il modello Seq2SeqLSTM: (a) ROUGE-1, (b) ROUGE-2, and (c) ROUGE-L.}
-    \label{fig:rouge_scores}
-\end{figure}
-
-
-\subsection{Word Error Rate (WER)}
-Il WER è una metrica che calcola il tasso di errore tra due sequenze di parole.\\
-In particolare, il WER calcola il numero di operazioni di inserimento, cancellazione e sostituzione necessarie per trasformare una sequenza di parole in un'altra.\\
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{media/Seq2SeqLSTM_wer_scores.png}
-    \caption{Valori WER per il modello Seq2SeqLSTM}
-    \label{fig:wer}
-\end{figure}
-
-
-\subsection{Cosine Similarity}
-La similarità cosenica è una metrica che calcola la similarità tra due vettori in uno spazio multidimensionale.\\
-Nel caso specifico della generazione di riassunti, la similarità cosenica è stata calcolata tra i vettori di embedding delle parole nei riassunti generati e quelli nei riassunti di riferimento, con il fine di valutare la qualità dei riassunti generati.\\
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{media/Seq2SeqLSTM_cosine_similarity_scores.png}
-    \caption{Valori di similarità cosenica per il modello Seq2SeqLSTM}
-    \label{fig:cosine_similarity}
-\end{figure}
-
-\section{Implementazione del Modello Seq2SeqBiLSTM}
-
-In questo caso, abbiamo implementato un modello di tipo Sequence-to-Sequence con una versione BiLSTM (Bidirectional LSTM).\\
-L'architettura è simile al modello Seq2Seq LSTM, ma con un'encoder bidirezionale, il che consente di catturare informazioni contestuali da entrambe le direzioni della sequenza.
-
-\subsection{Architettura del Modello Seq2SeqBiLSTM}
-L'architettura del modello Seq2SeqBiLSTM include le seguenti modifiche rispetto al modello LSTM standard:
+\subsection{Seq2SeqBiLSTM}
+La classe \texttt{Seq2SeqBiLSTM} implementa un'architettura simile al modello Seq2SeqLSTM, ma i layer LSTM dell'encoder sono bidirezionali.\\
 
 \subsubsection{Encoder}
 L'encoder è composto da:
 \begin{itemize}
-    \item \textbf{Layer di embedding}: mappa i token di input in vettori di lunghezza fissa.
-    \item \textbf{Due layer LSTM bidirezionali} con:
+    \item \textbf{Layer di embedding}
+    \item \textbf{Un layer LSTM bidirezionale} con:
         \begin{itemize}
-            \item Dimensione latente fissa.
-            \item Dropout del 40\%.
-            \item Recurrent dropout del 20\%.
+            \item Dimensione latente fissa
+            \item Dropout del 40\%
+            \item Recurrent dropout del 40\%
         \end{itemize}
+    \item \textbf{Layer di Concatenazione}: Concatena gli stati del layer LSTM bidirezionale
 \end{itemize}
 
 \subsubsection{Decoder}
 Il decoder include:
 \begin{itemize}
-    \item \textbf{Layer di embedding}: mappa i token di output in vettori di lunghezza fissa.
-    \item \textbf{Layer LSTM}: stessa dimensione latente dell'encoder.
-    \item \textbf{Layer di attenzione}: calcola i pesi di attenzione tra l'encoder e il decoder.
-    \item \textbf{Layer denso di output}: restituisce la distribuzione di probabilità per la generazione delle parole del riassunto.
+    \item \textbf{Layer di embedding}
+    \item \textbf{Layer LSTM}:
+        \begin{itemize}
+            \item Dimensione latente pari \(2 * \textit{dimensione\_latente\_fissa}\), per adattarsi alla concatenazione degli stati provenienti dall'encoder.
+            \item Dropout del 40\%
+            \item Recurrent dropout del 20\%
+        \end{itemize}
+    \item \textbf{Layer di attenzione}
+    \item \textbf{Layer di Concatenazione}
+    \item \textbf{Layer denso di output}
 \end{itemize}
 
-Di seguito, possiamo vedere un diagramma dell'architettura del modello Seq2SeqBiLSTM nella figura \ref{fig:biLSTM_model_architecture}.
+Di seguito, possiamo vedere un diagramma dell'architettura del modello Seq2SeqBiLSTM nella figura \ref{fig:seq2seqbilstm_model_architecture}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{media/Seq2SeqBiLSTM_image.png}
     \caption{Diagramma dell'architettura del modello Seq2SeqBiLSTM}
-    \label{fig:biLSTM_model_architecture}
+    \label{fig:seq2seqbilstm_model_architecture}
 \end{figure}
 
-\section{Training del Modello Seq2SeqBiLSTM}
-Il processo di addestramento per il modello Seq2SeqBiLSTM è stato simile a quello del modello Seq2Seq LSTM, ma con l'encoder bidirezionale, che permette al modello di considerare il contesto sia precedente che successivo per ogni parola.
 
-\subsection{Loss}
-Durante l'addestramento, la loss sul training set è scesa a circa [valore loss training set], mentre la loss sul validation set è arrivata a [valore loss validation set].\\
-L'andamento della loss durante l'addestramento è mostrato nella figura \ref{fig:biLSTM_loss_plot}.
+\subsection{Training del Modello}
+L'addestramento del modello è stato effettuato utilizzando il dataset preprocessato.\\
+Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
+A questo punto ho definito una funzione di early stopping per monitorare la loss sul validation set e fermare l'addestramento quando la loss non diminuisce per un certo numero di epoche, ciò per evitare l'overfitting.\\
+Dopodiché sono passato alla fase effettiva di training del modello, utilizzando l'ottimizzatore \texttt{rmsprop} e la loss function \texttt{categorical crossentropy}.\\
 
+\subsubsection{Loss}
+Alla fine dell'addestramento, la loss sul training set è scesa a circa , mentre la loss sul validation set è arrivata a .\\
+Possiamo verifcare l'andamento delle loss durante l'addestramento nella figura \ref{fig:loss_plot}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{media/Seq2SeqBiLSTM_image.png}
-    \caption{Andamento delle loss durante l'addestramento per il modello Seq2SeqBiLSTM}
-    \label{fig:biLSTM_loss_plot}
+    %TODO: Aggiungere immagine traingin loss
+    \includegraphics[width=0.75\textwidth]{media/Seq2SeqLSTM_wer_scores.png}
+    \caption{Andamento delle loss durante l'addestramento}
+    \label{fig:loss_plot}
 \end{figure}
 
-\section{Metriche di Valutazione per Seq2SeqBiLSTM}
-
-Come per il modello Seq2Seq LSTM, sono state calcolate le metriche ROUGE, WER, e la Similarità Cosine per valutare le performance del modello Seq2SeqBiLSTM.
+\section{Metriche di Valutazione}
+In questa sezione vengono analizzate le prestazioni dei due modelli attraverso i grafici delle principali metriche di valutazione: ROUGE, WER e cosine similarity. 
+Queste metriche sono state scelte per misurare in modo accurato la qualità dei riassunti generati, confrontandoli con quelli di riferimento.\\
+Le valutazioni sono state effettuate utilizzando il dataset di test, che non è stato utilizzato durante l'addestramento del modello.\\
+Durante la fase di inferenza, sono stati generati 1000 riassunti a partire dai dati di test.
 
 \subsection{ROUGE (Recall-Oriented Understudy for Gisting Evaluation)}
-I valori delle metriche ROUGE per il modello Seq2SeqBiLSTM sono mostrati nelle seguenti figure:
+Sono state calcolate tre varianti di ROUGE:
+\begin{itemize}
+    \item ROUGE-1: confronta unigrammi tra il riassunto generato e quello di riferimento
+    \item ROUGE-2: considera bigrammi per valutare la similarità tra i due testi
+    \item ROUGE-L: confronta la sottosequenza più lunga comune tra i due testi
+\end{itemize}    
 
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_rouge1_scores.png}
-        \caption{ROUGE-1}
-        \label{fig:biLSTM_rouge_1}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_rouge2_scores.png}
-        \caption{ROUGE-2}
-        \label{fig:biLSTM_rouge_2}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.32\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_rougeL_scores.png}
-        \caption{ROUGE-L}
-        \label{fig:biLSTM_rouge_l}
-    \end{subfigure}
-    \caption{Valori ROUGE per il modello Seq2SeqBiLSTM: (a) ROUGE-1, (b) ROUGE-2, and (c) ROUGE-L.}
-    \label{fig:biLSTM_rouge_scores}
-\end{figure}
-
-\subsection{Word Error Rate (WER)}
-Il WER per il modello Seq2SeqBiLSTM è stato calcolato sui riassunti generati e i riassunti di riferimento.\\
-I valori di WER sono mostrati nella figura \ref{fig:biLSTM_wer}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{media/Seq2SeqBiLSTM_wer_scores.png}
-    \caption{Valori WER per il modello Seq2SeqBiLSTM}
-    \label{fig:biLSTM_wer}
-\end{figure}
-
-\subsection{Cosine Similarity}
-La similarità cosenica per il modello Seq2SeqBiLSTM è stata calcolata tra i vettori di embedding delle parole nei riassunti generati e quelli nei riassunti di riferimento.\\
-I valori di similarità cosenica sono mostrati nella figura \ref{fig:biLSTM_cosine_similarity}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{media/Seq2SeqBiLSTM_cosine_similarity_scores.png}
-    \caption{Valori di similarità cosenica per il modello Seq2SeqBiLSTM}
-    \label{fig:biLSTM_cosine_similarity}
-\end{figure}
-
-\section{Confronto tra Seq2SeqLSTM e Seq2SeqBiLSTM}
-In questa sezione vengono confrontate le prestazioni dei due modelli utilizzando i grafici delle metriche di valutazione: ROUGE, WER e cosine similarity.
-
-\subsection{ROUGE Scores}
 I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in termini di ROUGE-1, ROUGE-2 e ROUGE-L per i due modelli. Il modello Seq2SeqBiLSTM mostra un miglioramento nei punteggi ROUGE rispetto al Seq2SeqLSTM, indicando una maggiore capacità di catturare similarità lessicali.
-
 \begin{figure}[H]
     \centering
     \begin{subfigure}{0.32\textwidth}
@@ -405,6 +307,9 @@ I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in 
 \end{figure}
 
 \subsection{Word Error Rate (WER)}
+Il WER è una metrica che calcola il tasso di errore tra due sequenze di parole.\\
+In particolare, il WER calcola il numero di operazioni di inserimento, cancellazione e sostituzione necessarie per trasformare una sequenza di parole in un'altra.\\
+
 Il confronto del WER, mostrato nella Figura \ref{fig:wer_comparison}, evidenzia che il modello Seq2SeqBiLSTM ottiene risultati migliori, indicando una maggiore accuratezza nella generazione delle parole.
 
 \begin{figure}[H]
@@ -425,6 +330,8 @@ Il confronto del WER, mostrato nella Figura \ref{fig:wer_comparison}, evidenzia 
 \end{figure}
 
 \subsection{Cosine Similarity}
+La similarità cosenica è una metrica che calcola la similarità tra due vettori in uno spazio multidimensionale.\\
+Nel caso specifico della generazione di riassunti, la similarità cosenica è stata calcolata tra i vettori di embedding delle parole nei riassunti generati e quelli nei riassunti di riferimento, con il fine di valutare la qualità dei riassunti generati.\\
 La Figura \ref{fig:cosine_similarity_comparison} confronta i valori di similarità cosenica. Anche in questo caso, il modello Seq2SeqBiLSTM ottiene valori più alti, suggerendo una maggiore correlazione semantica con i riassunti di riferimento.
 
 \begin{figure}[H]
@@ -446,6 +353,7 @@ La Figura \ref{fig:cosine_similarity_comparison} confronta i valori di similarit
 
 
 \section{Conclusioni}
+%%TODO: Scrivere conclusioni
 Il modello implementato dimostra la capacità di generare riassunti efficaci delle recensioni di prodotti.\\
 I risultati complessivi indicano che il modello Seq2Seq LSTM ha difficoltà significative nel generare output precisi, sia dal punto di vista lessicale che sintattico. \\
 Tuttavia, la similarità cosenica superiore a zero per la maggior parte delle righe suggerisce che il modello riesce a mantenere una correlazione semantica, seppure debole, con il testo di riferimento.\\
