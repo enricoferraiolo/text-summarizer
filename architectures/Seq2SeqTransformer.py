@@ -14,8 +14,9 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 import tensorflow as tf
 from architectures.BaseModel import BaseModel
+import numpy as np
 
-
+#TODO: INFERENZA È ROTTA 
 class Seq2SeqTransformer(BaseModel):
     def __init__(
         self, x_voc, y_voc, max_text_len, max_summary_len, x_tokenizer, y_tokenizer
@@ -124,3 +125,37 @@ class Seq2SeqTransformer(BaseModel):
         )
 
         return encoder_model, decoder_model
+
+    def decode_sequence(self, input_seq):
+        # Get the encoder states
+        e_out = self.encoder_model.predict(input_seq)
+
+        # Initialize the target sequence (with the start token)
+        target_seq = np.zeros((1, 1))  # Shape (1, 1) for the initial token
+        target_seq[0, 0] = self.target_word_index["sostok"]
+
+        stop_condition = False
+        decoded_sentence = ""
+
+        while not stop_condition:
+            # Predict the next token in the sequence
+            output_tokens = self.decoder_model.predict([target_seq, e_out])
+
+            # Get the most probable next token
+            sampled_token_index = np.argmax(output_tokens[0, -1, :])
+            sampled_token = self.reverse_target_word_index[sampled_token_index]
+
+            # Stop if we predict the end token or exceed max length
+            if (
+                sampled_token == "eostok"
+                or len(decoded_sentence.split()) >= self.max_summary_len
+            ):
+                stop_condition = True
+
+            decoded_sentence += " " + sampled_token
+
+            # Update the target sequence (for the next token)
+            target_seq = np.zeros((1, 1))
+            target_seq[0, 0] = sampled_token_index
+
+        return decoded_sentence
