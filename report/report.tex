@@ -174,7 +174,7 @@ Di seguito, nella figura \ref{fig:seq2seqlstm_model_architecture}, possiamo vede
     \label{fig:seq2seqlstm_model_architecture}
 \end{figure}
 
-\subsection{Training del Modello}
+\subsubsection{Training del Modello}
 L'addestramento del modello è stato effettuato utilizzando il dataset preprocessato.\\
 Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
 A questo punto ho definito una funzione di early stopping per monitorare la loss sul validation set e fermare l'addestramento quando la loss non diminuisce per un certo numero di epoche, ciò per evitare l'overfitting.\\
@@ -182,13 +182,13 @@ Dopodiché sono passato alla fase effettiva di training del modello, utilizzando
 
 \subsubsection{Loss}
 Alla fine dell'addestramento, la loss sul training set è scesa a circa , mentre la loss sul validation set è arrivata a .\\
-Possiamo verifcare l'andamento delle loss durante l'addestramento nella figura \ref{fig:loss_plot}.
+Possiamo verifcare l'andamento delle loss durante l'addestramento nella figura \ref{fig:seq2seqlstm_loss_plot}.
 \begin{figure}[H]
     \centering
-    %TODO: Aggiungere immagine traingin loss
-    \includegraphics[width=0.75\textwidth]{media/Seq2SeqLSTM_wer_scores.png}
+    %TODO: Aggiungere immagine traingin loss È DA AGGIORNARE
+    \includegraphics[width=0.75\textwidth]{media/Seq2SeqLSTM_originale_lossplot.png}
     \caption{Andamento delle loss durante l'addestramento}
-    \label{fig:loss_plot}
+    \label{fig:seq2seqlstm_loss_plot}
 \end{figure}
 
 
@@ -233,7 +233,7 @@ Di seguito, possiamo vedere un diagramma dell'architettura del modello Seq2SeqBi
 \end{figure}
 
 
-\subsection{Training del Modello}
+\subsubsection{Training del Modello}
 L'addestramento del modello è stato effettuato utilizzando il dataset preprocessato.\\
 Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
 A questo punto ho definito una funzione di early stopping per monitorare la loss sul validation set e fermare l'addestramento quando la loss non diminuisce per un certo numero di epoche, ciò per evitare l'overfitting.\\
@@ -241,13 +241,38 @@ Dopodiché sono passato alla fase effettiva di training del modello, utilizzando
 
 \subsubsection{Loss}
 Alla fine dell'addestramento, la loss sul training set è scesa a circa , mentre la loss sul validation set è arrivata a .\\
-Possiamo verifcare l'andamento delle loss durante l'addestramento nella figura \ref{fig:loss_plot}.
+Possiamo verifcare l'andamento delle loss durante l'addestramento nella figura \ref{fig:seq2seqbilstm_loss_plot}.
 \begin{figure}[H]
     \centering
-    %TODO: Aggiungere immagine traingin loss
-    \includegraphics[width=0.75\textwidth]{media/Seq2SeqLSTM_wer_scores.png}
+    %TODO: Aggiungere immagine traingin loss È DA AGGIORNARE
+    \includegraphics[width=0.75\textwidth]{media/Seq2SeqBiLSTM_originale_lossplot.png}
     \caption{Andamento delle loss durante l'addestramento}
-    \label{fig:loss_plot}
+    \label{fig:seq2seqbilstm_loss_plot}
+\end{figure}
+
+\subsection{Seq2Seq3BiLSTM}
+La classe \texttt{Seq2Seq3BiLSTM} implementa un'architettura simile al modello Seq2SeqBiLSTM, ma con tre layer LSTM bidirezionali nell'encoder.\\
+Di seguito, possiamo vedere un diagramma dell'architettura del modello Seq2Seq3BiLSTM nella figura \ref{fig:seq2seq3bilstm_model_architecture}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{media/Seq2Seq3BiLSTM_image.png}
+    \caption{Diagramma dell'architettura del modello Seq2Seq3BiLSTM}
+    \label{fig:seq2seq3bilstm_model_architecture}
+\end{figure}
+
+\subsubsection{Training del Modello}
+L'addestramento del modello è stato uguale a quello dei modelli precedenti.\\
+
+\subsubsection{Loss}
+Alla fine dell'addestramento, la loss sul training set è scesa a circa , mentre la loss sul validation set è arrivata a .\\
+Possiamo verifcare l'andamento delle loss durante l'addestramento nella figura \ref{fig:seq2seq3bilstm_loss_plot}.
+
+\begin{figure}[H]
+    \centering
+    %TODO: Aggiungere immagine traingin loss È DA AGGIORNARE
+    \includegraphics[width=0.75\textwidth]{media/Seq2Seq3BiLSTM_originale_lossplot.png}
+    \caption{Andamento delle loss durante l'addestramento}
+    \label{fig:seq2seq3bilstm_loss_plot}
 \end{figure}
 
 \section{Metriche di Valutazione}
@@ -349,7 +374,7 @@ Il confronto del WER, mostrato nella Figura \ref{fig:wer_comparison}, evidenzia 
         \includegraphics[width=\textwidth]{media/Seq2Seq3BiLSTM_wer_scores.png}
         \caption{WER Seq2Seq3BiLSTM. Valore medio: 1.1474}
     \end{subfigure}
-    \caption{Confronto del Word Error Rate tra i modelli Seq2SeqLSTM e Seq2SeqBiLSTM.}
+    \caption{Confronto del Word Error Rate tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM e Seq2Seq3BiLSTM.}
     \label{fig:wer_comparison}
 \end{figure}
 
