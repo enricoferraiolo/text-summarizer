@@ -16,7 +16,8 @@ import tensorflow as tf
 from architectures.BaseModel import BaseModel
 import numpy as np
 
-#TODO: INFERENZA È ROTTA 
+
+# TODO: INFERENZA È ROTTA
 class Seq2SeqTransformer(BaseModel):
     def __init__(
         self, x_voc, y_voc, max_text_len, max_summary_len, x_tokenizer, y_tokenizer
