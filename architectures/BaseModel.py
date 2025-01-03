@@ -17,6 +17,7 @@ from tensorflow.keras.layers import (
     TimeDistributed,
 )
 from tensorflow.keras.models import Model
+from tensorflow.keras.callbacks import EarlyStopping
 
 
 class BaseModel(ABC):
@@ -43,6 +44,18 @@ class BaseModel(ABC):
         self.target_word_index = self.y_tokenizer.word_index
         self.name = name
         self.model = self.build_model()
+        self.callbacks = [
+            EarlyStopping(
+                monitor="val_loss",
+                mode="min",
+                verbose=1,
+                patience=2,
+                restore_best_weights=True,
+            )
+        ]
+
+    def get_callbacks(self):
+        return self.callbacks
 
     def get_model(self):
         return self.model
