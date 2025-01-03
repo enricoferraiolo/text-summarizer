@@ -99,9 +99,9 @@ class Seq2SeqImproved(BaseModel):
 
         model = Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
         model.compile(
-            optimizer=Adam(learning_rate=0.001),
-            loss="sparse_categorical_crossentropy",
-            metrics=["accuracy"],
+            optimizer=self.get_optimizer(),
+            loss=self.get_loss(),
+            metrics=self.get_metrics(),
         )
         return model
 

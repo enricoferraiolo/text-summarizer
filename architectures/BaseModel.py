@@ -16,6 +16,7 @@ from tensorflow.keras.layers import (
     Concatenate,
     TimeDistributed,
 )
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import EarlyStopping
 
@@ -53,6 +54,20 @@ class BaseModel(ABC):
                 restore_best_weights=True,
             )
         ]
+        self.default_lr = 0.001
+        self.optimizer = Adam(learning_rate=self.default_lr)
+        self.loss = "sparse_categorical_crossentropy"
+        self.metrics = ["accuracy"]
+
+    def get_metrics(self):
+        return self.metrics
+
+    def get_optimizer(self, lr=0.001):
+        self.optimizer = Adam(learning_rate=lr)
+        return self.optimizer
+
+    def get_loss(self):
+        return self.loss
 
     def get_callbacks(self):
         return self.callbacks
