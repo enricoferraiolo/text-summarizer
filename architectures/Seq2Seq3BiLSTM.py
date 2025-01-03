@@ -116,7 +116,7 @@ class Seq2Seq3BiLSTM(BaseModel):
         )
 
         model = Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
-        model.compile(optimizer="rmsprop", loss="sparse_categorical_crossentropy")
+        model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 
         return model
 

@@ -1,0 +1,15 @@
+\newcommand{\risultati}[4]{
+\subsubsection{Risultati}
+Questo modello ha ottenuto i seguenti risultati al termine dell'addestramento:
+\begin{itemize}
+    \item \textbf{Loss}: #1
+    \item \textbf{Validation loss}: #2
+    \item \textbf{Accuracy}: #3
+    \item \textbf{Validation Accuracy}: #4
+\end{itemize}
+}
+
+\newcommand{\training}[2]{
+\subsubsection{Training}
+L'addestramento del modello è stato effettuato con ottimizzatore #1 e #2 epoche con early stopping.\\
+}

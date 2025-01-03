@@ -1,0 +1,25 @@
+\input{sections/architetture/utils.tex}
+
+\section{Architettura del Modello}
+L'implementazione dei modelli è stata effettuata attraverso una classe astratta \texttt{BaseModel} e una classe derivata \texttt{   LSTM}.\\
+Questo permette di definire un'interfaccia comune per tutti i modelli di summarization e di estendere facilmente l'architettura in futuro.\\
+
+\subsection{Classe Base Astratta}
+La classe \texttt{BaseModel} fornisce l'interfaccia base per tutti i modelli di summarization:
+\begin{itemize}
+    \item Metodi astratti per costruire encoder e decoder.
+    \item Funzionalità per il salvataggio, caricamento e inferenza del modello.
+    \item Conversione tra sequenze e testo tramite i tokenizzatori.
+\end{itemize}
+
+\subsection{Training}
+L'addestramento dei modelli successivi è stato effettuato utilizzando il dataset preprocessato.\\
+Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
+A questo punto ho definito una funzione di early stopping per monitorare la loss sul validation set e fermare l'addestramento quando la loss non diminuisce per un certo numero di epoche, ciò per evitare l'overfitting.\\
+Dopodiché sono passato alla fase effettiva di training del modello, utilizzando l'ottimizzatore \texttt{Adam} e la loss function \texttt{Sparse Categorical Crossentropy}.\\
+
+\input{sections/architetture/Seq2SeqLSTM.tex}
+\input{sections/architetture/Seq2SeqBiLSTM.tex}
+\input{sections/architetture/Seq2Seq3BiLSTM.tex}
+\input{sections/architetture/Seq2SeqLSTMGloVe.tex}
+\input{sections/architetture/Seq2SeqLSTMTransformer.tex}
