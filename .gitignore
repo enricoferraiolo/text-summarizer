@@ -1,3 +1,6 @@
+#glove files
+architectures/weightsGLOVE/
+
 .conda
 .venv
 __pycache__
