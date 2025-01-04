@@ -71,8 +71,21 @@ class BaseModel(ABC):
     def change_optimizer(self, optimizer):
         self.optimizer = optimizer
 
+        # Update the model with the new optimizer
+        self.model.compile(
+            optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
+        )
+
     def get_optimizer(self):
         return self.optimizer
+
+    def change_loss(self, loss):
+        self.loss = loss
+
+        # Update the model with the new loss
+        self.model.compile(
+            optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
+        )
 
     def get_loss(self, loss="sparse_categorical_crossentropy"):
         self.loss = loss
