@@ -103,6 +103,9 @@ class BaseModel(ABC):
         return self.callbacks
 
     def get_model(self):
+        self.model.compile(
+            optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
+        )
         return self.model
 
     def save_model(self, path):
