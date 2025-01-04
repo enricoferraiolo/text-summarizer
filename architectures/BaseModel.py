@@ -44,7 +44,6 @@ class BaseModel(ABC):
         self.reverse_source_word_index = self.x_tokenizer.index_word
         self.target_word_index = self.y_tokenizer.word_index
         self.name = name
-        self.model = self.build_model()
         self.callbacks = [
             EarlyStopping(
                 monitor="val_loss",
@@ -58,16 +57,36 @@ class BaseModel(ABC):
         self.optimizer = Adam(learning_rate=self.default_lr)
         self.loss = "sparse_categorical_crossentropy"
         self.metrics = ["accuracy"]
+        self.model = self.build_model()
+
+    def add_metrics(self, metrics):
+        # Check if metrics is a list
+        if isinstance(metrics, list):
+            # Add each metric to the list only if it is not already in the list
+            for metric in metrics:
+                if metric not in self.metrics:
+                    self.metrics.append(metric)
 
     def get_metrics(self):
         return self.metrics
 
-    def get_optimizer(self, lr=0.001):
-        self.optimizer = Adam(learning_rate=lr)
+    def change_optimizer(self, optimizer):
+        self.optimizer = optimizer
+
+    def get_optimizer(self):
         return self.optimizer
 
-    def get_loss(self):
+    def get_loss(self, loss="sparse_categorical_crossentropy"):
+        self.loss = loss
         return self.loss
+
+    def add_callbacks(self, callbacks):
+        # Check if callbacks is a list
+        if isinstance(callbacks, list):
+            # Add each callback to the list only if it is not already in the list
+            for callback in callbacks:
+                if callback not in self.callbacks:
+                    self.callbacks.append(callback)
 
     def get_callbacks(self):
         return self.callbacks
