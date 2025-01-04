@@ -31,6 +31,7 @@ class Seq2SeqLSTMTransformer(BaseModel):
         x_tokenizer,
         y_tokenizer,
         name="Seq2SeqLSTMTransformer",
+        name_additional_info="",
         latent_dim=300,
         embedding_dim=100,
         num_heads=8,
@@ -44,7 +45,7 @@ class Seq2SeqLSTMTransformer(BaseModel):
         # Model parameters
         self.latent_dim = latent_dim
         self.embedding_dim = embedding_dim
-        self.name = name
+        self.name = name + name_additional_info
         self.num_heads = num_heads
         self.ff_dim = ff_dim
         self.num_transformer_blocks = num_transformer_blocks
@@ -53,7 +54,6 @@ class Seq2SeqLSTMTransformer(BaseModel):
         self.encoder_recurrent_dropout = encoder_recurrent_dropout
         self.decoder_dropout = decoder_dropout
         self.decoder_recurrent_dropout = decoder_recurrent_dropout
-
 
         self.reverse_target_word_index = y_tokenizer.index_word
         self.reverse_source_word_index = x_tokenizer.index_word

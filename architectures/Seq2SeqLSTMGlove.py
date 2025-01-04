@@ -64,6 +64,7 @@ class Seq2SeqLSTMGlove(BaseModel):
         x_tokenizer,
         y_tokenizer,
         name="Seq2SeqLSTMGlove",
+        name_additional_info="",
         latent_dim=300,
         embedding_dim=100,
         encoder_dropout=0.4,
@@ -74,7 +75,7 @@ class Seq2SeqLSTMGlove(BaseModel):
         # Set unique parameters for this model
         self.latent_dim = latent_dim
         self.embedding_dim = embedding_dim
-        self.name = name
+        self.name = name + name_additional_info
         self.reverse_target_word_index = y_tokenizer.index_word
         self.reverse_source_word_index = x_tokenizer.index_word
         self.target_word_index = y_tokenizer.word_index
