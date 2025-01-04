@@ -36,8 +36,6 @@ class BaseModel(ABC):
         self.y_voc = y_voc
         self.max_text_len = max_text_len
         self.max_summary_len = max_summary_len
-        self.latent_dim = 300
-        self.embedding_dim = 100
         self.y_tokenizer = y_tokenizer
         self.x_tokenizer = x_tokenizer
         self.reverse_target_word_index = self.y_tokenizer.index_word

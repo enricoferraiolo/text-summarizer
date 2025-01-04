@@ -19,15 +19,32 @@ from architectures.BaseModel import BaseModel
 
 class Seq2Seq3BiLSTM(BaseModel):
     def __init__(
-        self, x_voc, y_voc, max_text_len, max_summary_len, x_tokenizer, y_tokenizer
+        self,
+        x_voc,
+        y_voc,
+        max_text_len,
+        max_summary_len,
+        x_tokenizer,
+        y_tokenizer,
+        name="Seq2Seq3BiLSTM",
+        latent_dim=300,
+        embedding_dim=100,
+        encoder_dropout=0.4,
+        encoder_recurrent_dropout=0.4,
+        decoder_dropout=0.4,
+        decoder_recurrent_dropout=0.2,
     ):
         self.NUMBER_OF_LSTM_LAYERS = 3
-        self.latent_dim = 300
-        self.embedding_dim = 100
-        self.name = "Seq2Seq3BiLSTM"
+        self.latent_dim = latent_dim
+        self.embedding_dim = embedding_dim
+        self.name = name
         self.reverse_target_word_index = y_tokenizer.index_word
         self.reverse_source_word_index = x_tokenizer.index_word
         self.target_word_index = y_tokenizer.word_index
+        self.encoder_dropout = encoder_dropout
+        self.encoder_recurrent_dropout = encoder_recurrent_dropout
+        self.decoder_dropout = decoder_dropout
+        self.decoder_recurrent_dropout = decoder_recurrent_dropout
 
         # Initialize shared layers
         self.encoder_embedding = Embedding(
@@ -42,8 +59,8 @@ class Seq2Seq3BiLSTM(BaseModel):
             self.latent_dim * 2,
             return_sequences=True,
             return_state=True,
-            dropout=0.4,
-            recurrent_dropout=0.2,
+            dropout=self.decoder_dropout,
+            recurrent_dropout=self.decoder_recurrent_dropout,
             name="decoder_lstm",
         )
         self.attention_layer = AttentionLayer(name="attention_layer")
@@ -71,8 +88,8 @@ class Seq2Seq3BiLSTM(BaseModel):
                     self.latent_dim,
                     return_sequences=True,
                     return_state=True,
-                    dropout=0.4,
-                    recurrent_dropout=0.4,
+                    dropout=self.encoder_dropout,
+                    recurrent_dropout=self.encoder_recurrent_dropout,
                     name=f"encoder_bilstm_{i}",
                 )
             )
@@ -116,7 +133,11 @@ class Seq2Seq3BiLSTM(BaseModel):
         )
 
         model = Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
-        model.compile(optimizer=self.get_optimizer(), loss=self.get_loss(), metrics=self.get_metrics())
+        model.compile(
+            optimizer=self.get_optimizer(),
+            loss=self.get_loss(),
+            metrics=self.get_metrics(),
+        )
 
         return model
 

@@ -23,16 +23,37 @@ from architectures.BaseModel import BaseModel
 
 class Seq2SeqLSTMTransformer(BaseModel):
     def __init__(
-        self, x_voc, y_voc, max_text_len, max_summary_len, x_tokenizer, y_tokenizer
+        self,
+        x_voc,
+        y_voc,
+        max_text_len,
+        max_summary_len,
+        x_tokenizer,
+        y_tokenizer,
+        name="Seq2SeqLSTMTransformer",
+        latent_dim=300,
+        embedding_dim=100,
+        num_heads=8,
+        ff_dim=512,
+        num_transformer_blocks=2,
+        encoder_dropout=0.4,
+        encoder_recurrent_dropout=0.4,
+        decoder_dropout=0.4,
+        decoder_recurrent_dropout=0.2,
     ):
         # Model parameters
-        self.latent_dim = 300
-        self.embedding_dim = 100
-        self.name = "Seq2SeqLSTMTransformer-3epoch"
-        self.num_heads = 8
-        self.ff_dim = 512
-        self.num_transformer_blocks = 2
-        self.dropout_rate = 0.1
+        self.latent_dim = latent_dim
+        self.embedding_dim = embedding_dim
+        self.name = name
+        self.num_heads = num_heads
+        self.ff_dim = ff_dim
+        self.num_transformer_blocks = num_transformer_blocks
+        self.transformer_dropout_rate = 0.1
+        self.encoder_dropout = encoder_dropout
+        self.encoder_recurrent_dropout = encoder_recurrent_dropout
+        self.decoder_dropout = decoder_dropout
+        self.decoder_recurrent_dropout = decoder_recurrent_dropout
+
 
         self.reverse_target_word_index = y_tokenizer.index_word
         self.reverse_source_word_index = x_tokenizer.index_word
@@ -87,24 +108,24 @@ class Seq2SeqLSTMTransformer(BaseModel):
                 self.latent_dim,
                 return_sequences=True,
                 return_state=True,
-                dropout=0.4,
-                recurrent_dropout=0.4,
+                dropout=self.encoder_dropout,
+                recurrent_dropout=self.encoder_recurrent_dropout,
                 name="encoder_lstm1",
             ),
             LSTM(
                 self.latent_dim,
                 return_sequences=True,
                 return_state=True,
-                dropout=0.4,
-                recurrent_dropout=0.4,
+                dropout=self.encoder_dropout,
+                recurrent_dropout=self.encoder_recurrent_dropout,
                 name="encoder_lstm2",
             ),
             LSTM(
                 self.latent_dim,
                 return_sequences=True,
                 return_state=True,
-                dropout=0.4,
-                recurrent_dropout=0.4,
+                dropout=self.encoder_dropout,
+                recurrent_dropout=self.encoder_recurrent_dropout,
                 name="encoder_lstm3",
             ),
         )
@@ -114,8 +135,8 @@ class Seq2SeqLSTMTransformer(BaseModel):
             self.latent_dim,
             return_sequences=True,
             return_state=True,
-            dropout=0.4,
-            recurrent_dropout=0.2,
+            dropout=self.decoder_dropout,
+            recurrent_dropout=self.decoder_recurrent_dropout,
             name="decoder_lstm",
         )
 
@@ -127,7 +148,7 @@ class Seq2SeqLSTMTransformer(BaseModel):
         x = enc_emb
         for _ in range(self.num_transformer_blocks):
             x = self.transformer_block(
-                x, self.num_heads, self.ff_dim, self.dropout_rate
+                x, self.num_heads, self.ff_dim, self.transformer_dropout_rate
             )
 
         # LSTM layers
@@ -145,7 +166,7 @@ class Seq2SeqLSTMTransformer(BaseModel):
         x = dec_emb
         for _ in range(self.num_transformer_blocks):
             x = self.transformer_block(
-                x, self.num_heads, self.ff_dim, self.dropout_rate
+                x, self.num_heads, self.ff_dim, self.transformer_dropout_rate
             )
             # Add cross-attention with encoder outputs
             cross_attn_output = MultiHeadAttention(
@@ -170,7 +191,11 @@ class Seq2SeqLSTMTransformer(BaseModel):
         )
 
         model = Model([encoder_inputs, decoder_inputs], decoder_outputs, name=self.name)
-        model.compile(optimizer=self.get_optimizer(), loss=self.get_loss(), metrics=self.get_metrics())
+        model.compile(
+            optimizer=self.get_optimizer(),
+            loss=self.get_loss(),
+            metrics=self.get_metrics(),
+        )
 
         return model
 
@@ -189,7 +214,7 @@ class Seq2SeqLSTMTransformer(BaseModel):
         x = dec_emb
         for _ in range(self.num_transformer_blocks):
             x = self.transformer_block(
-                x, self.num_heads, self.ff_dim, self.dropout_rate
+                x, self.num_heads, self.ff_dim, self.transformer_dropout_rate
             )
             cross_attn_output = MultiHeadAttention(
                 num_heads=self.num_heads, key_dim=self.embedding_dim
