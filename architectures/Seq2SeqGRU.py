@@ -163,3 +163,41 @@ class Seq2SeqGRU(BaseModel):
         )
 
         return encoder_model, decoder_model
+
+    def decode_sequence(self, input_seq):
+        import numpy as np
+        
+        # Encoder outputs and final hidden state
+        e_out, e_h = self.encoder_model.predict(input_seq)
+
+        # Initialize the target sequence with the start token
+        target_seq = np.zeros((1, 1))
+        target_seq[0, 0] = self.target_word_index["sostok"]
+
+        stop_condition = False
+        decoded_sentence = ""
+        while not stop_condition:
+            # Decoder returns the next token probabilities and the new hidden state
+            output_tokens, h = self.decoder_model.predict([target_seq, e_out, e_h])
+
+            # Get the predicted token
+            sampled_token_index = np.argmax(output_tokens[0, -1, :])
+            sampled_token = self.reverse_target_word_index[sampled_token_index]
+
+            # Stop if end token is reached or max length is exceeded
+            if sampled_token != "eostok":
+                decoded_sentence += " " + sampled_token
+
+            if sampled_token == "eostok" or len(decoded_sentence.split()) >= (
+                self.max_summary_len - 1
+            ):
+                stop_condition = True
+
+            # Update the target sequence for the next time step
+            target_seq = np.zeros((1, 1))
+            target_seq[0, 0] = sampled_token_index
+
+            # Update the hidden state for the next prediction
+            e_h = h
+
+        return decoded_sentence
