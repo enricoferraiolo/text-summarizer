@@ -15,9 +15,9 @@ def create_hyperparameter_grid():
     decoder_recurrent_dropout = [0.1, 0.4]
     optimizer = [
         Adam(learning_rate=0.001),
-        Adam(learning_rate=0.0005),
+        #Adam(learning_rate=0.0005),
         RMSprop(learning_rate=0.001),
-        RMSprop(learning_rate=0.0005),
+        #RMSprop(learning_rate=0.0005),
     ]
     epochs = [50]
     batch_size = [128]
