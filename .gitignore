@@ -1,5 +1,6 @@
 #glove files
 architectures/weightsGLOVE/
+mega-training/architectures/weightsGLOVE/*
 
 .conda
 .venv
