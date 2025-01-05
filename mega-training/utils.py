@@ -4,6 +4,56 @@ from matplotlib import pyplot as plt
 import pandas as pd
 
 
+def create_hyperparameter_grid():
+    from tensorflow.keras.optimizers import Adam, RMSprop
+
+    latent_dim = [256, 1024]
+    embedding_dim = [128, 512]
+    encoder_dropout = [0.1, 0.4]
+    encoder_recurrent_dropout = [0.1, 0.4]
+    decoder_dropout = [0.1, 0.4]
+    decoder_recurrent_dropout = [0.1, 0.4]
+    optimizer = [
+        Adam(learning_rate=0.001),
+        Adam(learning_rate=0.0005),
+        RMSprop(learning_rate=0.001),
+        RMSprop(learning_rate=0.0005),
+    ]
+    epochs = [50]
+    batch_size = [128]
+
+    hyperparameter_grid = []
+
+    # Create all the combinations of hyperparameters
+    for latent_dim_val in latent_dim:
+        for embedding_dim_val in embedding_dim:
+            for encoder_dropout_val in encoder_dropout:
+                for encoder_recurrent_dropout_val in encoder_recurrent_dropout:
+                    for decoder_dropout_val in decoder_dropout:
+                        for decoder_recurrent_dropout_val in decoder_recurrent_dropout:
+                            for optimizer_val in optimizer:
+                                for epochs_val in epochs:
+                                    for batch_size_val in batch_size:
+                                        hyperparameter_grid.append(
+                                            {
+                                                "latent_dim": latent_dim_val,
+                                                "embedding_dim": embedding_dim_val,
+                                                "encoder_dropout": encoder_dropout_val,
+                                                "encoder_recurrent_dropout": encoder_recurrent_dropout_val,
+                                                "decoder_dropout": decoder_dropout_val,
+                                                "decoder_recurrent_dropout": decoder_recurrent_dropout_val,
+                                                "optimizer": optimizer_val,
+                                                "epochs": epochs_val,
+                                                "batch_size": batch_size_val,
+                                            }
+                                        )
+
+    # Print the number of hyperparameter combinations
+    print(f"Number of hyperparameter combinations: {len(hyperparameter_grid)}")
+
+    return hyperparameter_grid
+
+
 def plot_rouge(
     df,
     save_path,
@@ -94,17 +144,17 @@ def evaluate_rouge(df_summaries):
     df_summaries["rouge_scores"] = df_summaries.apply(compute_rouge_scores, axis=1)
 
     # Compute the mean ROUGE scores
-    mean_rouge1 = df_summaries["rouge_scores"].apply(
-        lambda x: x["rouge1"].fmeasure
-    ).mean()
+    mean_rouge1 = (
+        df_summaries["rouge_scores"].apply(lambda x: x["rouge1"].fmeasure).mean()
+    )
 
-    mean_rouge2 = df_summaries["rouge_scores"].apply(
-        lambda x: x["rouge2"].fmeasure
-    ).mean()
+    mean_rouge2 = (
+        df_summaries["rouge_scores"].apply(lambda x: x["rouge2"].fmeasure).mean()
+    )
 
-    mean_rougeL = df_summaries["rouge_scores"].apply(
-        lambda x: x["rougeL"].fmeasure
-    ).mean()
+    mean_rougeL = (
+        df_summaries["rouge_scores"].apply(lambda x: x["rougeL"].fmeasure).mean()
+    )
 
     rouge_means_scores = {
         "mean_rouge1": mean_rouge1,
