@@ -9,15 +9,15 @@ def create_hyperparameter_grid():
 
     latent_dim = [256, 1024]
     embedding_dim = [128, 512]
-    encoder_dropout = [0.1, 0.4]
-    encoder_recurrent_dropout = [0.1, 0.4]
-    decoder_dropout = [0.1, 0.4]
-    decoder_recurrent_dropout = [0.1, 0.4]
+    encoder_dropout = [0.2]
+    encoder_recurrent_dropout = [0.2]
+    decoder_dropout = [0.2]
+    decoder_recurrent_dropout = [0.2]
     optimizer = [
         Adam(learning_rate=0.001),
-        #Adam(learning_rate=0.0005),
+        # Adam(learning_rate=0.0005),
         RMSprop(learning_rate=0.001),
-        #RMSprop(learning_rate=0.0005),
+        # RMSprop(learning_rate=0.0005),
     ]
     epochs = [50]
     batch_size = [128]
@@ -248,3 +248,450 @@ def generate_summaries(
 
     print(df_summaries.head())
     return df_summaries
+
+
+# This function is used to prepare the data for the model training, so every model's training script will use this function to prepare the data.
+def prepare_data():
+    """
+    #!pip install tensorflow==2.18.0
+    #!pip install keras==3.7.0
+    """
+    import tensorflow as tf
+
+    import numpy as np
+    import pandas as pd
+    import re
+    from bs4 import BeautifulSoup
+    from tensorflow.keras.preprocessing.text import Tokenizer
+    from tensorflow.keras.preprocessing.sequence import pad_sequences
+    from nltk.corpus import stopwords
+
+    from tensorflow.keras.callbacks import EarlyStopping
+    import warnings
+
+    pd.set_option("display.max_colwidth", 200)
+    warnings.filterwarnings("ignore")
+
+    GDRIVE_PATH = ""
+    """
+    # mount drive
+    from google.colab import drive
+    drive.mount('/content/gdrive')
+    GDRIVE_PATH="/content/gdrive/MyDrive/Colab Notebooks/dasalvare/"
+    """
+
+    import kagglehub
+
+    # Download latest version
+    path = kagglehub.dataset_download("snap/amazon-fine-food-reviews")
+
+    data = pd.read_csv(f"{path}/Reviews.csv", nrows=100000)  # reading only 100k rows
+
+    data.drop_duplicates(subset=["Text"], inplace=True)  # dropping duplicates
+    data.dropna(axis=0, inplace=True)  # dropping na
+
+    contraction_mapping = {
+        "ain't": "is not",
+        "aren't": "are not",
+        "can't": "cannot",
+        "'cause": "because",
+        "could've": "could have",
+        "couldn't": "could not",
+        "didn't": "did not",
+        "doesn't": "does not",
+        "don't": "do not",
+        "hadn't": "had not",
+        "hasn't": "has not",
+        "haven't": "have not",
+        "he'd": "he would",
+        "he'll": "he will",
+        "he's": "he is",
+        "how'd": "how did",
+        "how'd'y": "how do you",
+        "how'll": "how will",
+        "how's": "how is",
+        "I'd": "I would",
+        "I'd've": "I would have",
+        "I'll": "I will",
+        "I'll've": "I will have",
+        "I'm": "I am",
+        "I've": "I have",
+        "i'd": "i would",
+        "i'd've": "i would have",
+        "i'll": "i will",
+        "i'll've": "i will have",
+        "i'm": "i am",
+        "i've": "i have",
+        "isn't": "is not",
+        "it'd": "it would",
+        "it'd've": "it would have",
+        "it'll": "it will",
+        "it'll've": "it will have",
+        "it's": "it is",
+        "let's": "let us",
+        "ma'am": "madam",
+        "mayn't": "may not",
+        "might've": "might have",
+        "mightn't": "might not",
+        "mightn't've": "might not have",
+        "must've": "must have",
+        "mustn't": "must not",
+        "mustn't've": "must not have",
+        "needn't": "need not",
+        "needn't've": "need not have",
+        "o'clock": "of the clock",
+        "oughtn't": "ought not",
+        "oughtn't've": "ought not have",
+        "shan't": "shall not",
+        "sha'n't": "shall not",
+        "shan't've": "shall not have",
+        "she'd": "she would",
+        "she'd've": "she would have",
+        "she'll": "she will",
+        "she'll've": "she will have",
+        "she's": "she is",
+        "should've": "should have",
+        "shouldn't": "should not",
+        "shouldn't've": "should not have",
+        "so've": "so have",
+        "so's": "so as",
+        "this's": "this is",
+        "that'd": "that would",
+        "that'd've": "that would have",
+        "that's": "that is",
+        "there'd": "there would",
+        "there'd've": "there would have",
+        "there's": "there is",
+        "here's": "here is",
+        "they'd": "they would",
+        "they'd've": "they would have",
+        "they'll": "they will",
+        "they'll've": "they will have",
+        "they're": "they are",
+        "they've": "they have",
+        "to've": "to have",
+        "wasn't": "was not",
+        "we'd": "we would",
+        "we'd've": "we would have",
+        "we'll": "we will",
+        "we'll've": "we will have",
+        "we're": "we are",
+        "we've": "we have",
+        "weren't": "were not",
+        "what'll": "what will",
+        "what'll've": "what will have",
+        "what're": "what are",
+        "what's": "what is",
+        "what've": "what have",
+        "when's": "when is",
+        "when've": "when have",
+        "where'd": "where did",
+        "where's": "where is",
+        "where've": "where have",
+        "who'll": "who will",
+        "who'll've": "who will have",
+        "who's": "who is",
+        "who've": "who have",
+        "why's": "why is",
+        "why've": "why have",
+        "will've": "will have",
+        "won't": "will not",
+        "won't've": "will not have",
+        "would've": "would have",
+        "wouldn't": "would not",
+        "wouldn't've": "would not have",
+        "y'all": "you all",
+        "y'all'd": "you all would",
+        "y'all'd've": "you all would have",
+        "y'all're": "you all are",
+        "y'all've": "you all have",
+        "you'd": "you would",
+        "you'd've": "you would have",
+        "you'll": "you will",
+        "you'll've": "you will have",
+        "you're": "you are",
+        "you've": "you have",
+    }
+
+    import nltk
+
+    # Download stopwords if not already downloaded
+    nltk.download("stopwords")
+
+    STOP_WORDS = set(stopwords.words("english"))  # set of stopwords
+
+    def clean_text(input_text, remove_stopwords):
+        """
+        This function cleans the input text based on the following steps:
+        - Lowercase the text
+        - Remove HTML tags
+        - Remove quotes and parentheses content
+        - Replace contractions
+        - Remove 's
+        - Remove any non-alphanumeric characters
+        - Normalize multiple letter repetitions (mmmm -> mm)
+        - Tokenize the text
+        - Remove stopwords
+        - Remove words with length <= 1
+
+        Args:
+            input_text (str): To clean text.
+            remove_stopwords (bool): If True, remove stopwords.
+
+        Returns:
+            str: Clean text.
+        """
+
+        # Lowercase
+        cleaned_text = input_text.lower()
+
+        # Remove HTML tags
+        cleaned_text = BeautifulSoup(cleaned_text, "html.parser").text
+
+        # Remove quotes and parentheses content
+        cleaned_text = re.sub(r"\([^)]*\)", "", cleaned_text)
+        cleaned_text = re.sub('"', "", cleaned_text)
+
+        # Replace contractions
+        cleaned_text = " ".join(
+            [
+                contraction_mapping[word] if word in contraction_mapping else word
+                for word in cleaned_text.split()
+            ]
+        )
+
+        # Remove 's
+        cleaned_text = re.sub(r"'s\\b", "", cleaned_text)
+
+        # Remove any non-alphanumeric characters
+        cleaned_text = re.sub(r"[^a-zA-Z]", " ", cleaned_text)
+
+        # Normalize multiple letter repetitions
+        cleaned_text = re.sub(
+            r"[m]{2,}", "mm", cleaned_text
+        )  # Since it's a food review dataset there coulde be words mmm mmmm etc.
+
+        # Tokenizzation
+        tokens = cleaned_text.split()
+
+        # Remove stopwords
+        if remove_stopwords:
+            tokens = [word for word in tokens if word not in STOP_WORDS]
+
+        # Remove words with length <= 1
+        filtered_tokens = [word for word in tokens if len(word) > 1]
+
+        # Join tokens back to string
+        return " ".join(filtered_tokens).strip()
+
+    # Clean text
+    cleaned_text = [clean_text(text, remove_stopwords=True) for text in data["Text"]]
+
+    # Clean summary
+    cleaned_summary = [
+        clean_text(summary, remove_stopwords=False) for summary in data["Summary"]
+    ]
+
+    # Add cleaned text and summary to the dataframe
+    data["cleaned_text"] = cleaned_text
+    data["cleaned_summary"] = cleaned_summary
+
+    # Substituting empty strings with NaN
+    data.replace("", np.nan, inplace=True)
+
+    # Dropping rows with NaN values
+    data.dropna(axis=0, inplace=True)
+
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    import os
+
+    # Calculate the length of the text and summary
+    data["text_word_count"] = data["cleaned_text"].apply(lambda x: len(x.split()))
+    data["summary_word_count"] = data["cleaned_summary"].apply(lambda x: len(x.split()))
+
+    # Dataframe with text and summary length
+    length_df = data[["text_word_count", "summary_word_count"]]
+
+    max_text_len = 30  # Max length of text
+    max_summary_len = 8  # Max length of summary
+
+    # Count the number of words in text and summary
+    data["text_word_count"] = data["cleaned_text"].apply(
+        lambda x: len(x.split())
+    )  # Count words in text
+    data["summary_word_count"] = data["cleaned_summary"].apply(
+        lambda x: len(x.split())
+    )  # Count words in summary
+
+    # Filter only text and summaries that satisfy the length limits
+    filtered_data = data[
+        (data["text_word_count"] <= max_text_len)
+        & (data["summary_word_count"] <= max_summary_len)
+    ]
+
+    # Creare un nuovo DataFrame con i dati filtrati
+    df = filtered_data[["cleaned_text", "cleaned_summary"]].rename(
+        columns={"cleaned_text": "text", "cleaned_summary": "summary"}
+    )
+
+    # Add special tokens to the summary if not already present
+    def add_special_tokens(summary_text):
+        """
+        Add special tokens to the summary if not already present
+
+        Args:
+            summary_text (str): Text to modify.
+
+        Returns:
+            str: Text with special tokens.
+        """
+        prefix = "sostok "
+        suffix = " eostok"
+
+        # Add the prefix if not already present
+        if not summary_text.startswith(prefix):
+            summary_text = prefix + summary_text
+
+        # Add the suffix if not already present
+        if not summary_text.endswith(suffix):
+            summary_text = summary_text + suffix
+
+        return summary_text
+
+    # Apply the function to the summary column
+    df["modified_summary"] = df["summary"].apply(add_special_tokens)
+
+    from sklearn.model_selection import train_test_split
+
+    x_training, x_validation, y_training, y_validation = train_test_split(
+        np.array(df["text"]),
+        np.array(df["modified_summary"]),
+        test_size=0.1,
+        random_state=0,
+        shuffle=True,
+    )
+
+    def calculate_rare_words_coverage(tokenizer, threshold=4):
+        """
+        Calculate the percentage of rare words and the coverage of rare words in the vocabulary.
+
+        Args:
+            tokenizer (Tokenizer): The tokenizer object.
+            threshold (int): The threshold to consider a word as rare.
+
+        Returns:
+            dict: A dictionary containing the percentage of rare words and the coverage of rare words.
+        """
+        cnt = 0  # Number of rare words
+        tot_cnt = 0  # Number of total words
+        freq = 0  # Frequency of rare words
+        tot_freq = 0  # Total frequency of all words
+
+        for key, value in tokenizer.word_counts.items():
+            tot_cnt += 1
+            tot_freq += value
+            if value < threshold:
+                cnt += 1
+                freq += value
+
+        # Percentage of rare words
+        rare_word_percentage = (cnt / tot_cnt) * 100 if tot_cnt > 0 else 0
+        rare_word_coverage = (freq / tot_freq) * 100 if tot_freq > 0 else 0
+
+        return {
+            "percentage_of_rare_words": rare_word_percentage,
+            "coverage_of_rare_words": rare_word_coverage,
+            "cnt": cnt,
+            "tot_cnt": tot_cnt,
+            "freq": freq,
+            "tot_freq": tot_freq,
+        }
+
+    from tensorflow.keras.preprocessing.text import Tokenizer
+    from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+    # prepare a tokenizer for reviews on training data
+    x_tokenizer = Tokenizer()
+    x_tokenizer.fit_on_texts(list(x_training))
+
+    # Calculate the percentage of rare words and the coverage of rare words in the vocabulary
+    x_rarewords_result = calculate_rare_words_coverage(x_tokenizer, threshold=4)
+
+    # Define the maximum vocabulary size
+    max_vocab_size = max(x_rarewords_result["tot_cnt"] - x_rarewords_result["cnt"], 1)
+
+    # Define the tokenizer with the maximum vocabulary size
+    x_tokenizer = Tokenizer(num_words=max_vocab_size)
+
+    # Fit the tokenizer on the training data
+    x_tokenizer.fit_on_texts(list(x_training))
+
+    # Calculate the percentage of rare words and the coverage of rare words in the vocabulary
+    x_tr_seq = x_tokenizer.texts_to_sequences(x_training)
+    x_val_seq = x_tokenizer.texts_to_sequences(x_validation)
+
+    # Pad the sequences
+    x_training_padded = pad_sequences(x_tr_seq, maxlen=max_text_len, padding="post")
+    x_validation_padded = pad_sequences(x_val_seq, maxlen=max_text_len, padding="post")
+
+    # Define the vocabulary size (padding token included)
+    x_voc = x_tokenizer.num_words + 1
+
+    # prepare a tokenizer for reviews on training data
+    y_tokenizer = Tokenizer()
+    y_tokenizer.fit_on_texts(list(y_training))
+
+    # Calculate the percentage of rare words and the coverage of rare words in the vocabulary
+    y_rarewords_result = calculate_rare_words_coverage(y_tokenizer, threshold=6)
+
+    # Define the maximum vocabulary size
+    max_vocab_size = max(y_rarewords_result["tot_cnt"] - y_rarewords_result["cnt"], 1)
+
+    # Define the tokenizer with the maximum vocabulary size
+    y_tokenizer = Tokenizer(num_words=max_vocab_size)
+
+    # Fit the tokenizer on the training data
+    y_tokenizer.fit_on_texts(list(y_training))
+
+    # Calculate the percentage of rare words and the coverage of rare words in the vocabulary
+    y_tr_seq = y_tokenizer.texts_to_sequences(y_training)
+    y_val_seq = y_tokenizer.texts_to_sequences(y_validation)
+
+    # Pad the sequences
+    y_training_padded = pad_sequences(y_tr_seq, maxlen=max_summary_len, padding="post")
+    y_validation_padded = pad_sequences(
+        y_val_seq, maxlen=max_summary_len, padding="post"
+    )
+
+    # Define the vocabulary size (padding token included)
+    y_voc = y_tokenizer.num_words + 1
+
+    # Function to determine wether a sequence contains only START and END tokens
+    def is_only_start_end(sequence):
+        return (
+            np.count_nonzero(sequence) == 2
+        )  # Count the number of non-zero elements, if only 2 then delete
+
+    # Create a mask to remove sequences that contain only START and END tokens
+    mask_training = [not is_only_start_end(seq) for seq in y_training_padded]
+    mask_validation = [not is_only_start_end(seq) for seq in y_validation_padded]
+
+    # Apply the mask to the training and validation data
+    x_training_padded = x_training_padded[mask_training]
+    y_training_padded = y_training_padded[mask_training]
+    x_validation_padded = x_validation_padded[mask_validation]
+    y_validation_padded = y_validation_padded[mask_validation]
+
+    return (
+        x_voc,
+        y_voc,
+        x_tokenizer,
+        y_tokenizer,
+        x_training_padded,
+        y_training_padded,
+        x_validation_padded,
+        y_validation_padded,
+        max_text_len,
+        max_summary_len,
+    )
