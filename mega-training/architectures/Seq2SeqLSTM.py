@@ -29,7 +29,7 @@ class Seq2SeqLSTM(BaseModel):
         name_additional_info="",
         latent_dim=300,
         embedding_dim=100,
-        encocder_dropout=0.4,
+        encoder_dropout=0.4,
         encoder_recurrent_dropout=0.4,
         decoder_dropout=0.4,
         decoder_recurrent_dropout=0.2,
@@ -41,7 +41,7 @@ class Seq2SeqLSTM(BaseModel):
         self.reverse_target_word_index = y_tokenizer.index_word
         self.reverse_source_word_index = x_tokenizer.index_word
         self.target_word_index = y_tokenizer.word_index
-        self.encoder_dropout = encocder_dropout
+        self.encoder_dropout = encoder_dropout
         self.encoder_recurrent_dropout = encoder_recurrent_dropout
         self.decoder_dropout = decoder_dropout
         self.decoder_recurrent_dropout = decoder_recurrent_dropout
