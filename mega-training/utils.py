@@ -7,31 +7,32 @@ import pandas as pd
 def create_hyperparameter_grid():
     from tensorflow.keras.optimizers import Adam, RMSprop
 
-    latent_dim = [256, 1024]
-    embedding_dim = [128, 512]
+    latent_dim = [256]
+    embedding_dim = [512]
     encoder_dropout = [0.2]
     encoder_recurrent_dropout = [0.2]
     decoder_dropout = [0.2]
     decoder_recurrent_dropout = [0.2]
-    optimizer = [
-        Adam(learning_rate=0.001),
-        # Adam(learning_rate=0.0005),
-        RMSprop(learning_rate=0.001),
-        # RMSprop(learning_rate=0.0005),
+    # Store optimizer configurations as classes and learning rates
+    optimizers = [
+        {"class": Adam, "learning_rate": 0.001},
+        # {'class': Adam, 'learning_rate': 0.0005},
+        {"class": RMSprop, "learning_rate": 0.001},
+        # {'class': RMSprop, 'learning_rate': 0.0005},
     ]
     epochs = [50]
     batch_size = [128]
 
     hyperparameter_grid = []
 
-    # Create all the combinations of hyperparameters
+    # Create all combinations of hyperparameters
     for latent_dim_val in latent_dim:
         for embedding_dim_val in embedding_dim:
             for encoder_dropout_val in encoder_dropout:
                 for encoder_recurrent_dropout_val in encoder_recurrent_dropout:
                     for decoder_dropout_val in decoder_dropout:
                         for decoder_recurrent_dropout_val in decoder_recurrent_dropout:
-                            for optimizer_val in optimizer:
+                            for optimizer_config in optimizers:
                                 for epochs_val in epochs:
                                     for batch_size_val in batch_size:
                                         hyperparameter_grid.append(
@@ -42,15 +43,18 @@ def create_hyperparameter_grid():
                                                 "encoder_recurrent_dropout": encoder_recurrent_dropout_val,
                                                 "decoder_dropout": decoder_dropout_val,
                                                 "decoder_recurrent_dropout": decoder_recurrent_dropout_val,
-                                                "optimizer": optimizer_val,
+                                                "optimizer_class": optimizer_config[
+                                                    "class"
+                                                ],
+                                                "learning_rate": optimizer_config[
+                                                    "learning_rate"
+                                                ],
                                                 "epochs": epochs_val,
                                                 "batch_size": batch_size_val,
                                             }
                                         )
 
-    # Print the number of hyperparameter combinations
     print(f"Number of hyperparameter combinations: {len(hyperparameter_grid)}")
-
     return hyperparameter_grid
 
 
@@ -233,6 +237,10 @@ def generate_summaries(
 
         df_summaries = pd.DataFrame(
             {
+                "original_text": [
+                    model_instance.seq2text(x_training_padded[i])
+                    for i in range(0, n_summaries)
+                ],
                 "original_summary": [
                     model_instance.seq2summary(y_training_padded[i])
                     for i in range(0, n_summaries)
