@@ -181,7 +181,7 @@ def myevaluate(predicted_summary, original_summary, original_text):
     from sklearn.metrics.pairwise import cosine_similarity
 
     # TODO: trovare e spiegare il modello scelto (posso trovarne migliori?)
-    model = SentenceTransformer("all-mpnet-base-v2")
+    model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
     # Weights
     cs_PS_OT_weight = 0.3
     cs_OS_OT_weight = 0.3
