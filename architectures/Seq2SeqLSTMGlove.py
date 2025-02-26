@@ -71,7 +71,7 @@ class Seq2SeqLSTMGlove(BaseModel):
         encoder_recurrent_dropout=0.4,
         decoder_dropout=0.4,
         decoder_recurrent_dropout=0.2,
-        glove_dim=100, # GloVe dimension can be 50, 100, 200, or 300
+        glove_dim=100,  # GloVe dimension can be 50, 100, 200, or 300
     ):
         # Set unique parameters for this model
         self.latent_dim = latent_dim
@@ -80,6 +80,10 @@ class Seq2SeqLSTMGlove(BaseModel):
         self.reverse_target_word_index = y_tokenizer.index_word
         self.reverse_source_word_index = x_tokenizer.index_word
         self.target_word_index = y_tokenizer.word_index
+        self.encoder_dropout = encoder_dropout
+        self.encoder_recurrent_dropout = encoder_recurrent_dropout
+        self.decoder_dropout = decoder_dropout
+        self.decoder_recurrent_dropout = decoder_recurrent_dropout
 
         # Load GloVe embeddings
         self.embedding_matrix_x = self.load_glove_embeddings(
