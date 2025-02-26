@@ -71,10 +71,11 @@ class Seq2SeqLSTMGlove(BaseModel):
         encoder_recurrent_dropout=0.4,
         decoder_dropout=0.4,
         decoder_recurrent_dropout=0.2,
+        glove_dim=100, # GloVe dimension can be 50, 100, 200, or 300
     ):
         # Set unique parameters for this model
         self.latent_dim = latent_dim
-        self.embedding_dim = embedding_dim
+        self.embedding_dim = glove_dim
         self.name = name + name_additional_info
         self.reverse_target_word_index = y_tokenizer.index_word
         self.reverse_source_word_index = x_tokenizer.index_word
@@ -82,10 +83,10 @@ class Seq2SeqLSTMGlove(BaseModel):
 
         # Load GloVe embeddings
         self.embedding_matrix_x = self.load_glove_embeddings(
-            x_tokenizer, x_voc, glove_txt_file_name="glove.6B.100d.txt"
+            x_tokenizer, x_voc, glove_txt_file_name=f"glove.6B.{glove_dim}d.txt"
         )
         self.embedding_matrix_y = self.load_glove_embeddings(
-            y_tokenizer, y_voc, glove_txt_file_name="glove.6B.100d.txt"
+            y_tokenizer, y_voc, glove_txt_file_name=f"glove.6B.{glove_dim}d.txt"
         )
 
         # Initialize shared layers specific to this class
