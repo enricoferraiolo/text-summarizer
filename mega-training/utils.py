@@ -17,7 +17,7 @@ def create_hyperparameter_grid():
     optimizers = [
         {"class": Adam, "learning_rate": 0.001},
         # {'class': Adam, 'learning_rate': 0.0005},
-        {"class": RMSprop, "learning_rate": 0.001},
+        # {"class": RMSprop, "learning_rate": 0.001},
         # {'class': RMSprop, 'learning_rate': 0.0005},
     ]
     epochs = [50]
@@ -131,6 +131,97 @@ def plot_cosine_similarity(
     )
 
     plt.close()
+
+
+def plot_myevaluation(
+    df, save_path, model_instance, bins=30, color="salmon", title=None
+):
+    # Plot the distribution of myevaluation scores
+    plt.hist(df["myevaluation_scores"], bins=bins, color=color)
+    plt.suptitle(title or "Distribution of myevaluation scores", fontsize=16)
+    plt.xlabel("Myevaluation score", fontsize=12)
+    plt.ylabel("Frequency", fontsize=12)
+    plt.grid(True)
+
+    # Save the plot to a file
+    plt.savefig(
+        f"{save_path}/{model_instance.name}_myevaluation_scores.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close()
+
+def myevaluate(predicted_summary, original_summary, original_text):
+    """
+    This function calculates the myevaluation score between the predicted and original summaries.
+    The more the result is close to 1, the better the predicted summary is.
+    The more the result is close to 0, the worse the predicted summary is.
+    In this evaluation being close to 1 means that the predicted summary is closer to the original summary in terms of meaning and content.
+    The evaluation follows the following steps:
+    - Calculate cosine similarity between the predicted summary and the original text, cs_PS_OT
+    - Calculate cosine similarity between the original summary and the original text, cs_OS_OT
+    - Calculate cosine similarity between the predicted summary and the original summary, cs_PS_OS
+    - Calculate the myevaluation score as follows, then normalize the result between 0 and 1:
+        - cs_PS_OT has a weight of 0.3
+        - cs_OS_OT has a weight of 0.3
+        - cs_PS_OS has a weight of 0.4
+        myevaluation = (0.3 * cs_PS_OT + 0.3 * cs_OS_OT + 0.4 * cs_PS_OS) / 3
+
+    Args:
+        predicted (str): The predicted summary.
+        original (str): The original summary.
+
+    Returns:
+        float: The myevaluation score.
+    """
+
+    import numpy as np
+    from sentence_transformers import SentenceTransformer
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    # TODO: trovare e spiegare il modello scelto (posso trovarne migliori?)
+    model = SentenceTransformer("all-mpnet-base-v2")
+    # Weights
+    cs_PS_OT_weight = 0.3
+    cs_OS_OT_weight = 0.3
+    cs_PS_OS_weight = 0.4
+
+    cs_PS_OT = cosine_similarity(
+        model.encode([predicted_summary]), model.encode([original_text])
+    )
+    cs_OS_OT = cosine_similarity(
+        model.encode([original_summary]), model.encode([original_text])
+    )
+    cs_PS_OS = cosine_similarity(
+        model.encode([predicted_summary]), model.encode([original_summary])
+    )
+    my_eval = (
+        cs_PS_OT_weight * cs_PS_OT
+        + cs_OS_OT_weight * cs_OS_OT
+        + cs_PS_OS_weight * cs_PS_OS
+    ) / 3
+
+    return my_eval
+
+
+def evaluate_myevalutation(df_summaries):
+    def compute_myevaluation_scores(row):
+        predicted_summary = row["predicted_summary"]
+        original_summary = row["original_summary"]
+        original_text = row["original_text"]
+
+        return myevaluate(predicted_summary, original_summary, original_text)
+
+    # Apply the function to calculate myevaluation scores for each row in the DataFrame
+    df_summaries["myevaluation_scores"] = df_summaries.apply(
+        compute_myevaluation_scores, axis=1
+    )
+
+    # Compute the mean myevaluation scores
+    mean_myevaluation = df_summaries["myevaluation_scores"].mean()
+
+    return df_summaries, mean_myevaluation
 
 
 def evaluate_rouge(df_summaries):
