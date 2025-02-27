@@ -1,0 +1,6 @@
+
+Evaluation for Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.15000074370074373), 'mean_rouge2': np.float64(0.03472142857142858), 'mean_rougeL': np.float64(0.14921502941502945)}
+Mean WER score: 1.1230714285714287
+Mean Cosine Similarity: 0.4233684837818146
+Mean My Evaluation: 0.13237975537776947
