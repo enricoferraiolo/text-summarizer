@@ -21,7 +21,7 @@ def create_hyperparameter_grid():
         # {'class': RMSprop, 'learning_rate': 0.0005},
     ]
     epochs = [50]
-    batch_size = [128]
+    batch_size = [64, 128, 256]
 
     hyperparameter_grid = []
 
@@ -133,9 +133,7 @@ def plot_cosine_similarity(
     plt.close()
 
 
-def plot_myevaluation(
-    df, save_path, model_name, bins=30, color="salmon", title=None
-):
+def plot_myevaluation(df, save_path, model_name, bins=30, color="salmon", title=None):
     # Plot the distribution of myevaluation scores
     plt.hist(df["myevaluation_scores"], bins=bins, color=color)
     plt.suptitle(title or "Distribution of myevaluation scores", fontsize=16)
@@ -814,4 +812,3 @@ def prepare_data():
         max_text_len,
         max_summary_len,
     )
-
