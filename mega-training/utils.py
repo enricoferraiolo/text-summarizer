@@ -165,7 +165,7 @@ def myevaluate(predicted_summary, original_summary, original_text, model):
         - cs_PS_OT has a weight of 0.3
         - cs_OS_OT has a weight of 0.3
         - cs_PS_OS has a weight of 0.4
-        myevaluation = (0.3 * cs_PS_OT + 0.3 * cs_OS_OT + 0.4 * cs_PS_OS) / 3
+        myevaluation = (0.3 * cs_PS_OT + 0.3 * cs_OS_OT + 0.4 * cs_PS_OS)
 
     Args:
         predicted (str): The predicted summary.
@@ -176,6 +176,7 @@ def myevaluate(predicted_summary, original_summary, original_text, model):
     """
 
     from sklearn.metrics.pairwise import cosine_similarity
+    from nltk.corpus import stopwords
 
     predicted_embedding = model.encode([predicted_summary])
     original_summary_embedding = model.encode([original_summary])
@@ -184,20 +185,35 @@ def myevaluate(predicted_summary, original_summary, original_text, model):
     # TODO: trovare e spiegare il modello scelto (posso trovarne migliori?)
     # Weights
     cs_PS_OT_weight = 0.3
-    cs_OS_OT_weight = 0.3
     cs_PS_OS_weight = 0.4
+    keyword_overlap_weight = 0.3
 
     cs_PS_OT = cosine_similarity(predicted_embedding, original_text_embedding)[0][0]
-    cs_OS_OT = cosine_similarity(original_summary_embedding, original_text_embedding)[
-        0
-    ][0]
     cs_PS_OS = cosine_similarity(predicted_embedding, original_summary_embedding)[0][0]
+
+    def get_keywords(text):
+        return set(
+            [word for word in text.split() if word not in stopwords and word.isalpha()]
+        )
+
+    # Calculate keyword overlap - Jacard similarity
+    def get_keywords(text):
+        return set(
+            [word for word in text.split() if word not in stopwords and word.isalpha()]
+        )
+
+    predicted_keywords = get_keywords(predicted_summary)
+    original_keywords = get_keywords(original_summary)
+
+    keyword_overlap = len(predicted_keywords & original_keywords) / (
+        len(predicted_keywords | original_keywords) + 1e-8  # Avoid division by zero
+    )
 
     my_eval = (
         cs_PS_OT_weight * cs_PS_OT
-        + cs_OS_OT_weight * cs_OS_OT
         + cs_PS_OS_weight * cs_PS_OS
-    ) / 3
+        + keyword_overlap_weight * keyword_overlap
+    )
 
     return my_eval
 
