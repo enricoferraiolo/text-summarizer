@@ -151,108 +151,80 @@ def plot_myevaluation(df, save_path, model_name, bins=30, color="salmon", title=
     plt.close()
 
 
-def myevaluate(predicted_summary, original_summary, original_text, model):
-    """
-    This function calculates the myevaluation score between the predicted and original summaries.
-    The more the result is close to 1, the better the predicted summary is.
-    The more the result is close to 0, the worse the predicted summary is.
-    In this evaluation being close to 1 means that the predicted summary is closer to the original summary in terms of meaning and content.
-    The evaluation follows the following steps:
-    - Calculate cosine similarity between the predicted summary and the original text, cs_PS_OT
-    - Calculate cosine similarity between the original summary and the original text, cs_OS_OT
-    - Calculate cosine similarity between the predicted summary and the original summary, cs_PS_OS
-    - Calculate the myevaluation score as follows, then normalize the result between 0 and 1:
-        - cs_PS_OT has a weight of 0.3
-        - cs_OS_OT has a weight of 0.3
-        - cs_PS_OS has a weight of 0.4
-        myevaluation = (0.3 * cs_PS_OT + 0.3 * cs_OS_OT + 0.4 * cs_PS_OS)
-
-    Args:
-        predicted (str): The predicted summary.
-        original (str): The original summary.
-
-    Returns:
-        float: The myevaluation score.
-    """
-
-    from sklearn.metrics.pairwise import cosine_similarity
-    from nltk.corpus import stopwords
-
-    predicted_embedding = model.encode([predicted_summary])
-    original_summary_embedding = model.encode([original_summary])
-    original_text_embedding = model.encode([original_text])
-
-    # TODO: trovare e spiegare il modello scelto (posso trovarne migliori?)
-    # Weights
-    cs_PS_OT_weight = 0.3
-    cs_PS_OS_weight = 0.4
-    keyword_overlap_weight = 0.3
-
-    cs_PS_OT = cosine_similarity(predicted_embedding, original_text_embedding)[0][0]
-    cs_PS_OS = cosine_similarity(predicted_embedding, original_summary_embedding)[0][0]
-
-    def get_keywords(text):
-        return set(
-            [word for word in text.split() if word not in stopwords and word.isalpha()]
-        )
-
-    # Calculate keyword overlap - Jacard similarity
-    def get_keywords(text):
-        return set(
-            [word for word in text.split() if word not in stopwords and word.isalpha()]
-        )
-
-    predicted_keywords = get_keywords(predicted_summary)
-    original_keywords = get_keywords(original_summary)
-
-    keyword_overlap = len(predicted_keywords & original_keywords) / (
-        len(predicted_keywords | original_keywords) + 1e-8  # Avoid division by zero
-    )
-
-    my_eval = (
-        cs_PS_OT_weight * cs_PS_OT
-        + cs_PS_OS_weight * cs_PS_OS
-        + keyword_overlap_weight * keyword_overlap
-    )
-
-    return my_eval
-
-
 def evaluate_myevalutation(df_summaries):
     from sklearn.metrics.pairwise import cosine_similarity
     from sentence_transformers import SentenceTransformer
+    from nltk.corpus import stopwords
+    import numpy as np
+    import nltk
+
+    def get_keywords(text):
+        """Estrae parole chiave da un testo"""
+        stopwords_set = set(stopwords.words("english"))
+        return set(
+            [
+                word.lower()
+                for word in text.split()
+                if word.lower() not in stopwords_set and word.isalpha()
+            ]
+        )
 
     model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
 
-    # Extract columns
-    predicted_list = df_summaries["predicted_summary"].tolist()
-    original_summary_list = df_summaries["original_summary"].tolist()
-    original_text_list = df_summaries["original_text"].tolist()
+    # Extract texts
+    predicted_texts = df_summaries["predicted_summary"].tolist()
+    original_summary_texts = df_summaries["original_summary"].tolist()
+    original_texts = df_summaries["original_text"].tolist()
 
-    # Batch encoding, much efficient
-    predicted_embeddings = model.encode(predicted_list)
-    original_summary_embeddings = model.encode(original_summary_list)
-    original_text_embeddings = model.encode(original_text_list)
+    # Compute embeddings
+    predicted_embeddings = model.encode(predicted_texts)
+    original_summary_embeddings = model.encode(original_summary_texts)
+    original_text_embeddings = model.encode(original_texts)
 
-    # Compute scores
     scores = []
-    weights = {"cs_PS_OT": 0.3, "cs_OS_OT": 0.3, "cs_PS_OS": 0.4}
-    for pred, orig_sum, orig_txt in zip(
-        predicted_embeddings, original_summary_embeddings, original_text_embeddings
+    cs_PS_OT_list = []
+    cs_PS_OS_list = []
+    keyword_overlap_list = []
+
+    weights = {"cs_PS_OT": 0.3, "cs_PS_OS": 0.4, "keyword_overlap": 0.3}
+
+    for i, (pred_emb, orig_sum_emb, orig_txt_emb) in enumerate(
+        zip(predicted_embeddings, original_summary_embeddings, original_text_embeddings)
     ):
-        cs_PS_OT = cosine_similarity([pred], [orig_txt])[0][0]
-        cs_OS_OT = cosine_similarity([orig_sum], [orig_txt])[0][0]
-        cs_PS_OS = cosine_similarity([pred], [orig_sum])[0][0]
-        my_eval = (
-            weights["cs_PS_OT"] * cs_PS_OT
-            + weights["cs_OS_OT"] * cs_OS_OT
-            + weights["cs_PS_OS"] * cs_PS_OS
-        ) / 3
-        scores.append(my_eval)
+        # Cosine similarity
+        cs_ps_ot = cosine_similarity([pred_emb], [orig_txt_emb])[0][0]
+        cs_ps_os = cosine_similarity([pred_emb], [orig_sum_emb])[0][0]
 
+        # Keyword overlap
+        pred_text = predicted_texts[i]
+        orig_sum_text = original_summary_texts[i]
+
+        pred_keywords = get_keywords(pred_text)
+        orig_keywords = get_keywords(orig_sum_text)
+
+        union = len(pred_keywords | orig_keywords)
+        intersection = len(pred_keywords & orig_keywords)
+        ko = intersection / (union + 1e-8)
+
+        # Final score
+        my_evaluation_score = (
+            weights["cs_PS_OT"] * cs_ps_ot
+            + weights["cs_PS_OS"] * cs_ps_os
+            + weights["keyword_overlap"] * ko
+        )
+
+        # Aggiornamento liste
+        scores.append(my_evaluation_score)
+        cs_PS_OT_list.append(cs_ps_ot)
+        cs_PS_OS_list.append(cs_ps_os)
+        keyword_overlap_list.append(ko)
+
+    # Assegnazione al DataFrame
     df_summaries["myevaluation_scores"] = scores
+    df_summaries["cs_PS_OT"] = cs_PS_OT_list
+    df_summaries["cs_PS_OS"] = cs_PS_OS_list
+    df_summaries["keyword_overlap"] = keyword_overlap_list
 
-    # Compute the mean myevaluation scores
     mean_myevaluation = df_summaries["myevaluation_scores"].mean()
 
     return df_summaries, mean_myevaluation
