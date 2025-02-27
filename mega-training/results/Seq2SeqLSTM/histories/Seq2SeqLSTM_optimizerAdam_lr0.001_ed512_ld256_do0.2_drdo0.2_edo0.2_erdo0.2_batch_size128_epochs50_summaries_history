@@ -1,0 +1,36 @@
+
+Evaluation for Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.17022633477633475), 'mean_rouge2': np.float64(0.04534523809523809), 'mean_rougeL': np.float64(0.16935728715728718)}
+Mean WER score: 1.0825928571428571
+Mean Cosine Similarity: 0.43997952342033386
+Mean My Evaluation: 0.1369449347257614
+
+Evaluation for Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.17022633477633475), 'mean_rouge2': np.float64(0.04534523809523809), 'mean_rougeL': np.float64(0.16935728715728718)}
+Mean WER score: 1.0825928571428571
+Mean Cosine Similarity: 0.43997952342033386
+Mean My Evaluation: 0.1369449347257614
+
+Evaluation for Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.17022633477633475), 'mean_rouge2': np.float64(0.04534523809523809), 'mean_rougeL': np.float64(0.16935728715728718)}
+Mean WER score: 1.0825928571428571
+Mean Cosine Similarity: 0.43997952342033386
+Mean My Evaluation: 0.1369449347257614
+
+Evaluation for Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.17022633477633475), 'mean_rouge2': np.float64(0.04534523809523809), 'mean_rougeL': np.float64(0.16935728715728718)}
+Mean WER score: 1.0825928571428571
+Mean Cosine Similarity: 0.43997952342033386
+Mean My Evaluation: 0.1369449347257614
+
+Evaluation for Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.17022633477633475), 'mean_rouge2': np.float64(0.04534523809523809), 'mean_rougeL': np.float64(0.16935728715728718)}
+Mean WER score: 1.0825928571428571
+Mean Cosine Similarity: 0.43997952342033386
+Mean My Evaluation: 0.1369449347257614
+
+Evaluation for Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.17022633477633475), 'mean_rouge2': np.float64(0.04534523809523809), 'mean_rougeL': np.float64(0.16935728715728718)}
+Mean WER score: 1.0825928571428571
+Mean Cosine Similarity: 0.43997952342033386
+Mean My Evaluation: 0.33423134684562683
