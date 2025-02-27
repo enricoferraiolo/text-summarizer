@@ -61,7 +61,7 @@ def create_hyperparameter_grid():
 def plot_rouge(
     df,
     save_path,
-    model_instance,
+    model_name,
     metric="rouge1",
     bins=30,
     remove_zeros_rows=True,
@@ -87,7 +87,7 @@ def plot_rouge(
 
     # Save the plot to a file
     plt.savefig(
-        f"{save_path}/{model_instance.name}_{metric}_scores.png",
+        f"{save_path}/{model_name}_{metric}_scores.png",
         dpi=300,
         bbox_inches="tight",
     )
@@ -95,7 +95,7 @@ def plot_rouge(
     plt.close()
 
 
-def plot_wer(df, save_path, model_instance, bins=30, color="salmon", title=None):
+def plot_wer(df, save_path, model_name, bins=30, color="salmon", title=None):
     # Plot the distribution of WER scores
     plt.hist(df["wer_scores"], bins=bins, color=color)
     plt.suptitle(title or "Distribution of WER scores", fontsize=16)
@@ -105,7 +105,7 @@ def plot_wer(df, save_path, model_instance, bins=30, color="salmon", title=None)
 
     # Save the plot to a file
     plt.savefig(
-        f"{save_path}/{model_instance.name}_wer_scores.png",
+        f"{save_path}/{model_name}_wer_scores.png",
         dpi=300,
         bbox_inches="tight",
     )
@@ -114,7 +114,7 @@ def plot_wer(df, save_path, model_instance, bins=30, color="salmon", title=None)
 
 
 def plot_cosine_similarity(
-    df, save_path, model_instance, bins=30, color="salmon", title=None
+    df, save_path, model_name, bins=30, color="salmon", title=None
 ):
     # Plot the distribution of cosine similarity scores
     plt.hist(df["cosine_similarity"], bins=bins, color=color)
@@ -125,7 +125,7 @@ def plot_cosine_similarity(
 
     # Save the plot to a file
     plt.savefig(
-        f"{save_path}/{model_instance.name}_cosine_similarity_scores.png",
+        f"{save_path}/{model_name}_cosine_similarity_scores.png",
         dpi=300,
         bbox_inches="tight",
     )
@@ -134,7 +134,7 @@ def plot_cosine_similarity(
 
 
 def plot_myevaluation(
-    df, save_path, model_instance, bins=30, color="salmon", title=None
+    df, save_path, model_name, bins=30, color="salmon", title=None
 ):
     # Plot the distribution of myevaluation scores
     plt.hist(df["myevaluation_scores"], bins=bins, color=color)
@@ -145,14 +145,15 @@ def plot_myevaluation(
 
     # Save the plot to a file
     plt.savefig(
-        f"{save_path}/{model_instance.name}_myevaluation_scores.png",
+        f"{save_path}/{model_name}_myevaluation_scores.png",
         dpi=300,
         bbox_inches="tight",
     )
 
     plt.close()
 
-def myevaluate(predicted_summary, original_summary, original_text):
+
+def myevaluate(predicted_summary, original_summary, original_text, model):
     """
     This function calculates the myevaluation score between the predicted and original summaries.
     The more the result is close to 1, the better the predicted summary is.
@@ -176,26 +177,24 @@ def myevaluate(predicted_summary, original_summary, original_text):
         float: The myevaluation score.
     """
 
-    import numpy as np
-    from sentence_transformers import SentenceTransformer
     from sklearn.metrics.pairwise import cosine_similarity
 
+    predicted_embedding = model.encode([predicted_summary])
+    original_summary_embedding = model.encode([original_summary])
+    original_text_embedding = model.encode([original_text])
+
     # TODO: trovare e spiegare il modello scelto (posso trovarne migliori?)
-    model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
     # Weights
     cs_PS_OT_weight = 0.3
     cs_OS_OT_weight = 0.3
     cs_PS_OS_weight = 0.4
 
-    cs_PS_OT = cosine_similarity(
-        model.encode([predicted_summary]), model.encode([original_text])
-    )
-    cs_OS_OT = cosine_similarity(
-        model.encode([original_summary]), model.encode([original_text])
-    )
-    cs_PS_OS = cosine_similarity(
-        model.encode([predicted_summary]), model.encode([original_summary])
-    )
+    cs_PS_OT = cosine_similarity(predicted_embedding, original_text_embedding)[0][0]
+    cs_OS_OT = cosine_similarity(original_summary_embedding, original_text_embedding)[
+        0
+    ][0]
+    cs_PS_OS = cosine_similarity(predicted_embedding, original_summary_embedding)[0][0]
+
     my_eval = (
         cs_PS_OT_weight * cs_PS_OT
         + cs_OS_OT_weight * cs_OS_OT
@@ -206,17 +205,38 @@ def myevaluate(predicted_summary, original_summary, original_text):
 
 
 def evaluate_myevalutation(df_summaries):
-    def compute_myevaluation_scores(row):
-        predicted_summary = row["predicted_summary"]
-        original_summary = row["original_summary"]
-        original_text = row["original_text"]
+    from sklearn.metrics.pairwise import cosine_similarity
+    from sentence_transformers import SentenceTransformer
 
-        return myevaluate(predicted_summary, original_summary, original_text)
+    model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
 
-    # Apply the function to calculate myevaluation scores for each row in the DataFrame
-    df_summaries["myevaluation_scores"] = df_summaries.apply(
-        compute_myevaluation_scores, axis=1
-    )
+    # Extract columns
+    predicted_list = df_summaries["predicted_summary"].tolist()
+    original_summary_list = df_summaries["original_summary"].tolist()
+    original_text_list = df_summaries["original_text"].tolist()
+
+    # Batch encoding, much efficient
+    predicted_embeddings = model.encode(predicted_list)
+    original_summary_embeddings = model.encode(original_summary_list)
+    original_text_embeddings = model.encode(original_text_list)
+
+    # Compute scores
+    scores = []
+    weights = {"cs_PS_OT": 0.3, "cs_OS_OT": 0.3, "cs_PS_OS": 0.4}
+    for pred, orig_sum, orig_txt in zip(
+        predicted_embeddings, original_summary_embeddings, original_text_embeddings
+    ):
+        cs_PS_OT = cosine_similarity([pred], [orig_txt])[0][0]
+        cs_OS_OT = cosine_similarity([orig_sum], [orig_txt])[0][0]
+        cs_PS_OS = cosine_similarity([pred], [orig_sum])[0][0]
+        my_eval = (
+            weights["cs_PS_OT"] * cs_PS_OT
+            + weights["cs_OS_OT"] * cs_OS_OT
+            + weights["cs_PS_OS"] * cs_PS_OS
+        ) / 3
+        scores.append(my_eval)
+
+    df_summaries["myevaluation_scores"] = scores
 
     # Compute the mean myevaluation scores
     mean_myevaluation = df_summaries["myevaluation_scores"].mean()
@@ -794,3 +814,4 @@ def prepare_data():
         max_text_len,
         max_summary_len,
     )
+
