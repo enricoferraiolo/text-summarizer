@@ -34,3 +34,21 @@ Mean ROUGE scores: {'mean_rouge1': np.float64(0.1290088023088023), 'mean_rouge2'
 Mean WER score: 1.1169857142857142
 Mean Cosine Similarity: 0.38988250494003296
 Mean My Evaluation: 0.28113406896591187
+
+Evaluation for Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.1290088023088023), 'mean_rouge2': np.float64(0.025471428571428572), 'mean_rougeL': np.float64(0.12872308802308802)}
+Mean WER score: 1.1169857142857142
+Mean Cosine Similarity: 0.38988250494003296
+Mean My Evaluation: 0.19973720610141754
+
+Evaluation for Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.1290088023088023), 'mean_rouge2': np.float64(0.025471428571428572), 'mean_rougeL': np.float64(0.12872308802308802)}
+Mean WER score: 1.1169857142857142
+Mean Cosine Similarity: 0.38988250494003296
+Mean My Evaluation: 0.3037077784538269
+
+Evaluation for Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.1290088023088023), 'mean_rouge2': np.float64(0.025471428571428572), 'mean_rougeL': np.float64(0.12872308802308802)}
+Mean WER score: 1.1169857142857142
+Mean Cosine Similarity: 0.38988250494003296
+Mean My Evaluation: 0.3556930124759674

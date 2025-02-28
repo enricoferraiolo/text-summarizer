@@ -186,7 +186,7 @@ def evaluate_myevalutation(df_summaries):
     cs_PS_OS_list = []
     keyword_overlap_list = []
 
-    weights = {"cs_PS_OT": 0.3, "cs_PS_OS": 0.4, "keyword_overlap": 0.3}
+    weights = {"cs_PS_OT": 0.5, "cs_PS_OS": 0.5, "keyword_overlap": 0.0}
 
     for i, (pred_emb, orig_sum_emb, orig_txt_emb) in enumerate(
         zip(predicted_embeddings, original_summary_embeddings, original_text_embeddings)
