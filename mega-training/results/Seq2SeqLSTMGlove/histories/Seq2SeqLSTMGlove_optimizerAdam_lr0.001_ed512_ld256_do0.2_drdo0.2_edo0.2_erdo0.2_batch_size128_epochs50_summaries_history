@@ -52,3 +52,9 @@ Mean ROUGE scores: {'mean_rouge1': np.float64(0.17981291486291484), 'mean_rouge2
 Mean WER score: 1.0877357142857145
 Mean Cosine Similarity: 0.4314393997192383
 Mean My Evaluation: 0.4211116433143616
+
+Evaluation for Seq2SeqLSTMGlove_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
+Mean ROUGE scores: {'mean_rouge1': np.float64(0.17981291486291484), 'mean_rouge2': np.float64(0.04723968253968253), 'mean_rougeL': np.float64(0.17952720057720056)}
+Mean WER score: 1.0877357142857145
+Mean Cosine Similarity: 0.4314393997192383
+Mean My Evaluation: 0.4314393699169159
