@@ -8,11 +8,11 @@ def create_hyperparameter_grid():
     from tensorflow.keras.optimizers import Adam, RMSprop
 
     latent_dim = [256]
-    embedding_dim = [512]
-    encoder_dropout = [0.2]
-    encoder_recurrent_dropout = [0.2]
-    decoder_dropout = [0.2]
-    decoder_recurrent_dropout = [0.2]
+    embedding_dim = [300]
+    encoder_dropout = [0.3]
+    encoder_recurrent_dropout = [0.3]
+    decoder_dropout = [0.3]
+    decoder_recurrent_dropout = [0.3]
     # Store optimizer configurations as classes and learning rates
     optimizers = [
         {"class": Adam, "learning_rate": 0.001},
@@ -21,7 +21,7 @@ def create_hyperparameter_grid():
         # {'class': RMSprop, 'learning_rate': 0.0005},
     ]
     epochs = [50]
-    batch_size = [64, 128, 256]
+    batch_size = [64]
 
     hyperparameter_grid = []
 
@@ -186,7 +186,7 @@ def evaluate_myevalutation(df_summaries):
     cs_PS_OS_list = []
     keyword_overlap_list = []
 
-    weights = {"cs_PS_OT": 0.5, "cs_PS_OS": 0.5, "keyword_overlap": 0.0}
+    weights = {"cs_PS_OT": 0.0, "cs_PS_OS": 1.0, "keyword_overlap": 0.0}
 
     for i, (pred_emb, orig_sum_emb, orig_txt_emb) in enumerate(
         zip(predicted_embeddings, original_summary_embeddings, original_text_embeddings)
