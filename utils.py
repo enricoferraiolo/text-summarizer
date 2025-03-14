@@ -6,8 +6,8 @@ from tensorflow.keras.optimizers import Adam, RMSprop
 
 
 def create_hyperparameter_grid(
-    latent_dim=[256],
     embedding_dim=[300],
+    latent_dim=[256],
     encoder_dropout=[0.3],
     encoder_recurrent_dropout=[0.3],
     decoder_dropout=[0.3],
