@@ -2,6 +2,7 @@ import os
 from keras import backend as K
 from matplotlib import pyplot as plt
 import pandas as pd
+from tensorflow.keras.optimizers import Adam, RMSprop
 
 
 def create_hyperparameter_grid(
@@ -32,7 +33,6 @@ def create_hyperparameter_grid(
     Returns:
         list: permutation grid of hyperparameters
     """
-    from tensorflow.keras.optimizers import Adam, RMSprop
 
     hyperparameter_grid = []
 
