@@ -800,3 +800,21 @@ def prepare_data():
         max_text_len,
         max_summary_len,
     )
+
+
+def generate_model_name_additional_info(additional_info, hyperparams):
+    components = [
+        additional_info,
+        f"optimizer{hyperparams['optimizer_class'].__name__}",
+        f"lr{hyperparams['learning_rate']}",
+        f"ed{hyperparams['embedding_dim']}",
+        f"ld{hyperparams['latent_dim']}",
+        f"do{hyperparams['decoder_dropout']}",
+        f"drdo{hyperparams['decoder_recurrent_dropout']}",
+        f"edo{hyperparams['encoder_dropout']}",
+        f"erdo{hyperparams['encoder_recurrent_dropout']}",
+        f"batch_size{hyperparams['batch_size']}",
+        f"epochs{hyperparams['epochs']}",
+    ]
+
+    return "_".join(components)
