@@ -1,6 +1,6 @@
 #glove files
 architectures/weightsGLOVE/
-mega-training/architectures/weightsGLOVE/*
+architectures/weightsGLOVE/*
 
 .conda
 .venv
@@ -312,4 +312,4 @@ TSWLatexianTemp*
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
-mega-training/results/Seq2SeqBiLSTMImproved/weights/Seq2SeqBiLSTMImproved_optimizerAdam_lr0.001_ed300_ld256_do0.3_drdo0.3_edo0.3_erdo0.3_batch_size64_epochs50_full_model.h5
+results/Seq2SeqBiLSTMImproved/weights/Seq2SeqBiLSTMImproved_optimizerAdam_lr0.001_ed300_ld256_do0.3_drdo0.3_edo0.3_erdo0.3_batch_size64_epochs50_full_model.h5
