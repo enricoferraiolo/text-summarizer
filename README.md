@@ -16,7 +16,7 @@ The project explores techniques in text summarization. It leverages deep learnin
 - **`results/`**: Stores the trained models and their evaluation results, enabling performance tracking and comparison of different configurations.
 - **`report/`**: Includes documentation and analysis detailing the project's methodology, experiments, and findings.
 
-### Core Files and Notebooks
+### Notebooks
 
 - **Jupyter Notebooks:**
   - `text-summarizer_training.ipynb` – Notebook for training the models and evaluate their results.
