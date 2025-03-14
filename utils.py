@@ -4,24 +4,35 @@ from matplotlib import pyplot as plt
 import pandas as pd
 
 
-def create_hyperparameter_grid():
-    from tensorflow.keras.optimizers import Adam, RMSprop
+def create_hyperparameter_grid(
+    latent_dim=[256],
+    embedding_dim=[300],
+    encoder_dropout=[0.3],
+    encoder_recurrent_dropout=[0.3],
+    decoder_dropout=[0.3],
+    decoder_recurrent_dropout=[0.3],
+    optimizers=[{"class": Adam, "learning_rate": 0.001}],
+    epochs=[50],
+    batch_size=[64],
+):
+    """
+    Create a permutation grid of hyperparameters to search for the best model configuration.
 
-    latent_dim = [256]
-    embedding_dim = [300]
-    encoder_dropout = [0.3]
-    encoder_recurrent_dropout = [0.3]
-    decoder_dropout = [0.3]
-    decoder_recurrent_dropout = [0.3]
-    # Store optimizer configurations as classes and learning rates
-    optimizers = [
-        {"class": Adam, "learning_rate": 0.001},
-        # {'class': Adam, 'learning_rate': 0.0005},
-        # {"class": RMSprop, "learning_rate": 0.001},
-        # {'class': RMSprop, 'learning_rate': 0.0005},
-    ]
-    epochs = [50]
-    batch_size = [64]
+    Args:
+        latent_dim (list): Dimension of the latent space
+        embedding_dim (list): Dimension of the word embeddings
+        encoder_dropout (list): Encoder dropout
+        encoder_recurrent_dropout (list): Encoder recurrent dropout
+        decoder_dropout (list): Decoder dropout
+        decoder_recurrent_dropout (list): Decoder recurrent dropout
+        optimizers (list): List of dictionaries with the optimizer class and learning rate
+        epochs (list): Number of epochs
+        batch_size (list): Batch size
+
+    Returns:
+        list: permutation grid of hyperparameters
+    """
+    from tensorflow.keras.optimizers import Adam, RMSprop
 
     hyperparameter_grid = []
 
