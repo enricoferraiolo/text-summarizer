@@ -9,17 +9,29 @@ La classe \texttt{BaseModel} fornisce l'interfaccia base per tutti i modelli di 
 \begin{itemize}
     \item Metodi astratti per costruire encoder e decoder.
     \item Funzionalità per il salvataggio, caricamento e inferenza del modello.
-    \item Conversione tra sequenze e testo tramite i tokenizzatori.
+    \item Conversione tra sequenze e testo tramite i tokenizer.
 \end{itemize}
 
 \subsection{Training}
-L'addestramento dei modelli successivi è stato effettuato utilizzando il dataset preprocessato.\\
+L'addestramento dei modelli, derivati dalla classe \texttt{BaseModel}, è stato effettuato utilizzando il dataset preprocessato.\\
 Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
-A questo punto ho definito una funzione di early stopping per monitorare la loss sul validation set e fermare l'addestramento quando la loss non diminuisce per un certo numero di epoche, ciò serve a limitare l'overfitting.\\
 Dopodiché sono passato alla fase effettiva di training dei modelli, utilizzando e la loss function \texttt{Sparse Categorical Crossentropy}, utile nei task di summarization.\\
 
+\subsubsection{Callbacks}
+Durante il training ho utilizzato anche le seguenti funzioni di callback:
+\begin{itemize}
+    \item \textbf{Early Stopping}: monitora una metrica, in questo caso la validation loss, e interrompe l'addestramento se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a prevenire l'overfitting e a risparmiare tempo di calcolo.
+    \item \textbf{Learning Rate Scheduler}: regola il tasso di apprendiento durante il training secondo una strategia, nel mio caso ho utilizzato la \texttt{Step Decay}, che riduce il learning rate di un fattore fisso ogni tot epoche.
+    \item \textbf{Reduce LR on Plateau}: monitora una metrica, in questo caso la validation loss, e riduce il learning rate se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a ottimizzare il processo di addestramento e a trovare un tasso di apprendimento più efficace.
+\end{itemize}
+
+\subsection{Architetture sperimentate}
+
+\subsection{LSTM}
 \input{sections/architetture/Seq2SeqLSTM.tex}
 \input{sections/architetture/Seq2SeqBiLSTM.tex}
 \input{sections/architetture/Seq2Seq3BiLSTM.tex}
 \input{sections/architetture/Seq2SeqLSTMGloVe.tex}
 \input{sections/architetture/Seq2SeqLSTMTransformer.tex}
+
+\section{GRU}
