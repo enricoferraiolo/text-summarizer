@@ -119,6 +119,11 @@ Dove:
     \item $keyword\_overlap$ \`e la percentuale di parole chiave presenti nel riassunto generato rispetto a quelle nel riassunto originale
     \item $bert\_score$ \`e il punteggio BERTScore tra il riassunto generato e quello originale
     \item $W_{cs\_PS\_OS}$, $W_{keyword\_overlap}$ e $W_{bert\_score}$ sono i pesi associati a ciascun fattore
+    \begin{itemize}
+        \item $W_{cs\_PS\_OS} = 0.07$
+        \item $W_{keyword\_overlap} = 0.03$
+        \item $W_{bert\_score} = 0.9$
+    \end{itemize}
 \end{itemize}
 
 La Figura \ref{fig:myevaluation_comparison} mostra i risultati della metrica \texttt{myevaluation} per i diversi modelli.\\
