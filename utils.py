@@ -168,6 +168,7 @@ def evaluate_myevalutation(df_summaries):
     from nltk.corpus import stopwords
     import numpy as np
     import nltk
+    from bert_score import score as bert_scorer
 
     def get_keywords(text):
         """Estrae parole chiave da un testo"""
@@ -196,12 +197,30 @@ def evaluate_myevalutation(df_summaries):
     cs_PS_OT_list = []
     cs_PS_OS_list = []
     keyword_overlap_list = []
+    bert_score = []
 
-    weights = {"cs_PS_OT": 0.0, "cs_PS_OS": 1.0, "keyword_overlap": 0.0}
+    weights = {
+        "cs_PS_OT": 0.0,
+        "cs_PS_OS": 0.0,
+        "keyword_overlap": 0.0,
+        "bert_score": 1.0,
+    }
+
+    # Compute BERTScore in batch to be more efficient
+    bert_results = bert_scorer(
+        predicted_texts, original_summary_texts, lang="en", verbose=False
+    )
 
     for i, (pred_emb, orig_sum_emb, orig_txt_emb) in enumerate(
         zip(predicted_embeddings, original_summary_embeddings, original_text_embeddings)
     ):
+        # BERTScore
+        bert_P, bert_R, bert_F1 = (
+            bert_results[0][i],
+            bert_results[1][i],
+            bert_results[2][i],
+        )
+
         # Cosine similarity
         cs_ps_ot = cosine_similarity([pred_emb], [orig_txt_emb])[0][0]
         cs_ps_os = cosine_similarity([pred_emb], [orig_sum_emb])[0][0]
@@ -222,6 +241,7 @@ def evaluate_myevalutation(df_summaries):
             weights["cs_PS_OT"] * cs_ps_ot
             + weights["cs_PS_OS"] * cs_ps_os
             + weights["keyword_overlap"] * ko
+            + weights["bert_score"] * bert_F1.mean().item()
         )
 
         # Aggiornamento liste
@@ -229,12 +249,14 @@ def evaluate_myevalutation(df_summaries):
         cs_PS_OT_list.append(cs_ps_ot)
         cs_PS_OS_list.append(cs_ps_os)
         keyword_overlap_list.append(ko)
+        bert_score.append(bert_F1.mean().item())
 
     # Assegnazione al DataFrame
     df_summaries["myevaluation_scores"] = scores
     df_summaries["cs_PS_OT"] = cs_PS_OT_list
     df_summaries["cs_PS_OS"] = cs_PS_OS_list
     df_summaries["keyword_overlap"] = keyword_overlap_list
+    df_summaries["bert_score"] = bert_score
 
     mean_myevaluation = df_summaries["myevaluation_scores"].mean()
 
