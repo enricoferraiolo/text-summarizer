@@ -1,2 +1,0 @@
-la metrica la creo io:
-- se contiene matching words + 0.75
