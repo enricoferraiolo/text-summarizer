@@ -1,6 +1,9 @@
 \section{Conclusioni}
-%%TODO: Scrivere conclusioni
-Il modello implementato dimostra la capacità di generare riassunti efficaci delle recensioni di prodotti.\\
-I risultati complessivi indicano che il modello Seq2Seq LSTM ha difficoltà significative nel generare output precisi, sia dal punto di vista lessicale che sintattico. \\
-Tuttavia, la similarità cosenica superiore a zero per la maggior parte delle righe suggerisce che il modello riesce a mantenere una correlazione semantica, seppure debole, con il testo di riferimento.\\
-Per un fine di generazione di riassunti ci si può ritenere soddisfatti, grazie alla similarità cosenica.
+Il lavoro svolto ha portato alla realizzazione di un sistema di sintesi automatica dei testi, in grado di generare riassunti coerenti a partire da recensioni di cibo.\\
+Il sistema \`e stato progettato per essere facilmente estendibile e adattabile a diverse task, questo ne aumenta la versatilit\`a e l'utilizzo in contesti diversi.\\
+Sono stati implementati diversi modelli di sintesi automatica, tra cui Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqLSTMGlove.
+I risultati ottenuti sono stati valutati utilizzando diverse metriche, tra cui ROUGE, Word Error Rate (WER), Cosine Similarity, BERTScore e \texttt{MyEvaluation}.
+Tra queste metriche possiamo dire che quella più indicativa della bontà del lavoro svolto è la BERTScore, in quanto tiene conto del contesto semantico delle parole e della loro similarità.\\
+Inoltre, la metrica \texttt{MyEvaluation} ha dimostrato di essere utile per valutare la qualità dei riassunti generati in modo più dettagliato, tenendo conto di diversi fattori e pesandoli in base alla loro importanza.\\
+I risultati ottenuti mostrano che il modello Seq2SeqBiLSTM ha ottenuto le migliori prestazioni in praticamente tutte le metriche, suggerendo una maggiore capacità di catturare la similarità semantica tra i riassunti generati e quelli di riferimento.\\
+Tuttavia, \`e importante notare che i risultati ottenuti sono stati influenzati dalla scelta del dataset e dalle caratteristiche specifiche dei dati utilizzati tra cui il loro preprocessing.\\
