@@ -108,7 +108,19 @@ La Figura \ref{fig:bert_score_comparison} mostra i valori di BERTScore per i div
 
 \subsection{My Evaluation}
 La metrica \texttt{myevaluation} \`e stata progettata per valutare la qualit\`a dei riassunti generati in modo pi\`u dettagliato.\\
-Essa tiene conto di diversi fattori, tra cui la lunghezza del riassunto, la presenza di informazioni chiave e la coerenza del testo.\\
+Essa tiene conto di diversi fattori e ciuscuno di essi ha uno specifico peso in base alla sua importanza.\\
+La formula con cui viene calcolata la metrica \texttt{myevaluation} \`e la seguente:
+\[
+    \texttt{MyEval} = cs\_PS\_OS \cdot W_{cs\_PS\_OS} + keyword\_overlap \cdot W_{keyword\_overlap} + bert\_score \cdot W_{bert\_score}
+\]
+Dove:
+\begin{itemize}
+    \item $cs\_PS\_OS$ \`e la similarit\`a cosenica tra il riassunto generato e quello originale
+    \item $keyword\_overlap$ \`e la percentuale di parole chiave presenti nel riassunto generato rispetto a quelle nel riassunto originale
+    \item $bert\_score$ \`e il punteggio BERTScore tra il riassunto generato e quello originale
+    \item $W_{cs\_PS\_OS}$, $W_{keyword\_overlap}$ e $W_{bert\_score}$ sono i pesi associati a ciascun fattore
+\end{itemize}
+
 La Figura \ref{fig:myevaluation_comparison} mostra i risultati della metrica \texttt{myevaluation} per i diversi modelli.\\
 Il modello Seq2SeqBiLSTM ottiene i punteggi pi\`u alti, suggerendo una qualit\`a superiore dei riassunti generati rispetto agli altri modelli.
 \begin{figure}[H]
