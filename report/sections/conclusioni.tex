@@ -1,9 +1,12 @@
-\section{Conclusioni}
-Il lavoro svolto ha portato alla realizzazione di un sistema di sintesi automatica dei testi, in grado di generare riassunti coerenti a partire da recensioni di cibo.\\
-Il sistema \`e stato progettato per essere facilmente estendibile e adattabile a diverse task, questo ne aumenta la versatilit\`a e l'utilizzo in contesti diversi.\\
-Sono stati implementati diversi modelli di sintesi automatica, tra cui Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqLSTMGlove.
-I risultati ottenuti sono stati valutati utilizzando diverse metriche, tra cui ROUGE, Word Error Rate (WER), Cosine Similarity, BERTScore e \texttt{MyEvaluation}.
-Tra queste metriche possiamo dire che quella più indicativa della bontà del lavoro svolto è la BERTScore, in quanto tiene conto del contesto semantico delle parole e della loro similarità.\\
-Inoltre, la metrica \texttt{MyEvaluation} ha dimostrato di essere utile per valutare la qualità dei riassunti generati in modo più dettagliato, tenendo conto di diversi fattori e pesandoli in base alla loro importanza.\\
-I risultati ottenuti mostrano che il modello Seq2SeqBiLSTM ha ottenuto le migliori prestazioni in praticamente tutte le metriche, suggerendo una maggiore capacità di catturare la similarità semantica tra i riassunti generati e quelli di riferimento.\\
-Tuttavia, \`e importante notare che i risultati ottenuti sono stati influenzati dalla scelta del dataset e dalle caratteristiche specifiche dei dati utilizzati tra cui il loro preprocessing.\\
+\section{Conclusioni} Il lavoro svolto ha portato allo sviluppo di un sistema di sintesi automatica in grado di generare riassunti coerenti a partire da recensioni di cibo. Il sistema è stato progettato per garantire facilità di estensione e adattabilità a diverse tipologie di task, aumentando così la sua versatilità e potenziale applicativo in contesti variegati.\\
+Nel corso del progetto sono stati implementati diversi modelli di sintesi automatica, tra cui Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqLSTMGlove. 
+I risultati sono stati valutati attraverso numerose metriche, quali ROUGE, Word Error Rate (WER), Cosine Similarity, BERTScore e \texttt{MyEvaluation}. In particolare, 
+la BERTScore si è rivelata la metrica più rappresentativa della qualità dei riassunti, in quanto considera il contesto semantico e la similarità delle parole.\\
+
+Inoltre, la metrica \texttt{MyEvaluation} ha fornito una valutazione più dettagliata della qualità dei riassunti, integrando vari fattori e assegnando a ciascuno 
+un peso in base alla sua rilevanza. I risultati sperimentali indicano che il modello \textbf{Seq2SeqBiLSTM} ha ottenuto le prestazioni migliori su quasi tutte le metriche, 
+suggerendo una superiore capacità di catturare le similarità semantiche tra i riassunti generati e quelli di riferimento.\\
+
+È opportuno sottolineare che i risultati sono stati influenzati dalla scelta del dataset e dalle specifiche caratteristiche dei dati, 
+inclusi gli aspetti relativi al preprocessing. Tali elementi evidenziano l'importanza di un'attenta selezione e preparazione dei dati per 
+ottimizzare le prestazioni dei modelli di sintesi automatica.
