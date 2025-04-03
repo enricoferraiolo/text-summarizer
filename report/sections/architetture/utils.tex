@@ -9,7 +9,52 @@ Questo modello ha ottenuto i seguenti risultati al termine dell'addestramento:
 \end{itemize}
 }
 
-\newcommand{\training}[2]{
+\newcommand{\training}[8]{
 \subsubsection{Training}
-L'addestramento del modello è stato effettuato con ottimizzatore #1 e #2 epoche con early stopping.\\
+L'addestramento del modello è stato effettuato attraverso la seguente configurazione:
+\begin{itemize}
+    \item Ottimizzatore: #1
+    \item Learning rate: #2
+    \item Embedding dimension: #3
+    \item Latent dimension: #4
+    \item Decoder dropout: #5
+    \item Decoder recurrent dropout: #6
+    \item Encoder dropout: #7
+    \item Encoder recurrent dropout: #8
+    \trainingcontinued
+}
+
+\newcommand{\trainingcontinued}[2]{
+    \item Batch size: #1
+    \item Epochs: #2
+\end{itemize}
+
+\lossimg
+}
+
+\newcommand{\lossimg}[2]{
+Possiamo verificare l'andamento delle loss durante l'addestramento nella figura \ref{fig:#2}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{media/#1_best_lossplot.png}
+    \caption{Andamento delle loss durante l'addestramento}
+    \label{fig:#2}
+
+\end{figure}
+}
+
+\newcommand{\architecture}[3]{
+    \subsubsection{Architettura}
+    L'architettura utilizzata è la seguente:
+    \archimg{#1}{#2}{#3}
+}
+
+\newcommand{\archimg}[3]{
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{media/#1_best_architecture.png}
+    \caption{Architettura del modello #2}
+    \label{fig:#3}
+\end{figure}
 }
