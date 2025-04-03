@@ -58,3 +58,66 @@ Possiamo verificare l'andamento delle loss durante l'addestramento nella figura 
     \label{fig:#3}
 \end{figure}
 }
+
+\newcommand{\rougeonesubimg}[3]{
+  \begin{subfigure}{#1\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{media/#2_best_rouge1_scores.png}
+    \caption{ROUGE-1 #2}
+    \label{fig:#3}
+  \end{subfigure}
+}
+
+\newcommand{\rougetwosubimg}[3]{
+  \begin{subfigure}{#1\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{media/#2_best_rouge2_scores.png}
+    \caption{ROUGE-2 #2}
+    \label{fig:#3}
+  \end{subfigure}
+}
+
+\newcommand{\rougelubimg}[3]{
+  \begin{subfigure}{#1\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{media/#2_best_rougeL_scores.png}
+    \caption{ROUGE-L #2}
+    \label{fig:#3}
+  \end{subfigure}
+}
+
+\newcommand{\wersubimg}[3]{
+  \begin{subfigure}{#1\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{media/#2_best_wer_scores.png}
+    \caption{WER #2}
+    \label{fig:#3}
+  \end{subfigure}
+}
+
+\newcommand{\cssubimg}[3]{
+  \begin{subfigure}{#1\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{media/#2_best_cosine_similarity_scores.png}
+    \caption{Cosine similarity #2}
+    \label{fig:#3}
+    \end{subfigure}
+}
+
+\newcommand{\bertsubimg}[3]{
+  \begin{subfigure}{#1\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{media/#2_best_bert_scores.png}
+    \caption{BERTScore #2}
+    \label{fig:#3}
+    \end{subfigure}
+}
+
+\newcommand{\myevalsubimg}[3]{
+  \begin{subfigure}{#1\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{media/#2_best_myevaluation_scores.png}
+    \caption{My Evaluation #2}
+    \label{fig:#3}
+    \end{subfigure}
+}

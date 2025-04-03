@@ -1,5 +1,6 @@
 \section{Metriche di Valutazione}
-In questa sezione vengono analizzate le prestazioni dei modelli attraverso i grafici delle principali metriche di valutazione: ROUGE, WER e cosine similarity. 
+In questa sezione vengono analizzate le prestazioni dei modelli attraverso i grafici delle principali metriche di valutazione: ROUGE, WER, cosine similarity e BERTScore.\\
+Inoltre è stata anche utilizzata la metrica personalizzata \texttt{myevaluation}, che verrà approfondita in seguito.\\ 
 Queste metriche sono state scelte per misurare in modo accurato la qualit\`a dei riassunti generati, confrontandoli con quelli di riferimento.\\
 Le valutazioni sono state effettuate utilizzando il dataset di test, che non \`e stato utilizzato durante l'addestramento del modello.\\
 Durante la fase di inferenza, sono stati generati 1000 riassunti a partire dai dati di test.
@@ -15,97 +16,34 @@ Sono state calcolate tre varianti di ROUGE:
 I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in termini di ROUGE-1, ROUGE-2 e ROUGE-L per i quattro modelli. Il modello Seq2SeqBiLSTM mostra un miglioramento nei punteggi ROUGE rispetto al Seq2SeqLSTM e al Seq2SeqLSTMGlove, indicando una maggiore capacit\`a di catturare similarit\`a lessicali.
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_rouge1_scores.png}
-        \caption{ROUGE-1 Seq2SeqLSTM}
-    \end{subfigure}
+    \rougeonesubimg{0.45}{Seq2SeqLSTM}{rouge1_seq2seq_lstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_rouge1_scores.png}
-        \caption{ROUGE-1 Seq2SeqBiLSTM}
-    \end{subfigure}
+    \rougeonesubimg{0.45}{Seq2SeqBiLSTM}{rouge1_seq2seq_bilstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2Seq3BiLSTM_rouge1_scores.png}
-        \caption{ROUGE-1 Seq2Seq3BiLSTM}
-    \end{subfigure}
+    \rougeonesubimg{0.45}{Seq2Seq3BiLSTM}{rouge1_seq2seq_3bilstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMGlove_rouge1_scores.png}
-        \caption{ROUGE-1 Seq2SeqLSTMGlove}
-    \end{subfigure}
+    \rougeonesubimg{0.45}{Seq2SeqLSTMGlove}{rouge1_seq2seq_lstm_glove}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMTransformer_rouge1_scores.png}
-        \caption{ROUGE-1 Seq2SeqLSTMTransformer}
-    \end{subfigure}
 
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_rouge2_scores.png}
-        \caption{ROUGE-2 Seq2SeqLSTM}
-    \end{subfigure}
+    \rougetwosubimg{0.45}{Seq2SeqLSTM}{rouge2_seq2seq_lstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_rouge2_scores.png}
-        \caption{ROUGE-2 Seq2SeqBiLSTM}
-    \end{subfigure}
+    \rougetwosubimg{0.45}{Seq2SeqBiLSTM}{rouge2_seq2seq_bilstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2Seq3BiLSTM_rouge2_scores.png}
-        \caption{ROUGE-2 Seq2Seq3BiLSTM}
-    \end{subfigure}
+    \rougetwosubimg{0.45}{Seq2Seq3BiLSTM}{rouge2_seq2seq_3bilstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMGlove_rouge2_scores.png}
-        \caption{ROUGE-2 Seq2SeqLSTMGlove}
-    \end{subfigure}
+    \rougetwosubimg{0.45}{Seq2SeqLSTMGlove}{rouge2_seq2seq_lstm_glove}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMTransformer_rouge2_scores.png}
-        \caption{ROUGE-2 Seq2SeqLSTMTransformer}
-    \end{subfigure}
 
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_rougeL_scores.png}
-        \caption{ROUGE-L Seq2SeqLSTM}
-    \end{subfigure}
+    \rougelubimg{0.45}{Seq2SeqLSTM}{rougeL_seq2seq_lstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_rougeL_scores.png}
-        \caption{ROUGE-L Seq2SeqBiLSTM}
-    \end{subfigure}
+    \rougelubimg{0.45}{Seq2SeqBiLSTM}{rougeL_seq2seq_bilstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2Seq3BiLSTM_rougeL_scores.png}
-        \caption{ROUGE-L Seq2Seq3BiLSTM}
-    \end{subfigure}
+    \rougelubimg{0.45}{Seq2Seq3BiLSTM}{rougeL_seq2seq_3bilstm}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMGlove_rougeL_scores.png}
-        \caption{ROUGE-L Seq2SeqLSTMGlove}
-    \end{subfigure}
+    \rougelubimg{0.45}{Seq2SeqLSTMGlove}{rougeL_seq2seq_lstm_glove}
     \hfill
-    \begin{subfigure}{0.24\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMTransformer_rougeL_scores.png}
-        \caption{ROUGE-L Seq2SeqLSTMTransformer}
-    \end{subfigure}
 
-    \caption{Confronto dei punteggi ROUGE tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove e Seq2SeqLSTMTransformer.}
+    \caption{Confronto dei punteggi ROUGE tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove.}
     \label{fig:rouge_comparison}
 \end{figure}
 
@@ -117,37 +55,15 @@ Il confronto del WER, mostrato nella Figura \ref{fig:wer_comparison}, evidenzia 
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_wer_scores.png}
-        \caption{WER Seq2SeqLSTM. Valore medio: 1.1254}
-    \end{subfigure}
+    \wersubimg{0.45}{Seq2SeqLSTM}{wer_seq2seq_lstm}
     \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_wer_scores.png}
-        \caption{WER Seq2SeqBiLSTM. Valore medio: 1.1482}
-    \end{subfigure}
+    \wersubimg{0.45}{Seq2SeqBiLSTM}{wer_seq2seq_bilstm}
     \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2Seq3BiLSTM_wer_scores.png}
-        \caption{WER Seq2Seq3BiLSTM. Valore medio: 1.1474}
-    \end{subfigure}
+    \wersubimg{0.45}{Seq2Seq3BiLSTM}{wer_seq2seq_3bilstm}
     \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMGlove_wer_scores.png}
-        \caption{WER Seq2SeqLSTMGlove. Valore medio: 1.1456}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMTransformer_wer_scores.png}
-        \caption{WER Seq2SeqLSTMTransformer. Valore medio: 1.1302}
-    \end{subfigure}
-
-    \caption{Confronto del Word Error Rate tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove e Seq2SeqLSTMTransformer.}
+    \wersubimg{0.45}{Seq2SeqLSTMGlove}{wer_seq2seq_lstm_glove}
+    
+    \caption{Confronto del Word Error Rate tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove.}
     \label{fig:wer_comparison}
 \end{figure}
 
@@ -159,36 +75,52 @@ La Figura \ref{fig:cosine_similarity_comparison} confronta i valori di similarit
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTM_cosine_similarity_scores.png}
-        \caption{Cosine Similarity Seq2SeqLSTM. Valore medio: 0.4062}
-    \end{subfigure}
+    \cssubimg{0.45}{Seq2SeqLSTM}{cs_seq2seq_lstm}
     \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqBiLSTM_cosine_similarity_scores.png}
-        \caption{Cosine Similarity Seq2SeqBiLSTM. Valore medio: 0.4289}
-    \end{subfigure}
+    \cssubimg{0.45}{Seq2SeqBiLSTM}{cs_seq2seq_bilstm}
     \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2Seq3BiLSTM_cosine_similarity_scores.png}
-        \caption{Cosine Similarity Seq2Seq3BiLSTM. Valore medio: 0.4025}
-    \end{subfigure}
+    \cssubimg{0.45}{Seq2Seq3BiLSTM}{cs_seq2seq_3bilstm}
     \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMGlove_cosine_similarity_scores.png}
-        \caption{Cosine Similarity Seq2SeqLSTMGlove. Valore medio: 0.4158}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{media/Seq2SeqLSTMTransformer_cosine_similarity_scores.png}
-        \caption{Cosine Similarity Seq2SeqLSTMTransformer. Valore medio: 0.4191}
-    \end{subfigure}
-
-    \caption{Confronto della cosine similarity tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove e Seq2SeqLSTMTransformer.}
+    \cssubimg{0.45}{Seq2SeqLSTMGlove}{cs_seq2seq_lstm_glove}
+    
+    \caption{Confronto della cosine similarity tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove.}
     \label{fig:cosine_similarity_comparison}
+\end{figure}
+
+\subsection{BERTScore}
+Il BERTScore \`e una metrica che utilizza il modello BERT per calcolare la similarit\`a tra due testi.\\
+In particolare, il BERTScore calcola la similarit\`a tra i vettori di embedding delle parole nei riassunti generati e quelli nei riassunti di riferimento, tenendo conto del contesto semantico delle parole.\\
+La Figura \ref{fig:bert_score_comparison} mostra i valori di BERTScore per i diversi modelli. Anche in questo caso, il modello Seq2SeqBiLSTM ottiene risultati migliori, suggerendo una maggiore capacit\`a di catturare la similarit\`a semantica tra i riassunti generati e quelli di riferimento.
+
+\begin{figure}[H]
+    \centering
+    \bertsubimg{0.45}{Seq2SeqLSTM}{bert_seq2seq_lstm}
+    \hfill
+    \bertsubimg{0.45}{Seq2SeqBiLSTM}{bert_seq2seq_bilstm}
+    \hfill
+    \bertsubimg{0.45}{Seq2Seq3BiLSTM}{bert_seq2seq_3bilstm}
+    \hfill
+    \bertsubimg{0.45}{Seq2SeqLSTMGlove}{bert_seq2seq_lstm_glove}
+    
+    \caption{Confronto del BERTScore tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove.}
+    \label{fig:bert_score_comparison}
+\end{figure}
+
+\subsection{My Evaluation}
+La metrica \texttt{myevaluation} \`e stata progettata per valutare la qualit\`a dei riassunti generati in modo pi\`u dettagliato.\\
+Essa tiene conto di diversi fattori, tra cui la lunghezza del riassunto, la presenza di informazioni chiave e la coerenza del testo.\\
+La Figura \ref{fig:myevaluation_comparison} mostra i risultati della metrica \texttt{myevaluation} per i diversi modelli.\\
+Il modello Seq2SeqBiLSTM ottiene i punteggi pi\`u alti, suggerendo una qualit\`a superiore dei riassunti generati rispetto agli altri modelli.
+\begin{figure}[H]
+    \centering
+    \myevalsubimg{0.45}{Seq2SeqLSTM}{myeval_seq2seq_lstm}
+    \hfill
+    \myevalsubimg{0.45}{Seq2SeqBiLSTM}{myeval_seq2seq_bilstm}
+    \hfill
+    \myevalsubimg{0.45}{Seq2Seq3BiLSTM}{myeval_seq2seq_3bilstm}
+    \hfill
+    \myevalsubimg{0.45}{Seq2SeqLSTMGlove}{myeval_seq2seq_lstm_glove}
+    
+    \caption{Confronto della metrica \texttt{myevaluation} tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove.}
+    \label{fig:myevaluation_comparison}
 \end{figure}
