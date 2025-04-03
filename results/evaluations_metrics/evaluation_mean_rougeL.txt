@@ -2,25 +2,24 @@
 ================================================================================
 ROUGE-L Metric Report - Sorted by ROUGE-L (Descending)
 ================================================================================
-Generated: 2025-04-03 11:32:36
-Total Models/Instances: 16
+Generated: 2025-04-03 17:06:50
+Total Models/Instances: 15
 
 ================================================================================
 Rank  | Model                | Instance                                 | ROUGE-L    | Other Metrics
 --------------------------------------------------------------------------------
-1     | Seq2SeqBiLSTM        | Seq2SeqBiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.2397     | Rouge1: 0.2416, Rouge2: 0.0738, Wer: 1.0187, Cosine: 0.4731, Myevaluation: 0.4731
-2     | Seq2SeqBiLSTM        | Seq2SeqBiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.2227     | Rouge1: 0.2240, Rouge2: 0.0696, Wer: 1.0647, Cosine: 0.4631, Myevaluation: 0.4631
-3     | Seq2SeqBiLSTM        | Seq2SeqBiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.2052     | Rouge1: 0.2075, Rouge2: 0.0575, Wer: 1.0895, Cosine: 0.4431, Myevaluation: 0.4431
-4     | Seq2SeqLSTMGlove     | Seq2SeqLSTMGlove_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1918     | Rouge1: 0.1927, Rouge2: 0.0562, Wer: 1.0803, Cosine: 0.4467, Myevaluation: 0.4467
-5     | Seq2SeqGRU           | Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1875     | Rouge1: 0.1884, Rouge2: 0.0563, Wer: 1.1173, Cosine: 0.4445, Myevaluation: 0.4445
-6     | Seq2SeqLSTMGlove     | Seq2SeqLSTMGlove_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1855     | Rouge1: 0.1861, Rouge2: 0.0519, Wer: 1.1131, Cosine: 0.4378, Myevaluation: 0.4378
-7     | Seq2SeqLSTMGlove     | Seq2SeqLSTMGlove_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1795     | Rouge1: 0.1798, Rouge2: 0.0472, Wer: 1.0877, Cosine: 0.4314, Myevaluation: 0.4314
-8     | Seq2SeqLSTM          | Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1694     | Rouge1: 0.1702, Rouge2: 0.0453, Wer: 1.0826, Cosine: 0.4400, Myevaluation: 0.4400
-9     | Seq2Seq3BiLSTM       | Seq2Seq3BiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1653     | Rouge1: 0.1665, Rouge2: 0.0435, Wer: 1.1382, Cosine: 0.4318, Myevaluation: 0.4318
-10    | Seq2SeqGRU           | Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1650     | Rouge1: 0.1656, Rouge2: 0.0417, Wer: 1.0916, Cosine: 0.4294, Myevaluation: 0.4294
-11    | Seq2SeqLSTM          | Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1616     | Rouge1: 0.1629, Rouge2: 0.0407, Wer: 1.0963, Cosine: 0.4374, Myevaluation: 0.4374
-12    | Seq2SeqLSTM          | Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1604     | Rouge1: 0.1607, Rouge2: 0.0454, Wer: 1.1331, Cosine: 0.4266, Myevaluation: 0.4266
-13    | Seq2Seq3BiLSTM       | Seq2Seq3BiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1583     | Rouge1: 0.1588, Rouge2: 0.0383, Wer: 1.1611, Cosine: 0.4198, Myevaluation: 0.4198
-14    | Seq2Seq3BiLSTM       | Seq2Seq3BiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1552     | Rouge1: 0.1564, Rouge2: 0.0411, Wer: 1.1440, Cosine: 0.4189, Myevaluation: 0.4189
-15    | Seq2SeqGRU           | Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1287     | Rouge1: 0.1290, Rouge2: 0.0255, Wer: 1.1170, Cosine: 0.3899, Myevaluation: 0.3899
-16    | Seq2SeqBiLSTMImproved | Seq2SeqBiLSTMImproved_optimizerAdam_lr0.001_ed300_ld256_do0.3_drdo0.3_edo0.3_erdo0.3_batch_size64_epochs50_summaries | 0.0136     | Rouge1: 0.0136, Rouge2: 0.0000, Wer: 1.1710, Cosine: 0.1034, Myevaluation: 0.1034
+1     | Seq2SeqBiLSTM        | Seq2SeqBiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.2397     | Rouge1: 0.2416, Rouge2: 0.0738, Wer: 1.0187, Cosine: 0.4731, Myevaluation: 0.8290, Bertscore: 0.8777
+2     | Seq2SeqBiLSTM        | Seq2SeqBiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.2227     | Rouge1: 0.2240, Rouge2: 0.0696, Wer: 1.0647, Cosine: 0.4631, Myevaluation: 0.8258, Bertscore: 0.8755
+3     | Seq2SeqBiLSTM        | Seq2SeqBiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.2052     | Rouge1: 0.2075, Rouge2: 0.0575, Wer: 1.0895, Cosine: 0.4431, Myevaluation: 0.8189, Bertscore: 0.8700
+4     | Seq2SeqLSTMGlove     | Seq2SeqLSTMGlove_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1918     | Rouge1: 0.1927, Rouge2: 0.0562, Wer: 1.0803, Cosine: 0.4467, Myevaluation: 0.8237, Bertscore: 0.8753
+5     | Seq2SeqGRU           | Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1875     | Rouge1: 0.1884, Rouge2: 0.0563, Wer: 1.1173, Cosine: 0.4445, Myevaluation: 0.8215, Bertscore: 0.8733
+6     | Seq2SeqLSTMGlove     | Seq2SeqLSTMGlove_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1855     | Rouge1: 0.1861, Rouge2: 0.0519, Wer: 1.1131, Cosine: 0.4378, Myevaluation: 0.8219, Bertscore: 0.8743
+7     | Seq2SeqLSTMGlove     | Seq2SeqLSTMGlove_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1795     | Rouge1: 0.1798, Rouge2: 0.0472, Wer: 1.0877, Cosine: 0.4314, Myevaluation: 0.8208, Bertscore: 0.8739
+8     | Seq2SeqLSTM          | Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1694     | Rouge1: 0.1702, Rouge2: 0.0453, Wer: 1.0826, Cosine: 0.4400, Myevaluation: 0.8218, Bertscore: 0.8746
+9     | Seq2Seq3BiLSTM       | Seq2Seq3BiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1653     | Rouge1: 0.1665, Rouge2: 0.0435, Wer: 1.1382, Cosine: 0.4318, Myevaluation: 0.8183, Bertscore: 0.8714
+10    | Seq2SeqGRU           | Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1650     | Rouge1: 0.1656, Rouge2: 0.0417, Wer: 1.0916, Cosine: 0.4294, Myevaluation: 0.8192, Bertscore: 0.8724
+11    | Seq2SeqLSTM          | Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1616     | Rouge1: 0.1629, Rouge2: 0.0407, Wer: 1.0963, Cosine: 0.4374, Myevaluation: 0.8204, Bertscore: 0.8734
+12    | Seq2SeqLSTM          | Seq2SeqLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1604     | Rouge1: 0.1607, Rouge2: 0.0454, Wer: 1.1331, Cosine: 0.4266, Myevaluation: 0.8182, Bertscore: 0.8717
+13    | Seq2Seq3BiLSTM       | Seq2Seq3BiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size64_epochs50_summaries | 0.1583     | Rouge1: 0.1588, Rouge2: 0.0383, Wer: 1.1611, Cosine: 0.4198, Myevaluation: 0.8166, Bertscore: 0.8707
+14    | Seq2Seq3BiLSTM       | Seq2Seq3BiLSTM_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries | 0.1552     | Rouge1: 0.1564, Rouge2: 0.0411, Wer: 1.1440, Cosine: 0.4189, Myevaluation: 0.8151, Bertscore: 0.8692
+15    | Seq2SeqGRU           | Seq2SeqGRU_optimizerAdam_lr0.001_ed512_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size256_epochs50_summaries | 0.1287     | Rouge1: 0.1290, Rouge2: 0.0255, Wer: 1.1170, Cosine: 0.3899, Myevaluation: 0.8118, Bertscore: 0.8685

@@ -143,6 +143,22 @@ def plot_cosine_similarity(
 
     plt.close()
 
+def plot_bert_score(df, save_path, model_name, bins=30, color="salmon", title=None):
+    # Plot the distribution of BERT scores
+    plt.hist(df["bert_score"], bins=bins, color=color)
+    plt.suptitle(title or "Distribution of BERT scores", fontsize=16)
+    plt.xlabel("BERT score", fontsize=12)
+    plt.ylabel("Frequency", fontsize=12)
+    plt.grid(True)
+
+    # Save the plot to a file
+    plt.savefig(
+        f"{save_path}/{model_name}_bert_scores.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close()
 
 def plot_myevaluation(df, save_path, model_name, bins=30, color="salmon", title=None):
     # Plot the distribution of myevaluation scores
@@ -183,80 +199,70 @@ def evaluate_myevalutation(df_summaries):
 
     model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
 
-    # Extract texts
+    # Estrai i testi
     predicted_texts = df_summaries["predicted_summary"].tolist()
     original_summary_texts = df_summaries["original_summary"].tolist()
     original_texts = df_summaries["original_text"].tolist()
 
-    # Compute embeddings
+    # Embedding dei testi
     predicted_embeddings = model.encode(predicted_texts)
     original_summary_embeddings = model.encode(original_summary_texts)
     original_text_embeddings = model.encode(original_texts)
 
+    # Compute cosine similarity
+    cs_PS_OT_all = cosine_similarity(predicted_embeddings, original_text_embeddings)
+    cs_PS_OS_all = cosine_similarity(predicted_embeddings, original_summary_embeddings)
+    # Extract the diagonal elements to get the similarity scores
+    cs_PS_OT_list = cs_PS_OT_all.diagonal().tolist()
+    cs_PS_OS_list = cs_PS_OS_all.diagonal().tolist()
+
     scores = []
-    cs_PS_OT_list = []
-    cs_PS_OS_list = []
     keyword_overlap_list = []
-    bert_score = []
+    bert_score_list = []
 
     weights = {
         "cs_PS_OT": 0.0,
-        "cs_PS_OS": 0.0,
-        "keyword_overlap": 0.0,
-        "bert_score": 1.0,
+        "cs_PS_OS": 0.07,
+        "keyword_overlap": 0.03,
+        "bert_score": 0.9,
     }
 
-    # Compute BERTScore in batch to be more efficient
+    # Calcola BERTScore in batch per maggiore efficienza
     bert_results = bert_scorer(
         predicted_texts, original_summary_texts, lang="en", verbose=False
     )
 
-    for i, (pred_emb, orig_sum_emb, orig_txt_emb) in enumerate(
-        zip(predicted_embeddings, original_summary_embeddings, original_text_embeddings)
-    ):
+    # Itera sui testi per calcolare keyword overlap e combinare gli score
+    for i, pred_text in enumerate(predicted_texts):
         # BERTScore
-        bert_P, bert_R, bert_F1 = (
-            bert_results[0][i],
-            bert_results[1][i],
-            bert_results[2][i],
-        )
-
-        # Cosine similarity
-        cs_ps_ot = cosine_similarity([pred_emb], [orig_txt_emb])[0][0]
-        cs_ps_os = cosine_similarity([pred_emb], [orig_sum_emb])[0][0]
-
+        bert_F1 = bert_results[2][i]
+        
         # Keyword overlap
-        pred_text = predicted_texts[i]
         orig_sum_text = original_summary_texts[i]
-
         pred_keywords = get_keywords(pred_text)
         orig_keywords = get_keywords(orig_sum_text)
-
         union = len(pred_keywords | orig_keywords)
         intersection = len(pred_keywords & orig_keywords)
         ko = intersection / (union + 1e-8)
 
-        # Final score
+        # Calcola il punteggio finale combinato
         my_evaluation_score = (
-            weights["cs_PS_OT"] * cs_ps_ot
-            + weights["cs_PS_OS"] * cs_ps_os
+            weights["cs_PS_OT"] * cs_PS_OT_list[i]
+            + weights["cs_PS_OS"] * cs_PS_OS_list[i]
             + weights["keyword_overlap"] * ko
             + weights["bert_score"] * bert_F1.mean().item()
         )
 
-        # Aggiornamento liste
         scores.append(my_evaluation_score)
-        cs_PS_OT_list.append(cs_ps_ot)
-        cs_PS_OS_list.append(cs_ps_os)
         keyword_overlap_list.append(ko)
-        bert_score.append(bert_F1.mean().item())
+        bert_score_list.append(bert_F1.mean().item())
 
-    # Assegnazione al DataFrame
+    # Assegna i risultati al DataFrame
     df_summaries["myevaluation_scores"] = scores
     df_summaries["cs_PS_OT"] = cs_PS_OT_list
     df_summaries["cs_PS_OS"] = cs_PS_OS_list
     df_summaries["keyword_overlap"] = keyword_overlap_list
-    df_summaries["bert_score"] = bert_score
+    df_summaries["bert_score"] = bert_score_list
 
     mean_myevaluation = df_summaries["myevaluation_scores"].mean()
 
@@ -339,6 +345,24 @@ def evaluate_cosine_similarity(df_summaries):
 
     return df_summaries, mean_cosine_similarity
 
+def evaluate_bert_score(df_summaries):
+    from bert_score import score as bert_scorer
+
+    # Calculate BERTScore
+    P, R, F1 = bert_scorer(
+        df_summaries["predicted_summary"].tolist(),
+        df_summaries["original_summary"].tolist(),
+        lang="en",
+        verbose=True,
+    )
+
+    # Add BERTScore to the DataFrame
+    df_summaries["bert_score"] = F1.tolist()
+
+    # Compute the mean BERTScore
+    mean_bert_score = df_summaries["bert_score"].mean()
+
+    return df_summaries, mean_bert_score
 
 def generate_summaries(
     model_instance,
