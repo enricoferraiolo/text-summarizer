@@ -1,6 +1,7 @@
 \input{sections/architetture/utils.tex}
 
 \section{Architettura dei Modelli}
+Per svolgere questo progetto ho deciso di effettuare un confronto tra diversi modelli, implementando architetture Seq2Seq con LSTM e GRU.\\
 L'implementazione dei modelli è stata effettuata attraverso una classe astratta \texttt{BaseModel} e la successiva creazioni e implementazione di classi derivate.\\
 Questo permette di definire un'interfaccia comune per tutti i modelli di summarization e di estendere facilmente l'architettura in futuro.\\
 
@@ -50,15 +51,3 @@ siano stati effettuati numerosi tentativi e test riportati in seguito in una tab
 \input{sections/architetture/Seq2Seq3BiLSTM.tex}
 \input{sections/architetture/Seq2SeqLSTMGlove.tex}
 \input{sections/architetture/Seq2SeqGRU.tex}
-%\input{sections/architetture/Seq2SeqLSTMTransformer.tex}
-
-\subsection{Confronto tra le Architetture}
-Di seguito viene riportata una tabella comparativa (figura \ref{fig:models_comparison_instances}) tra i vari modelli implementati, con i rispettivi risultati ottenuti al termine dell'addestramento.\\
-Per ogni classe di modelli sono stati effettuati numerosi tentativi e test, riportati in seguito in una tabella comparativa le varie istanze di configurazione e i risultati ottenuti.\\
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{media/models_comparison_instances.png}
-    \caption{Comparazione delle istanze dei modelli}
-    \label{fig:models_comparison_instances}
-\end{figure}
-  
