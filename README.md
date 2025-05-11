@@ -32,3 +32,5 @@ The project explores techniques in text summarization. It leverages deep learnin
 2. **Install the requirements:**
     ```bash
     pip install -r requirements.txt
+
+[link](https://deepwiki.com/enricoferraiolo/text-summarizer)
