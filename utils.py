@@ -143,6 +143,7 @@ def plot_cosine_similarity(
 
     plt.close()
 
+
 def plot_bert_score(df, save_path, model_name, bins=30, color="salmon", title=None):
     # Plot the distribution of BERT scores
     plt.hist(df["bert_score"], bins=bins, color=color)
@@ -159,6 +160,7 @@ def plot_bert_score(df, save_path, model_name, bins=30, color="salmon", title=No
     )
 
     plt.close()
+
 
 def plot_myevaluation(df, save_path, model_name, bins=30, color="salmon", title=None):
     # Plot the distribution of myevaluation scores
@@ -236,7 +238,7 @@ def evaluate_myevalutation(df_summaries):
     for i, pred_text in enumerate(predicted_texts):
         # BERTScore
         bert_F1 = bert_results[2][i]
-        
+
         # Keyword overlap
         orig_sum_text = original_summary_texts[i]
         pred_keywords = get_keywords(pred_text)
@@ -345,6 +347,7 @@ def evaluate_cosine_similarity(df_summaries):
 
     return df_summaries, mean_cosine_similarity
 
+
 def evaluate_bert_score(df_summaries):
     from bert_score import score as bert_scorer
 
@@ -363,6 +366,7 @@ def evaluate_bert_score(df_summaries):
     mean_bert_score = df_summaries["bert_score"].mean()
 
     return df_summaries, mean_bert_score
+
 
 def generate_summaries(
     model_instance,
