@@ -1,17 +1,17 @@
-# Text-Summarizer
+# Text-Summarizer 📚🤖
 
-## Overview
+## 📖 Overview
 
 Text-Summarizer is an academic project developed for the Natural Language Processing course 2024/2025. It focuses on building and evaluating models for text summarization, offering a comprehensive workflow that covers data preparation, training and inference processes.
 
-## Key Features
+## 🔑 Key Features
 - Multiple model architectures based on LSTM and GRU with attention mechanisms
 - Data preprocessing pipeline for text cleaning and tokenization
 - Comprehensive evaluation using various metrics (ROUGE, WER, BERT Score, etc.)
 - Inference capabilities for generating summaries from new inputs
 - Visualization tools for analyzing model performance
 
-## Project Structure
+## 📂 Project Structure
 ```
 text-summarizer/
 ├── architectures/        # Model architecture implementations  
@@ -24,7 +24,7 @@ text-summarizer/
 └── utils.py              # Utility functions  
 ```
 
-## Installation
+## 📦 Installation
 1. Clone the repository:
    ```bash
    git clone https://github.com/enricoferraiolo/text-summarizer.git
@@ -35,7 +35,7 @@ text-summarizer/
     pip install -r requirements.txt
     ```
 
-## Dataset
+## 📊 Dataset
 The project uses the Amazon Fine Food Reviews dataset to train and evaluate summarization models. This dataset contains product reviews and summaries, making it suitable for abstractive text summarization tasks.
 The original data is processed in order to:
 - Remove duplicates
@@ -47,7 +47,7 @@ The preprocessing pipeline includes the following steps:
 1. Text cleaning (removing HTML tags, special characters, etc.)
 2. Tokenization (adding special tokens for start and end of sequences, separating input and output sequences, padding sequences to a fixed length)
 
-## Model Architectures
+## 📐 Model Architectures
 The project implements several sequence-to-sequence architectures.
 
 ### Base Architecture
@@ -58,14 +58,13 @@ All models extend a common BaseModel abstract class that provides:
 - Conversion between sequences and text
 
 ### Implemented Models
-- Seq2SeqLSTM: Basic LSTM-based sequence-to-sequence with attention
-- Seq2SeqGRU: GRU-based sequence-to-sequence with attention
-- Seq2SeqBiLSTM: Bidirectional LSTM encoder with attention
-- Seq2Seq3BiLSTM: Triple-stacked Bidirectional LSTM encoder
-- Seq2SeqLSTMGlove: LSTM model with pre-trained GloVe embeddings
-- Seq2SeqBiLSTMImproved: Enhanced Bidirectional LSTM with optimizations
+- **Seq2SeqLSTM**: Basic LSTM-based sequence-to-sequence with attention
+- **Seq2SeqGRU**: GRU-based sequence-to-sequence with attention
+- **Seq2SeqBiLSTM**: Bidirectional LSTM encoder with attention
+- **Seq2Seq3BiLSTM**: Triple-stacked Bidirectional LSTM encoder
+- **Seq2SeqLSTMGlove**: LSTM model with pre-trained GloVe embeddings
 
-## Training Process
+## 📈 Training Process
 The training process is implemented in the `text-summarizer_training.ipynb` notebook. It includes:
 1. Data Preparation:
    - Splitting data into training and validation sets
@@ -85,7 +84,14 @@ The training process is implemented in the `text-summarizer_training.ipynb` note
 4. Loss Function:
      - Sparse Categorical Crossentropy
 
-## Evaluation Metrics
+## 🚀 Inference
+The inference process is implemented in the `text_summarizer_inference.ipynb` notebook. It allows users to input new text and generate summaries using the trained models. 
+1. Load the trained model with its weights
+2. Preprocess the input text following the same pipeline as during training
+3. Generate the summary using the model's `decode_sequence` method
+
+## 📊 Evaluation
+### Evaluation Metrics
 The models are evaluated using multiple metrics to provide a comprehensive assessment of their performance:
 - **ROUGE 1**, **ROUGE 2**, **ROUGE L** (Recall-Oriented Understudy for Gisting Evaluation) for measuring n-gram overlap
 - **WER** (Word Error Rate) Measures the minimum number of edits required to transform the predicted summary into the reference summary
@@ -93,10 +99,24 @@ The models are evaluated using multiple metrics to provide a comprehensive asses
 - **BERT Score**: Measures the similarity between predicted and reference summaries using BERT embeddings.
 - **Custom Evaluation**: Combines multiple metrics with weighted importance.
 
-## Inference
-The inference process is implemented in the `text_summarizer_inference.ipynb` notebook. It allows users to input new text and generate summaries using the trained models. 
-1. Load the trained model with its weights
-2. Preprocess the input text following the same pipeline as during training
-3. Generate the summary using the model's `decode_sequence` method
+### Evaluation Process
+After the training process, the models are evaluated on the validation set using the defined metrics. The results are saved in the `results/` directory for further analysis.
+Each model's is inferred on the validation set and the results are saved in a CSV file. The evaluation metrics are calculated and saved in a separate subdirectory for each model.
+The evaluation results include:
+- ROUGE scores
+- WER scores
+- BERT scores
+- Cosine similarity scores
+- Custom evaluation scores
+- Plots of the evaluation metrics
+
+The results are saved in the `results/` directory, organized by model name. Each subdirectory contains:
+- `csv/` directory with the evaluation results in CSV format
+- `histories/` directory with training histories files
+- `media/` which contains the plots of the evaluation metrics. It also contains the model's architecture diagram
+
+A `evaluation_metrics/` directory is generated, containing 
+the evaluation results for each evaluation metric.
+Furthermore, a `evaluation_metrics/table_report.md` file is generated, containing the evaluation results for each model and each evaluation metric. Here we can find the best model for each evaluation metric.
 
 [link](https://deepwiki.com/enricoferraiolo/text-summarizer)
