@@ -69,7 +69,7 @@ The training process is implemented in the `text-summarizer_training.ipynb` note
 1. Data Preparation:
    - Splitting data into training and validation sets
    - Tokenizing and padding sequences
-2. Hyperparameter Configuration - the user can set how many hyperparameters he wants to tune, not only the hyperparameter value itself but also set different values for each hyperparameter, then the model will be trained with all combinations of these values. You can set:
+2. Hyperparameter Configuration - the user can set how many hyperparameters they want to tune, not only the hyperparameter value itself but also set different values for each hyperparameter, then the model will be trained with all combinations of these values. You can set:
      - Embedding dimensions
      - Latent dimensions
      - Dropout rates
