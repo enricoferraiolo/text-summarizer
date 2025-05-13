@@ -2,35 +2,101 @@
 
 ## Overview
 
-This repository is an academic project developed for the Natural Language Processing course 2024/2025. It focuses on building and evaluating models for text summarization, offering a comprehensive workflow that covers both training and inference processes.
+Text-Summarizer is an academic project developed for the Natural Language Processing course 2024/2025. It focuses on building and evaluating models for text summarization, offering a comprehensive workflow that covers data preparation, training and inference processes.
 
-## Key Components
+## Key Features
+- Multiple model architectures based on LSTM and GRU with attention mechanisms
+- Data preprocessing pipeline for text cleaning and tokenization
+- Comprehensive evaluation using various metrics (ROUGE, WER, BERT Score, etc.)
+- Inference capabilities for generating summaries from new inputs
+- Visualization tools for analyzing model performance
 
-### Project Purpose
+## Project Structure
+```
+text-summarizer/
+├── architectures/        # Model architecture implementations  
+├── report/               # Documentation and analysis of methodology  
+├── results/              # Trained models and evaluation results  
+├── attention.py          # Attention mechanism implementation  
+├── requirements.txt      # Project dependencies  
+├── text-summarizer_training.ipynb   # Training workflow notebook  
+├── text_summarizer_inference.ipynb  # Inference notebook  
+└── utils.py              # Utility functions  
+```
 
-The project explores techniques in text summarization. It leverages deep learning and attention mechanisms—critical components in modern NLP—to develop models capable of automatically summarizing text.
-
-### Directory Structure
-
-- **`architectures/`**: Contains different model architectures experimented with during the project.
-- **`results/`**: Stores the trained models and their evaluation results, enabling performance tracking and comparison of different configurations.
-- **`report/`**: Includes documentation and analysis detailing the project's methodology, experiments, and findings.
-
-### Python files
-
-- **Jupyter Notebooks:**
-  - `text-summarizer_training.ipynb` – Notebook for training the models and evaluate their results.
-  - `text_summarizer_inference.ipynb` – Notebook for performing text summarization on new inputs.
-- **Python Scripts:**
-  - `utils.py` – Provides utility functions to support data processing and other tasks.
-
-### Installation
-
-1. **Clone the repository:**
+## Installation
+1. Clone the repository:
    ```bash
-   git clone https://github.com/enricoferraiolo/text-summarizer.git 
-2. **Install the requirements:**
+   git clone https://github.com/enricoferraiolo/text-summarizer.git
+   cd text-summarizer
+   ```
+2. Install the requirements:
     ```bash
     pip install -r requirements.txt
+    ```
+
+## Dataset
+The project uses the Amazon Fine Food Reviews dataset to train and evaluate summarization models. This dataset contains product reviews and summaries, making it suitable for abstractive text summarization tasks.
+The original data is processed in order to:
+- Remove duplicates
+- Drop rows with missing values
+- Filter out reviews that are too short or too long
+
+### Preprocessing Pipeline
+The preprocessing pipeline includes the following steps:
+1. Text cleaning (removing HTML tags, special characters, etc.)
+2. Tokenization (adding special tokens for start and end of sequences, separating input and output sequences, padding sequences to a fixed length)
+
+## Model Architectures
+The project implements several sequence-to-sequence architectures.
+
+### Base Architecture
+All models extend a common BaseModel abstract class that provides:
+
+- Methods for building encoder and decoder components
+- Common functionality for inference, saving, and loading models
+- Conversion between sequences and text
+
+### Implemented Models
+- Seq2SeqLSTM: Basic LSTM-based sequence-to-sequence with attention
+- Seq2SeqGRU: GRU-based sequence-to-sequence with attention
+- Seq2SeqBiLSTM: Bidirectional LSTM encoder with attention
+- Seq2Seq3BiLSTM: Triple-stacked Bidirectional LSTM encoder
+- Seq2SeqLSTMGlove: LSTM model with pre-trained GloVe embeddings
+- Seq2SeqBiLSTMImproved: Enhanced Bidirectional LSTM with optimizations
+
+## Training Process
+The training process is implemented in the `text-summarizer_training.ipynb` notebook. It includes:
+1. Data Preparation:
+   - Splitting data into training and validation sets
+   - Tokenizing and padding sequences
+2. Hyperparameter Configuration - the user can set how many hyperparameters he wants to tune, not only the hyperparameter value itself but also set different values for each hyperparameter, then the model will be trained with all combinations of these values. You can set:
+     - Embedding dimensions
+     - Latent dimensions
+     - Dropout rates
+     - Optimizer
+     - Learning rate
+     - Batch size
+     - Number of epochs
+3. Training Callbacks:
+   - Early stopping
+   - Learning Rate Scheduler for adaptive learning rate adjustment
+   - Reduce LR on plateau for optimization
+4. Loss Function:
+     - Sparse Categorical Crossentropy
+
+## Evaluation Metrics
+The models are evaluated using multiple metrics to provide a comprehensive assessment of their performance:
+- **ROUGE 1**, **ROUGE 2**, **ROUGE L** (Recall-Oriented Understudy for Gisting Evaluation) for measuring n-gram overlap
+- **WER** (Word Error Rate) Measures the minimum number of edits required to transform the predicted summary into the reference summary
+- **Cosine Similarity**: Using sentence embeddings to measure semantic similarity.
+- **BERT Score**: Measures the similarity between predicted and reference summaries using BERT embeddings.
+- **Custom Evaluation**: Combines multiple metrics with weighted importance.
+
+## Inference
+The inference process is implemented in the `text_summarizer_inference.ipynb` notebook. It allows users to input new text and generate summaries using the trained models. 
+1. Load the trained model with its weights
+2. Preprocess the input text following the same pipeline as during training
+3. Generate the summary using the model's `decode_sequence` method
 
 [link](https://deepwiki.com/enricoferraiolo/text-summarizer)
