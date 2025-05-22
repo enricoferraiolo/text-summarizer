@@ -1,9 +1,13 @@
 \section{Metriche di Valutazione}
 In questa sezione vengono analizzate le prestazioni dei modelli attraverso i grafici delle principali metriche di valutazione: ROUGE, WER, cosine similarity e BERTScore.\\
-Inoltre è stata anche utilizzata la metrica personalizzata \texttt{myevaluation}, che verrà approfondita in seguito.\\ 
+Inoltre è stata anche utilizzata la metrica personalizzata \texttt{myevaluation}, che verrà approfondita in seguito.\\
 Queste metriche sono state scelte per misurare in modo accurato la qualit\`a dei riassunti generati, confrontandoli con quelli di riferimento.\\
 Le valutazioni sono state effettuate utilizzando il dataset di test, che non \`e stato utilizzato durante l'addestramento del modello.\\
-Durante la fase di inferenza, sono stati generati 1000 riassunti a partire dai dati di test per ogni istanza di ogni classe di modelli e sono stati confrontati con i riassunti di riferimento.\\
+
+\subsection{Valutazione per Permutazione}
+Per ogni permutazione delle architetture e dei relativi iperparametri,
+è stato seguito un processo di valutazione strutturato al termine della
+fase di addestramento. Di seguito sono riportate le metriche di valutazione utilizzate.
 
 \subsection{ROUGE (Recall-Oriented Understudy for Gisting Evaluation)}
 Sono state calcolate tre varianti di ROUGE:
@@ -11,7 +15,7 @@ Sono state calcolate tre varianti di ROUGE:
     \item ROUGE-1: confronta unigrammi tra il riassunto generato e quello di riferimento
     \item ROUGE-2: considera bigrammi per valutare la similarit\`a tra i due testi
     \item ROUGE-L: confronta la sottosequenza pi\`u lunga comune tra i due testi
-\end{itemize}    
+\end{itemize}
 
 I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in termini di ROUGE-1, ROUGE-2 e ROUGE-L per i quattro modelli. Il modello Seq2SeqBiLSTM mostra un miglioramento nei punteggi ROUGE rispetto al Seq2SeqLSTM, Seq2SeqLSTMGlove, Seq2Seq3BiLSTM e Seq2SeqGRU, indicando una maggiore capacit\`a di catturare similarit\`a lessicali.
 \begin{figure}[H]
@@ -111,7 +115,7 @@ La Figura \ref{fig:bert_score_comparison} mostra i valori di BERTScore per i div
     \bertsubimg{0.45}{Seq2Seq3BiLSTM}{bert_seq2seq_3bilstm}
     \hfill
     \bertsubimg{0.45}{Seq2SeqLSTMGlove}{bert_seq2seq_lstm_glove}
-    
+
     \caption{Confronto del BERTScore tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove.}
     \label{fig:bert_score_comparison}
 \end{figure}
@@ -129,11 +133,11 @@ Dove:
     \item $keyword\_overlap$ \`e la percentuale di parole chiave presenti nel riassunto generato rispetto a quelle nel riassunto originale
     \item $bert\_score$ \`e il punteggio BERTScore tra il riassunto generato e quello originale
     \item $W_{cs\_PS\_OS}$, $W_{keyword\_overlap}$ e $W_{bert\_score}$ sono i pesi associati a ciascun fattore
-    \begin{itemize}
-        \item $W_{cs\_PS\_OS} = 0.07$
-        \item $W_{keyword\_overlap} = 0.03$
-        \item $W_{bert\_score} = 0.9$
-    \end{itemize}
+          \begin{itemize}
+              \item $W_{cs\_PS\_OS} = 0.07$
+              \item $W_{keyword\_overlap} = 0.03$
+              \item $W_{bert\_score} = 0.9$
+          \end{itemize}
 \end{itemize}
 
 La Figura \ref{fig:myevaluation_comparison} mostra i risultati della metrica \texttt{myevaluation} per i diversi modelli.\\
@@ -165,4 +169,4 @@ Possiamo subito notare che il modello Seq2SeqBiLSTM ha ottenuto i risultati migl
     \caption{Comparazione delle istanze dei modelli}
     \label{fig:models_comparison_instances}
 \end{figure}
-  
+
