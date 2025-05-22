@@ -18,6 +18,40 @@ L'addestramento dei modelli, derivati dalla classe \texttt{BaseModel}, è stato 
 Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
 Dopodiché sono passato alla fase effettiva di training dei modelli, utilizzando e la loss function \texttt{Sparse Categorical Crossentropy}, utile nei task di summarization.\\
 
+\subsection{Iperparametri}
+Per ogni classe di modello, il training è stato eseguito più volte, ciascuna con una combinazione diversa di iperparametri.\\
+Queste combinazioni vengono generate tramite una \textit{hyperparameter\_grid}
+implementata nella funzione \texttt{create\_hyperparameter\_grid}, che restituisce tutte le
+permutazioni possibili tra i valori forniti per:
+\begin{itemize}
+    \item \texttt{embedding\_dim}: dimensione dell'embedding delle parole
+    \item \texttt{hidden\_dim}: dimensione dello stato nascosto dell'encoder e del decoder
+    \item \texttt{encoder\_dropout}: tasso di dropout dell'encoder
+    \item \texttt{encoder\_recurrent\_dropout}: tasso di dropout per gli stati ricorrenti dell'encoder
+    \item \texttt{decoder\_dropout}: tasso di dropout del decoder
+    \item \texttt{decoder\_recurrent\_dropout}: tasso di dropout per gli stati ricorrenti del decoder
+    \item \texttt{optimizer}: ottimizzatore da utilizzare durante l'addestramento
+    \item \texttt{learning\_rate}: tasso di apprendimento
+    \item \texttt{batch\_size}: dimensione del batch durante l'addestramento
+    \item \texttt{epochs}: numero di epoche per l'addestramento
+\end{itemize}
+
+Per ogni \textbf{permutazione} di iperparametri, viene eseguito il seguente processo di allenamento:
+\begin{enumerate}
+    \item \textbf{Preparazione dei dati}: viene eseguita la parte di caricamento e preprocessing dei dati
+    \item \textbf{Istanza del modello}: viene istanziata la classe del modello corrento con gli iperparametri selezionati
+    \item \textbf{Compilazione del modello}: viene compilato il modello ed eseguita la fase di training con diverse callback, di cui parleremo nella sezione successiva
+    \item \textbf{Training del modello}: viene eseguito il training del modello 
+    \item \textbf{Salvataggio dei risultati}:
+    \begin{itemize}
+        \item \textit{Pesi del modello} (\texttt{result/\{model\_class\}/weights/})
+        \item \textit{Architettura del modello} (\texttt{result/\{model\_class\}/media/architectures/})
+        \item \textit{Grafico dell'andamento della loss} (\texttt{result/\{model\_class\}/media/graphs/})
+        \item \textit{Cronologia dell'allenamento} (\texttt{result/\{model\_class\}/histories/})
+        \item \textit{Riassunti generati}: al termine del training vengono generati i riassunti (dal validation set) e salvati in un file csv (\texttt{result/\{model\_class\}/csv/})
+    \end{itemize}
+\end{enumerate}
+
 \subsubsection{Callbacks}
 Durante il training ho utilizzato anche le seguenti funzioni di callback:
 \begin{itemize}
