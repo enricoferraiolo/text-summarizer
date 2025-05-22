@@ -370,8 +370,8 @@ def evaluate_bert_score(df_summaries):
 
 def generate_summaries(
     model_instance,
-    x_training_padded,
-    y_training_padded,
+    x_validation_padded,
+    y_validation_padded,
     max_text_len,
     n_summaries,
     save_path,
@@ -389,18 +389,18 @@ def generate_summaries(
         for i in range(0, n_summaries):
             summaries.append(
                 model_instance.decode_sequence(
-                    x_training_padded[i].reshape(1, max_text_len)
+                    x_validation_padded[i].reshape(1, max_text_len)
                 )
             )
 
         df_summaries = pd.DataFrame(
             {
                 "original_text": [
-                    model_instance.seq2text(x_training_padded[i])
+                    model_instance.seq2text(x_validation_padded[i])
                     for i in range(0, n_summaries)
                 ],
                 "original_summary": [
-                    model_instance.seq2summary(y_training_padded[i])
+                    model_instance.seq2summary(y_validation_padded[i])
                     for i in range(0, n_summaries)
                 ],
                 "predicted_summary": summaries,
