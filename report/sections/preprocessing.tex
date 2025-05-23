@@ -23,7 +23,7 @@ Sono stati applicati i seguenti step di preprocessing:
         Questo processo vuole standardizzare e garantire coerenza in tutto il testo e aiuta il modello a catturare meglio le relazioni semantiche, eliminando variazioni non necessarie della stessa espressione.
     \end{itemize}
 
-    \item \textbf{Rimozione degli apostrofi possessivi ('s)}
+    \item \textbf{Rimozione del genitivo sassone ('s)}
     \begin{itemize}
         \item La forma possessiva in inglese non altera sostanzialmente il significato della frase ai fini del riassunto.\\ 
         La sua rimozione semplifica il testo e riduce ulteriormente la dimensione del vocabolario, permettendo al modello di concentrarsi sui concetti principali.
@@ -32,13 +32,13 @@ Sono stati applicati i seguenti step di preprocessing:
     \item \textbf{Eliminazione del testo tra parentesi}
     \begin{itemize}
         \item Il testo tra parentesi spesso contiene informazioni supplementari che non sono generalmente essenziali per il riassunto.\\ 
-        La loro rimozione aiuta a mantenere il focus sulle informazioni principali della recensione.
+        La rimozione aiuta a mantenere il focus sulle informazioni principali della recensione.
     \end{itemize}
 
     \item \textbf{Rimozione della punteggiatura e caratteri speciali}
     \begin{itemize}
         \item La punteggiatura e i caratteri speciali, pur essendo importanti per la leggibilità umana, possono introdurre rumore nell'addestramento del modello.\\
-        La loro rimozione semplifica il testo mantenendo intatto il contenuto semantico essenziale per la generazione del riassunto.
+        La rimozione semplifica il testo mantenendo intatto il contenuto semantico essenziale per la generazione del riassunto.
     \end{itemize}
 
     \item \textbf{Eliminazione delle stopwords}
@@ -68,7 +68,7 @@ Questi limiti sono stati determinati attraverso un'analisi statistica della dist
     \caption{A sinistra la distribuzione delle lunghezze delle recensioni, a destra la distribuzione delle lunghezze dei riassunti}
     \label{fig:dataset_length_distribuition}
 \end{figure}
-Infatti, come si puè notare dai due grafici, la maggior parte delle recensioni e dei riassunti ha lunghezze inferiori ai limiti stabiliti, quindi questi vincoli permettono di mantenere la maggior parte dei dati del dataset.
+Infatti, come si può notare dai due grafici, la maggior parte delle recensioni e dei riassunti ha lunghezze inferiori ai limiti stabiliti, quindi questi vincoli permettono di mantenere la maggior parte dei dati del dataset.
 
 \subsection{Tokenizzazione e Token Speciali}
 Per preparare i dati per i modelli ho aggiunto i token speciali \texttt{"sostok"} e \texttt{"eostok"} per indicare l'inizio e la fine di una sequenza, in modo da facilitare la tokenizzazione e la fase di addestramento.\\
