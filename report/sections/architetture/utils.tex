@@ -9,25 +9,36 @@ Questo modello ha ottenuto i seguenti risultati al termine dell'addestramento:
 \end{itemize}
 }
 
+\definecolor{lightgray}{gray}{0.95}
+
 \newcommand{\training}[8]{
 \subsubsection{Training}
 L'addestramento del modello è stato effettuato attraverso la seguente configurazione:
-\begin{itemize}
-    \item Ottimizzatore: #1
-    \item Learning rate: #2
-    \item Embedding dimension: #3
-    \item Latent dimension: #4
-    \item Decoder dropout: #5
-    \item Decoder recurrent dropout: #6
-    \item Encoder dropout: #7
-    \item Encoder recurrent dropout: #8
-    \trainingcontinued
-}
-
-\newcommand{\trainingcontinued}[2]{
-    \item Batch size: #1
-    \item Epochs: #2
-\end{itemize}
+\begin{table}[ht]
+    \centering
+    \rowcolors{2}{lightgray}{white}
+    \begin{tabular}{@{} >{\bfseries}l c @{}}
+      \toprule
+      \textbf{Parametro} & \textbf{Valore} \\
+      \midrule
+      Ottimizzatore            & #1 \\
+      Learning rate            & #2 \\
+      Embedding dimension      & #3 \\
+      Latent dimension         & #4 \\
+      Decoder dropout          & #5 \\
+      Decoder recurrent dropout& #6 \\
+      Encoder dropout          & #7 \\
+      Encoder recurrent dropout& #8 \\
+      \trainingcontinued
+      }
+      
+      \newcommand{\trainingcontinued}[2]{
+        Batch size               & #1 \\
+        Epochs                   & #2\\
+        \bottomrule
+      \end{tabular}
+      \caption{Configurazione dell'addestramento del modello}
+  \end{table}
 
 \lossimg
 }
@@ -38,7 +49,7 @@ Possiamo verificare l'andamento delle loss durante l'addestramento nella figura 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{media/#1_best_lossplot.png}
-    \caption{Andamento delle loss durante l'addestramento}
+    \caption{Andamento della \textit{loss} e \textit{validation loss} durante l'addestramento}
     \label{fig:#2}
 
 \end{figure}
