@@ -39,7 +39,7 @@ permutazioni possibili tra i valori forniti per:
 Per ogni \textbf{permutazione} di iperparametri, viene eseguito il seguente processo di allenamento:
 \begin{enumerate}
     \item \textbf{Preparazione dei dati}: viene eseguita la parte di caricamento e preprocessing dei dati
-    \item \textbf{Istanza del modello}: viene istanziata la classe del modello corrento con gli iperparametri selezionati
+    \item \textbf{Istanza del modello}: viene istanziata la classe del modello corrente con gli iperparametri selezionati
     \item \textbf{Compilazione del modello}: viene compilato il modello ed eseguita la fase di training con diverse callback, di cui parleremo nella sezione successiva
     \item \textbf{Training del modello}: viene eseguito il training del modello 
     \item \textbf{Salvataggio dei risultati}:
@@ -56,12 +56,12 @@ Per ogni \textbf{permutazione} di iperparametri, viene eseguito il seguente proc
 Durante il training ho utilizzato anche le seguenti funzioni di callback:
 \begin{itemize}
     \item \textbf{Early Stopping}: monitora una metrica, in questo caso la validation loss, e interrompe l'addestramento se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a prevenire l'overfitting e a risparmiare tempo di calcolo.
-    \item \textbf{Learning Rate Scheduler}: regola il tasso di apprendiento durante il training secondo una strategia, nel mio caso ho utilizzato la \texttt{Step Decay}, che riduce il learning rate di un fattore fisso ogni tot epoche.
+    \item \textbf{Learning Rate Scheduler}: regola il tasso di apprendimento durante il training secondo una strategia, nel mio caso ho utilizzato la \texttt{Step Decay}, che riduce il learning rate di un fattore fisso ogni tot epoche.
     \item \textbf{Reduce LR on Plateau}: monitora una metrica, in questo caso la validation loss, e riduce il learning rate se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a ottimizzare il processo di addestramento e a trovare un tasso di apprendimento più efficace.
 \end{itemize}
 
 \subsection{Architetture Sperimentate}
-Sono state sperimentante diverse architetture di modelli di summarization, ognuna con caratteristiche e parametri diversi.\\
+Sono state sperimentate diverse architetture di modelli di summarization, ognuna con caratteristiche e parametri diversi.\\
 Le due categorie principali di modelli implementati sono:
 \begin{itemize}
     \item \textbf{LSTM}: modelli basati su layer LSTM per encoder e decoder.

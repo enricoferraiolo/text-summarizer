@@ -1,5 +1,5 @@
 \section{Metriche di Valutazione}
-In questa sezione vengono analizzate le prestazioni dei modelli attraverso i grafici delle principali metriche di valutazione: ROUGE, WER, cosine similarity e BERTScore.\\
+In questa sezione vengono analizzate le prestazioni dei modelli attraverso i grafici delle principali metriche di valutazione: ROUGE \cite{lin-2004-rouge}, WER \cite{roy2021semanticwerunifiedmetricevaluation}, cosine similarity e BERTScore \cite{zhang2020bertscoreevaluatingtextgeneration}.\\
 Inoltre è stata anche utilizzata la metrica personalizzata \texttt{myevaluation}, che verrà approfondita in seguito.\\
 Queste metriche sono state scelte per misurare in modo accurato la qualit\`a dei riassunti generati, confrontandoli con quelli di riferimento.\\
 Le valutazioni sono state effettuate utilizzando il dataset di test, che non \`e stato utilizzato durante l'addestramento del modello.\\
@@ -164,7 +164,7 @@ Il modello Seq2SeqBiLSTM ottiene i punteggi pi\`u alti, suggerendo una qualit\`a
 
 \subsection{Confronto tra le Architetture}
 Di seguito viene riportata una tabella comparativa (figura \ref{fig:models_comparison_instances}) tra i vari modelli implementati, con i rispettivi risultati ottenuti al termine dell'addestramento.\\
-Per ogni classe di modelli sono stati effettuati numerosi tentativi e test, riportati in seguito in una tabella comparativa le varie istanze di configurazione e i risultati ottenuti.\\
+Per ogni classe di modello sono stati effettuati numerosi tentativi e test, riportati in seguito in una tabella comparativa le varie istanze di configurazione e i risultati ottenuti.\\
 Possiamo subito notare che il modello Seq2SeqBiLSTM ha ottenuto i risultati migliori in quasi tutte le metriche.
 \begin{figure}[H]
     \centering
