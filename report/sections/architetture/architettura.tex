@@ -1,7 +1,7 @@
 \input{sections/architetture/utils.tex}
 
 \section{Architettura dei Modelli}
-Per svolgere questo progetto ho deciso di effettuare un confronto tra diversi modelli, implementando architetture Seq2Seq con LSTM e GRU.\\
+Per svolgere questo progetto ho deciso di effettuare un confronto tra diversi modelli, implementando architetture \textbf{Sequence to Sequence} con \textbf{LSTM} e \textbf{GRU}.\\
 L'implementazione dei modelli è stata effettuata attraverso una classe astratta \texttt{BaseModel} e la successiva creazioni e implementazione di classi derivate.\\
 Questo permette di definire un'interfaccia comune per tutti i modelli di summarization e di estendere facilmente l'architettura in futuro.\\
 
@@ -10,19 +10,19 @@ La classe \texttt{BaseModel} fornisce l'interfaccia base per tutti i modelli di 
 \begin{itemize}
     \item Metodi astratti per costruire encoder e decoder.
     \item Funzionalità per il salvataggio, caricamento e inferenza del modello.
-    \item Conversione tra sequenze e testo tramite i tokenizer.
+    \item Conversione tra sequenze di token e testo tramite i tokenizer.
 \end{itemize}
 
 \subsection{Training}
 L'addestramento dei modelli, derivati dalla classe \texttt{BaseModel}, è stato effettuato utilizzando il dataset preprocessato.\\
 Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
-Dopodiché sono passato alla fase effettiva di training dei modelli, utilizzando e la loss function \texttt{Sparse Categorical Crossentropy}, utile nei task di summarization.\\
+Dopodiché sono passato alla fase effettiva di training dei modelli, utilizzando e la funzione loss \texttt{Sparse Categorical Crossentropy}, utile nei task di summarization.\\
 
 \subsection{Iperparametri}
 Per ogni classe di modello, il training è stato eseguito più volte, ciascuna con una combinazione diversa di iperparametri.\\
 Queste combinazioni vengono generate tramite una \textit{hyperparameter\_grid}
 implementata nella funzione \texttt{create\_hyperparameter\_grid}, che restituisce tutte le
-permutazioni possibili tra i valori forniti per:
+permutazioni possibili tra i valori forniti per i seguenti parametri:
 \begin{itemize}
     \item \texttt{embedding\_dim}: dimensione dell'embedding delle parole
     \item \texttt{hidden\_dim}: dimensione dello stato nascosto dell'encoder e del decoder
@@ -40,25 +40,25 @@ Per ogni \textbf{permutazione} di iperparametri, viene eseguito il seguente proc
 \begin{enumerate}
     \item \textbf{Preparazione dei dati}: viene eseguita la parte di caricamento e preprocessing dei dati
     \item \textbf{Istanza del modello}: viene istanziata la classe del modello corrento con gli iperparametri selezionati
-    \item \textbf{Compilazione del modello}: viene compilato il modello ed eseguita la fase di training con diverse callback, di cui parleremo nella sezione successiva
-    \item \textbf{Training del modello}: viene eseguito il training del modello 
+    \item \textbf{Training del modello}: viene eseguito il training del modello con alcune callback, di cui verrà parlato in seguito
     \item \textbf{Salvataggio dei risultati}:
-    \begin{itemize}
-        \item \textit{Pesi del modello} (\texttt{result/\{model\_class\}/weights/})
-        \item \textit{Architettura del modello} (\texttt{result/\{model\_class\}/media/architectures/})
-        \item \textit{Grafico dell'andamento della loss} (\texttt{result/\{model\_class\}/media/graphs/})
-        \item \textit{Cronologia dell'allenamento} (\texttt{result/\{model\_class\}/histories/})
-        \item \textit{Riassunti generati}: al termine del training vengono generati i riassunti (dal validation set) e salvati in un file csv (\texttt{result/\{model\_class\}/csv/})
-    \end{itemize}
+          \begin{itemize}
+              \item \textit{Pesi del modello} (\texttt{result/\{model\_class\}/weights/})
+              \item \textit{Architettura del modello} (\texttt{result/\{model\_class\}/media/architectures/})
+              \item \textit{Grafico dell'andamento della loss} (\texttt{result/\{model\_class\}/media/graphs/})
+              \item \textit{Cronologia dell'allenamento} (\texttt{result/\{model\_class\}/histories/})
+              \item \textit{Riassunti generati}: al termine del training vengono generati i riassunti, partendo da recensioni presenti nel validation set, e salvati in un file csv (\texttt{result/\{model\_class\}/csv/})
+          \end{itemize}
 \end{enumerate}
 
-\subsubsection{Callbacks}
+\subsubsection{Callback}
 Durante il training ho utilizzato anche le seguenti funzioni di callback:
 \begin{itemize}
     \item \textbf{Early Stopping}: monitora una metrica, in questo caso la validation loss, e interrompe l'addestramento se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a prevenire l'overfitting e a risparmiare tempo di calcolo.
     \item \textbf{Learning Rate Scheduler}: regola il tasso di apprendiento durante il training secondo una strategia, nel mio caso ho utilizzato la \texttt{Step Decay}, che riduce il learning rate di un fattore fisso ogni tot epoche.
     \item \textbf{Reduce LR on Plateau}: monitora una metrica, in questo caso la validation loss, e riduce il learning rate se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a ottimizzare il processo di addestramento e a trovare un tasso di apprendimento più efficace.
 \end{itemize}
+In questo modo sono riuscito a ottenere i risultati migliori per ogni modello, aggiustando i suoi iperparametrie e provando le diverse combinazioni.
 
 \subsection{Architetture Sperimentate}
 Sono state sperimentante diverse architetture di modelli di summarization, ognuna con caratteristiche e parametri diversi.\\
@@ -67,17 +67,17 @@ Le due categorie principali di modelli implementati sono:
     \item \textbf{LSTM}: modelli basati su layer LSTM per encoder e decoder.
     \item \textbf{GRU}: modelli basati su layer GRU per encoder e decoder.
 \end{itemize}
-Tali architetture sono basate sulle RNN (Recurrent Neural Networks) e sono state scelte per la loro efficacia nei task di text-summarization, poiché 
-gestiscono le dipendenze tra le parole su sequenze di testo.\\ 
+Tali architetture sono basate sulle RNN (Recurrent Neural Networks) e sono state scelte per la loro efficacia nei task di text-summarization, poiché
+gestiscono le dipendenze tra le parole su sequenze di testo.\\
 \begin{itemize}
-    \item \textbf{LSTM}: Long Short-Term Memory, è una variante delle RNN che risolve il problema del vanishing gradient, grazie alla presenza di un meccanismo di memoria a lungo termine.
-    Tale meccanismo di gating permette di memorizzare informazioni importanti e scartare quelle meno rilevanti.
+    \item \textbf{LSTM}: Long Short-Term Memory, è una variante delle RNN che risolve il problema della scomparsa del gradiente, grazie alla presenza di un meccanismo di memoria a lungo termine.
+          Tale meccanismo di gating permette di memorizzare informazioni importanti e scartare quelle meno rilevanti.
     \item \textbf{GRU}: Gated Recurrent Unit, è una variante più semplice delle LSTM, con meno parametri e meno complessità computazionale.
-    Anche in questo caso, il meccanismo di gating permette di memorizzare informazioni importanti e scartare quelle meno rilevanti.
+          Anche in questo caso, il meccanismo di gating permette di memorizzare informazioni importanti e scartare quelle meno rilevanti.
 \end{itemize}
 
 Al fine di rendere più scorrevole la lettura, per ogni classe vengono riportati solamente i migliori risultati ottenuti durante l'addestramento con i migliori parametri e le migliori configurazioni trovate (basate sul \texttt{BERTScore}, di cui verrà parlato in seguito), sebbene
-siano stati effettuati numerosi tentativi e test riportati in seguito in una tabella comparativa.\\
+siano stati effettuati numerosi tentativi e test riportati nelle prossime sezioni in una tabella comparativa.\\
 
 
 \input{sections/architetture/Seq2SeqLSTM.tex}

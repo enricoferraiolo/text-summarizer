@@ -1,73 +1,83 @@
-\newcommand{\risultati}[4]{
-\subsubsection{Risultati}
-Questo modello ha ottenuto i seguenti risultati al termine dell'addestramento:
-\begin{itemize}
-    \item \textbf{Loss}: #1
-    \item \textbf{Validation loss}: #2
-    \item \textbf{Accuracy}: #3
-    \item \textbf{Validation Accuracy}: #4
-\end{itemize}
-}
-
 \definecolor{lightgray}{gray}{0.95}
 
+\newcommand{\risultati}[4]{
+  \subsubsection{Risultati}
+  Questo modello ha ottenuto i seguenti risultati al termine dell'addestramento:
+  \begin{table}[H]
+  \centering
+  \rowcolors{2}{lightgray}{white}
+  \begin{tabular}{@{} >{\bfseries}l c @{}}
+    \toprule
+    \textbf{Metrica}    & \textbf{Valore} \\
+    \midrule
+    Loss                & #1              \\
+    Validation Loss     & #2              \\
+    Accuracy            & #3              \\
+    Validation Accuracy & #4              \\
+    \bottomrule
+  \end{tabular}
+  \caption{Risultati del modello alla fine dell'addestramento}
+  \label{tab:risultati}
+  \end{table}
+}
+
 \newcommand{\training}[8]{
-\subsubsection{Training}
-L'addestramento del modello è stato effettuato attraverso la seguente configurazione:
-\begin{table}[ht]
+  \subsubsection{Training}
+  L'addestramento del modello è stato effettuato attraverso la seguente configurazione:
+  \begin{table}[ht]
     \centering
     \rowcolors{2}{lightgray}{white}
     \begin{tabular}{@{} >{\bfseries}l c @{}}
       \toprule
-      \textbf{Parametro} & \textbf{Valore} \\
+      \textbf{Parametro}        & \textbf{Valore} \\
       \midrule
-      Ottimizzatore            & #1 \\
-      Learning rate            & #2 \\
-      Embedding dimension      & #3 \\
-      Latent dimension         & #4 \\
-      Decoder dropout          & #5 \\
-      Decoder recurrent dropout& #6 \\
-      Encoder dropout          & #7 \\
-      Encoder recurrent dropout& #8 \\
+      Ottimizzatore             & #1              \\
+      Learning rate             & #2              \\
+      Dimensione embedding       & #3              \\
+      Dimensione latente          & #4              \\
+      Decoder dropout           & #5              \\
+      Decoder recurrent dropout & #6              \\
+      Encoder dropout           & #7              \\
+      Encoder recurrent dropout & #8              \\
       \trainingcontinued
       }
-      
+
       \newcommand{\trainingcontinued}[2]{
-        Batch size               & #1 \\
-        Epochs                   & #2\\
-        \bottomrule
-      \end{tabular}
-      \caption{Configurazione dell'addestramento del modello}
+      Batch size                & #1              \\
+      Epoche                    & #2              \\
+      \bottomrule
+    \end{tabular}
+    \caption{Configurazione dell'addestramento del modello}
   \end{table}
 
-\lossimg
+  \lossimg
 }
 
 \newcommand{\lossimg}[2]{
-Possiamo verificare l'andamento delle loss durante l'addestramento nella figura \ref{fig:#2}.
+  Possiamo verificare l'andamento delle loss durante l'addestramento nella figura \ref{fig:#2}.
 
-\begin{figure}[H]
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{media/#1_best_lossplot.png}
     \caption{Andamento della \textit{loss} e \textit{validation loss} durante l'addestramento}
     \label{fig:#2}
 
-\end{figure}
+  \end{figure}
 }
 
 \newcommand{\architecture}[3]{
-    \subsubsection{Architettura}
-    L'architettura utilizzata è la seguente:
-    \archimg{#1}{#2}{#3}
+  \subsubsection{Architettura}
+  L'architettura utilizzata è la seguente:
+  \archimg{#1}{#2}{#3}
 }
 
 \newcommand{\archimg}[3]{
-\begin{figure}[H]
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{media/#1_best_architecture.png}
     \caption{Architettura del modello #2}
     \label{fig:#3}
-\end{figure}
+  \end{figure}
 }
 
 \newcommand{\rougeonesubimg}[3]{
@@ -112,7 +122,7 @@ Possiamo verificare l'andamento delle loss durante l'addestramento nella figura 
     \includegraphics[width=\textwidth]{media/#2_best_cosine_similarity_scores.png}
     \caption{Cosine similarity #2}
     \label{fig:#3}
-    \end{subfigure}
+  \end{subfigure}
 }
 
 \newcommand{\bertsubimg}[3]{
@@ -121,7 +131,7 @@ Possiamo verificare l'andamento delle loss durante l'addestramento nella figura 
     \includegraphics[width=\textwidth]{media/#2_best_bert_scores.png}
     \caption{BERTScore #2}
     \label{fig:#3}
-    \end{subfigure}
+  \end{subfigure}
 }
 
 \newcommand{\myevalsubimg}[3]{
@@ -130,5 +140,5 @@ Possiamo verificare l'andamento delle loss durante l'addestramento nella figura 
     \includegraphics[width=\textwidth]{media/#2_best_myevaluation_scores.png}
     \caption{My Evaluation #2}
     \label{fig:#3}
-    \end{subfigure}
+  \end{subfigure}
 }
