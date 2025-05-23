@@ -17,7 +17,7 @@ Sono state calcolate tre varianti di ROUGE:
     \item ROUGE-L: confronta la sottosequenza pi\`u lunga comune tra i due testi
 \end{itemize}
 
-I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in termini di ROUGE-1, ROUGE-2 e ROUGE-L per i quattro modelli. Il modello Seq2SeqBiLSTM mostra un miglioramento nei punteggi ROUGE rispetto al Seq2SeqLSTM, Seq2SeqLSTMGlove, Seq2Seq3BiLSTM e Seq2SeqGRU, indicando una maggiore capacit\`a di catturare similarit\`a lessicali.
+I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in termini di ROUGE-1, ROUGE-2 e ROUGE-L per i quattro modelli. Il modello Seq2SeqBiLSTM mostra un miglioramento nei punteggi ROUGE rispetto al Seq2SeqLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU, indicando una maggiore capacit\`a di catturare similarit\`a lessicali.
 \begin{figure}[H]
     \centering
     \rougeonesubimg{0.45}{Seq2SeqLSTM}{rouge1_seq2seq_lstm}
@@ -26,8 +26,8 @@ I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in 
     \hfill
     \rougeonesubimg{0.45}{Seq2Seq3BiLSTM}{rouge1_seq2seq_3bilstm}
     \hfill
-    \rougeonesubimg{0.45}{Seq2SeqLSTMGlove}{rouge1_seq2seq_lstm_glove}
-    \hfill
+    %\rougeonesubimg{0.45}{Seq2SeqLSTMGlove}{rouge1_seq2seq_lstm_glove}
+    %\hfill
     \rougeonesubimg{0.45}{Seq2SeqGRU}{rouge1_seq2seq_gru}
     \hfill
 
@@ -37,8 +37,8 @@ I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in 
     \hfill
     \rougetwosubimg{0.45}{Seq2Seq3BiLSTM}{rouge2_seq2seq_3bilstm}
     \hfill
-    \rougetwosubimg{0.45}{Seq2SeqLSTMGlove}{rouge2_seq2seq_lstm_glove}
-    \hfill
+    %\rougetwosubimg{0.45}{Seq2SeqLSTMGlove}{rouge2_seq2seq_lstm_glove}
+    %\hfill
     \rougetwosubimg{0.45}{Seq2SeqGRU}{rouge2_seq2seq_gru}
     \hfill
 
@@ -48,12 +48,12 @@ I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in 
     \hfill
     \rougelubimg{0.45}{Seq2Seq3BiLSTM}{rougeL_seq2seq_3bilstm}
     \hfill
-    \rougelubimg{0.45}{Seq2SeqLSTMGlove}{rougeL_seq2seq_lstm_glove}
-    \hfill
+    %\rougelubimg{0.45}{Seq2SeqLSTMGlove}{rougeL_seq2seq_lstm_glove}
+    %\hfill
     \rougelubimg{0.45}{Seq2SeqGRU}{rougeL_seq2seq_gru}
     \hfill
 
-    \caption{Confronto dei punteggi ROUGE tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove e Seq2SeqGRU.}
+    \caption{Confronto dei punteggi ROUGE tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
     \label{fig:rouge_comparison}
 \end{figure}
 
@@ -71,11 +71,11 @@ Il confronto del WER, mostrato nella Figura \ref{fig:wer_comparison}, evidenzia 
     \hfill
     \wersubimg{0.45}{Seq2Seq3BiLSTM}{wer_seq2seq_3bilstm}
     \hfill
-    \wersubimg{0.45}{Seq2SeqLSTMGlove}{wer_seq2seq_lstm_glove}
-    \hfill
+    %\wersubimg{0.45}{Seq2SeqLSTMGlove}{wer_seq2seq_lstm_glove}
+    %\hfill
     \wersubimg{0.45}{Seq2SeqGRU}{wer_seq2seq_gru}
 
-    \caption{Confronto del Word Error Rate tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove e Seq2SeqGRU.}
+    \caption{Confronto del Word Error Rate tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
     \label{fig:wer_comparison}
 \end{figure}
 
@@ -93,11 +93,11 @@ La Figura \ref{fig:cosine_similarity_comparison} confronta i valori di similarit
     \hfill
     \cssubimg{0.45}{Seq2Seq3BiLSTM}{cs_seq2seq_3bilstm}
     \hfill
-    \cssubimg{0.45}{Seq2SeqLSTMGlove}{cs_seq2seq_lstm_glove}
-    \hfill
+    %\cssubimg{0.45}{Seq2SeqLSTMGlove}{cs_seq2seq_lstm_glove}
+    %\hfill
     \cssubimg{0.45}{Seq2SeqGRU}{cs_seq2seq_gru}
 
-    \caption{Confronto della cosine similarity tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove e Seq2SeqGRU.}
+    \caption{Confronto della cosine similarity tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
     \label{fig:cosine_similarity_comparison}
 \end{figure}
 
@@ -114,9 +114,12 @@ La Figura \ref{fig:bert_score_comparison} mostra i valori di BERTScore per i div
     \hfill
     \bertsubimg{0.45}{Seq2Seq3BiLSTM}{bert_seq2seq_3bilstm}
     \hfill
-    \bertsubimg{0.45}{Seq2SeqLSTMGlove}{bert_seq2seq_lstm_glove}
+    %\bertsubimg{0.45}{Seq2SeqLSTMGlove}{bert_seq2seq_lstm_glove}
+    %\hfill
+    \bertsubimg{0.45}{Seq2SeqGRU}{bert_seq2seq_gru}
+    \hfill
 
-    \caption{Confronto del BERTScore tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove.}
+    \caption{Confronto del BERTScore tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
     \label{fig:bert_score_comparison}
 \end{figure}
 
@@ -150,12 +153,12 @@ Il modello Seq2SeqBiLSTM ottiene i punteggi pi\`u alti, suggerendo una qualit\`a
     \hfill
     \myevalsubimg{0.45}{Seq2Seq3BiLSTM}{myeval_seq2seq_3bilstm}
     \hfill
-    \myevalsubimg{0.45}{Seq2SeqLSTMGlove}{myeval_seq2seq_lstm_glove}
-    \hfill
+    %\myevalsubimg{0.45}{Seq2SeqLSTMGlove}{myeval_seq2seq_lstm_glove}
+    %\hfill
     \myevalsubimg{0.45}{Seq2SeqGRU}{myeval_seq2seq_gru}
     \hfill
 
-    \caption{Confronto della metrica \texttt{myevaluation} tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, Seq2SeqLSTMGlove e Seq2SeqGRU.}
+    \caption{Confronto della metrica \texttt{myevaluation} tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
     \label{fig:myevaluation_comparison}
 \end{figure}
 
