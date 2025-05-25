@@ -1,84 +1,82 @@
 \input{sections/architetture/utils.tex}
 
-\section{Architettura dei Modelli}
-Per svolgere questo progetto ho deciso di effettuare un confronto tra diversi modelli, implementando architetture \textbf{Sequence to Sequence} con \textbf{LSTM} e \textbf{GRU}.\\
-L'implementazione dei modelli è stata effettuata attraverso una classe astratta \texttt{BaseModel} e la successiva creazioni e implementazione di classi derivate.\\
-Questo permette di definire un'interfaccia comune per tutti i modelli di summarization e di estendere facilmente l'architettura in futuro.\\
+\section{Model Architectures}
+For this project, I chose to compare different models by implementing various \textbf{Sequence-to-Sequence} architectures using both \textbf{LSTM} and \textbf{GRU} layers.\\
+The implementation was carried out using an abstract class called \texttt{BaseModel}, from which all specific model classes are derived.\\
+This approach defines a common interface for all summarization models and allows for future architectural extensions with ease.\\
 
-\subsection{Classe Base Astratta}
-La classe \texttt{BaseModel} fornisce l'interfaccia base per tutti i modelli di summarization:
+\subsection{Abstract Base Class}
+The \texttt{BaseModel} class provides the base interface for all summarization models:
 \begin{itemize}
-    \item Metodi astratti per costruire encoder e decoder.
-    \item Funzionalità per il salvataggio, caricamento e inferenza del modello.
-    \item Conversione tra sequenze di token e testo tramite i tokenizer.
+    \item Abstract methods for building the encoder and decoder.
+    \item Functionality for saving, loading, and performing inference with the model.
+    \item Token-to-text and text-to-token conversion using the appropriate tokenizers.
 \end{itemize}
 
 \subsection{Training}
-L'addestramento dei modelli, derivati dalla classe \texttt{BaseModel}, è stato effettuato utilizzando il dataset preprocessato.\\
-Prima di iniziare l'addestramento, il dataset è stato suddiviso in training set e validation set, con una proporzione del 90\% e 10\% rispettivamente.\\
-Dopodiché sono passato alla fase effettiva di training dei modelli, utilizzando e la funzione loss \texttt{Sparse Categorical Crossentropy}, utile nei task di summarization.\\
+The training of models derived from the \texttt{BaseModel} class was carried out using the preprocessed dataset.\\
+Before starting the training, the dataset was split into a training set and a validation set, with a ratio of 90\% and 10\% respectively.\\
+Then I moved on to the actual training phase of the models, using the loss function \texttt{Sparse Categorical Crossentropy}, which is useful in summarization tasks.\\
 
-\subsection{Iperparametri}
-Per ogni classe di modello, il training è stato eseguito più volte, ciascuna con una combinazione diversa di iperparametri.\\
-Queste combinazioni vengono generate tramite una \textit{hyperparameter\_grid}
-implementata nella funzione \texttt{create\_hyperparameter\_grid}, che restituisce tutte le
-permutazioni possibili tra i valori forniti per i seguenti parametri:
+\subsection{Hyperparameters}
+For each model class, training was performed multiple times, each with a different combination of hyperparameters.\\
+These combinations are generated through a \textit{hyperparameter\_grid}
+implemented in the function \texttt{create\_hyperparameter\_grid}, which returns all the
+possible permutations of the values provided for the following parameters:
 \begin{itemize}
-    \item \texttt{embedding\_dim}: dimensione dell'embedding delle parole
-    \item \texttt{hidden\_dim}: dimensione dello stato nascosto dell'encoder e del decoder
-    \item \texttt{encoder\_dropout}: tasso di dropout dell'encoder
-    \item \texttt{encoder\_recurrent\_dropout}: tasso di dropout per gli stati ricorrenti dell'encoder
-    \item \texttt{decoder\_dropout}: tasso di dropout del decoder
-    \item \texttt{decoder\_recurrent\_dropout}: tasso di dropout per gli stati ricorrenti del decoder
-    \item \texttt{optimizer}: ottimizzatore da utilizzare durante l'addestramento
-    \item \texttt{learning\_rate}: tasso di apprendimento
-    \item \texttt{batch\_size}: dimensione del batch durante l'addestramento
-    \item \texttt{epochs}: numero di epoche per l'addestramento
+    \item \texttt{embedding\_dim}: dimension of the word embedding
+    \item \texttt{hidden\_dim}: dimension of the hidden state of the encoder and decoder
+    \item \texttt{encoder\_dropout}: dropout rate of the encoder
+    \item \texttt{encoder\_recurrent\_dropout}: dropout rate for the recurrent states of the encoder
+    \item \texttt{decoder\_dropout}: dropout rate of the decoder
+    \item \texttt{decoder\_recurrent\_dropout}: dropout rate for the recurrent states of the decoder
+    \item \texttt{optimizer}: optimizer to use during training
+    \item \texttt{learning\_rate}: learning rate
+    \item \texttt{batch\_size}: batch size during training
+    \item \texttt{epochs}: number of epochs for training
 \end{itemize}
 
-Per ogni \textbf{permutazione} di iperparametri, viene eseguito il seguente processo di allenamento:
+For each \textbf{hyperparameter permutation}, the following training pipeline was executed:
 \begin{enumerate}
-    \item \textbf{Preparazione dei dati}: viene eseguita la parte di caricamento e preprocessing dei dati
-    \item \textbf{Istanza del modello}: viene istanziata la classe del modello corrente con gli iperparametri selezionati
-    \item \textbf{Compilazione del modello}: viene compilato il modello ed eseguita la fase di training con diverse callback, di cui parleremo nella sezione successiva
-    \item \textbf{Training del modello}: viene eseguito il training del modello 
-    \item \textbf{Salvataggio dei risultati}:
+    \item \textbf{Data Preparation}: loading and preprocessing of the data.
+    \item \textbf{Model Instantiation}: initializing the current model class with the selected hyperparameters.
+    \item \textbf{Model Compilation}: compiling the model and starting training with various callbacks (discussed in the next section).
+    \item \textbf{Model Training}: executing the training process.
+    \item \textbf{Saving Results}:
           \begin{itemize}
-              \item \textit{Pesi del modello} (\texttt{result/\{model\_class\}/weights/})
-              \item \textit{Architettura del modello} (\texttt{result/\{model\_class\}/media/architectures/})
-              \item \textit{Grafico dell'andamento della loss} (\texttt{result/\{model\_class\}/media/graphs/})
-              \item \textit{Cronologia dell'allenamento} (\texttt{result/\{model\_class\}/histories/})
-              \item \textit{Riassunti generati}: al termine del training vengono generati i riassunti, partendo da recensioni presenti nel validation set, e salvati in un file csv (\texttt{result/\{model\_class\}/csv/})
+              \item \textit{Model weights} (\texttt{result/\{model\_class\}/weights/})
+              \item \textit{Model architecture} (\texttt{result/\{model\_class\}/media/architectures/})
+              \item \textit{Loss plot} (\texttt{result/\{model\_class\}/media/graphs/})
+              \item \textit{Training history} (\texttt{result/\{model\_class\}/histories/})
+              \item \textit{Generated summaries}: at the end of training, summaries were generated from validation reviews and saved in a CSV file (\texttt{result/\{model\_class\}/csv/})
           \end{itemize}
 \end{enumerate}
 
 \subsubsection{Callback}
-Durante il training ho utilizzato anche le seguenti funzioni di callback:
+During training, I also used the following callback functions:
 \begin{itemize}
-    \item \textbf{Early Stopping}: monitora una metrica, in questo caso la validation loss, e interrompe l'addestramento se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a prevenire l'overfitting e a risparmiare tempo di calcolo.
-    \item \textbf{Learning Rate Scheduler}: regola il tasso di apprendimento durante il training secondo una strategia, nel mio caso ho utilizzato la \texttt{Step Decay}, che riduce il learning rate di un fattore fisso ogni tot epoche.
-    \item \textbf{Reduce LR on Plateau}: monitora una metrica, in questo caso la validation loss, e riduce il learning rate se non ci sono miglioramenti per un certo numero di epoche consecutive. Questo aiuta a ottimizzare il processo di addestramento e a trovare un tasso di apprendimento più efficace.
+    \item \textbf{Early Stopping}: monitors a metric, in this case the validation loss, and stops training if there are no improvements for a certain number of consecutive epochs. This helps prevent overfitting and saves computation time.
+    \item \textbf{Learning Rate Scheduler}: adjusts the learning rate during training according to a strategy, in my case I used \texttt{Step Decay}, which reduces the learning rate by a fixed factor every few epochs.
+    \item \textbf{Reduce LR on Plateau}: monitors a metric, in this case the validation loss, and reduces the learning rate if there are no improvements for a certain number of consecutive epochs. This helps optimize the training process and find a more effective learning rate.
 \end{itemize}
-In questo modo sono riuscito a ottenere i risultati migliori per ogni modello, aggiustando i suoi iperparametrie e provando le diverse combinazioni.
+In this way, I was able to achieve the best results for each model by adjusting its hyperparameters and trying different combinations.
 
-\subsection{Architetture Sperimentate}
-Sono state sperimentate diverse architetture di modelli di summarization, ognuna con caratteristiche e parametri diversi.\\
-Le due categorie principali di modelli implementati sono:
+\subsection{Tested Architectures}
+Several summarization model architectures were tested, each with different characteristics and parameter configurations.\\
+The two main categories of implemented models are:
 \begin{itemize}
-    \item \textbf{LSTM}: modelli basati su layer LSTM per encoder e decoder.
-    \item \textbf{GRU}: modelli basati su layer GRU per encoder e decoder.
+    \item \textbf{LSTM}: models based on LSTM layers for both encoder and decoder.
+    \item \textbf{GRU}: models based on GRU layers for both encoder and decoder.
 \end{itemize}
-Tali architetture sono basate sulle RNN (Recurrent Neural Networks) e sono state scelte per la loro efficacia nei task di text-summarization, poiché
-gestiscono le dipendenze tra le parole su sequenze di testo.\\
+These architectures are based on RNNs (Recurrent Neural Networks) and were chosen for their effectiveness in text summarization tasks, as they handle dependencies between words in text sequences well.\\
 \begin{itemize}
-    \item \textbf{LSTM}: Long Short-Term Memory, è una variante delle RNN che risolve il problema della scomparsa del gradiente, grazie alla presenza di un meccanismo di memoria a lungo termine.
-          Tale meccanismo di gating permette di memorizzare informazioni importanti e scartare quelle meno rilevanti.
-    \item \textbf{GRU}: Gated Recurrent Unit, è una variante più semplice delle LSTM, con meno parametri e meno complessità computazionale.
-          Anche in questo caso, il meccanismo di gating permette di memorizzare informazioni importanti e scartare quelle meno rilevanti.
+    \item \textbf{LSTM}: Long Short-Term Memory, is a variant of RNNs that solves the vanishing gradient problem, thanks to the presence of a long-term memory mechanism.
+          This gating mechanism allows it to store important information and discard less relevant data.
+    \item \textbf{GRU}: Gated Recurrent Unit, is a simpler variant of LSTMs, with fewer parameters and less computational complexity.
+          Again, the gating mechanism allows it to store important information and discard less relevant data.
 \end{itemize}
 
-Al fine di rendere più scorrevole la lettura, per ogni classe vengono riportati solamente i migliori risultati ottenuti durante l'addestramento con i migliori parametri e le migliori configurazioni trovate (basate sul \texttt{BERTScore}, di cui verrà parlato in seguito), sebbene
-siano stati effettuati numerosi tentativi e test riportati nelle prossime sezioni in una tabella comparativa.\\
+In order to make the reading smoother, only the best results obtained during training with the best parameters and configurations found (based on the \texttt{BERT score}, which will be discussed later) are reported for each class, although numerous attempts and tests were conducted, which are reported in the following sections in a comparative table.\\
 
 
 \input{sections/architetture/Seq2SeqLSTM.tex}

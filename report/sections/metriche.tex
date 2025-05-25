@@ -1,23 +1,23 @@
-\section{Metriche di Valutazione}
-In questa sezione vengono analizzate le prestazioni dei modelli attraverso i grafici delle principali metriche di valutazione: ROUGE \cite{lin-2004-rouge}, WER \cite{roy2021semanticwerunifiedmetricevaluation}, cosine similarity e BERTScore \cite{zhang2020bertscoreevaluatingtextgeneration}.\\
-Inoltre è stata anche utilizzata la metrica personalizzata \texttt{myevaluation}, che verrà approfondita in seguito.\\
-Queste metriche sono state scelte per misurare in modo accurato la qualit\`a dei riassunti generati, confrontandoli con quelli di riferimento.\\
-Le valutazioni sono state effettuate utilizzando il dataset di test, che non \`e stato utilizzato durante l'addestramento del modello.\\
+\section{Evaluation Metrics}
+In this section, the performance of the models is analyzed through the graphs of the main evaluation metrics: ROUGE \cite{lin-2004-rouge}, WER \cite{roy2021semanticwerunifiedmetricevaluation}, cosine similarity, and BERT score \cite{zhang2020bertscoreevaluatingtextgeneration}.\\
+Additionally, a custom metric \texttt{myevaluation} was also used, which will be discussed later.\\
+These metrics were chosen to accurately measure the quality of the generated summaries by comparing them with the reference summaries.\\
+The evaluations were conducted using the test dataset, which was not used during the model training phase.\\
 
-\subsection{Valutazione per Permutazione}
-Per ogni permutazione delle architetture e dei relativi iperparametri,
-è stato seguito un processo di valutazione strutturato al termine della
-fase di addestramento. Di seguito sono riportate le metriche di valutazione utilizzate.
+\subsection{Evaluation by Permutation}
+For each permutation of architectures and their respective hyperparameters,
+a structured evaluation process was followed at the end of the
+training phase. Below are the evaluation metrics used.
 
 \subsection{ROUGE (Recall-Oriented Understudy for Gisting Evaluation)}
-Sono state calcolate tre varianti di ROUGE:
+Three variants of ROUGE were calculated:
 \begin{itemize}
-    \item ROUGE-1: confronta unigrammi tra il riassunto generato e quello di riferimento
-    \item ROUGE-2: considera bigrammi per valutare la similarit\`a tra i due testi
-    \item ROUGE-L: confronta la sottosequenza pi\`u lunga comune tra i due testi
+    \item ROUGE-1: compares unigrams between the generated summary and the reference summary
+    \item ROUGE-2: considers bigrams to evaluate the similarity between the two texts
+    \item ROUGE-L: compares the longest common subsequence between the two texts
 \end{itemize}
 
-I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in termini di ROUGE-1, ROUGE-2 e ROUGE-L per i quattro modelli. Il modello Seq2SeqBiLSTM mostra un miglioramento nei punteggi ROUGE rispetto al Seq2SeqLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU, indicando una maggiore capacit\`a di catturare similarit\`a lessicali.
+The graphs in Figure \ref{fig:rouge_comparison} compare the performance in terms of ROUGE-1, ROUGE-2, and ROUGE-L for the four models. The Seq2SeqBiLSTM model shows an improvement in ROUGE scores compared to Seq2SeqLSTM, Seq2Seq3BiLSTM, and Seq2SeqGRU, indicating a greater ability to capture lexical similarities.
 \begin{figure}[H]
     \centering
     \rougeonesubimg{0.45}{Seq2SeqLSTM}{rouge1_seq2seq_lstm}
@@ -53,15 +53,15 @@ I grafici nella Figura \ref{fig:rouge_comparison} confrontano le performance in 
     \rougelubimg{0.45}{Seq2SeqGRU}{rougeL_seq2seq_gru}
     \hfill
 
-    \caption{Confronto dei punteggi ROUGE tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
+    \caption{ROUGE scores comparison between Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM and Seq2SeqGRU architectures.}
     \label{fig:rouge_comparison}
 \end{figure}
 
 \subsection{WER (Word Error Rate)}
-Il WER \`e una metrica che calcola il tasso di errore tra due sequenze di parole.\\
-In particolare, il WER calcola il numero di operazioni di inserimento, cancellazione e sostituzione necessarie per trasformare una sequenza di parole in un'altra.\\
+The WER is a metric that calculates the error rate between two sequences of words.\\
+In particular, the WER calculates the number of insertion, deletion, and substitution operations needed to transform one word sequence into another.\\
 
-Il confronto del WER, mostrato nella Figura \ref{fig:wer_comparison}, evidenzia che il modello Seq2Seq3BiLSTM ottiene risultati migliori, indicando una maggiore accuratezza nella generazione delle parole, nonostante la differenza con l'architettura Seq2SeqBiLSTM non sia significativa.\\
+The WER comparison, shown in Figure \ref{fig:wer_comparison}, highlights that the Seq2Seq3BiLSTM model achieves better results, indicating a greater accuracy in word generation, although the difference with the Seq2SeqBiLSTM architecture is not significant.\\
 
 \begin{figure}[H]
     \centering
@@ -75,15 +75,15 @@ Il confronto del WER, mostrato nella Figura \ref{fig:wer_comparison}, evidenzia 
     %\hfill
     \wersubimg{0.45}{Seq2SeqGRU}{wer_seq2seq_gru}
 
-    \caption{Confronto del Word Error Rate tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
+    \caption{WER scores comparison between Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM and Seq2SeqGRU architectures.}
     \label{fig:wer_comparison}
 \end{figure}
 
 
 \subsection{Cosine Similarity}
-La similarit\`a cosenica \`e una metrica che calcola la similarit\`a tra due vettori in uno spazio multidimensionale.\\
-Nel caso specifico della generazione di riassunti, la similarit\`a cosenica \`e stata calcolata tra i vettori di embedding delle parole nei riassunti generati e quelli nei riassunti di riferimento, con il fine di valutare la qualit\`a dei riassunti generati.\\
-La Figura \ref{fig:cosine_similarity_comparison} confronta i valori di similarit\`a cosenica. Anche in questo caso, il modello Seq2SeqBiLSTM ottiene valori pi\`u alti, suggerendo una maggiore correlazione semantica con i riassunti di riferimento.
+Cosine similarity is a metric that calculates the similarity between two vectors in a multidimensional space.\\
+In the specific case of summary generation, cosine similarity was calculated between the embedding vectors of the words in the generated summaries and those in the reference summaries, in order to evaluate the quality of the generated summaries.\\
+Figure \ref{fig:cosine_similarity_comparison} compares the cosine similarity values. Again, the Seq2SeqBiLSTM model achieves higher values, suggesting a greater semantic correlation with the reference summaries.
 
 \begin{figure}[H]
     \centering
@@ -97,14 +97,14 @@ La Figura \ref{fig:cosine_similarity_comparison} confronta i valori di similarit
     %\hfill
     \cssubimg{0.45}{Seq2SeqGRU}{cs_seq2seq_gru}
 
-    \caption{Confronto della cosine similarity tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
+    \caption{Cosine similarity scores comparison between Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM and Seq2SeqGRU architectures.}
     \label{fig:cosine_similarity_comparison}
 \end{figure}
 
-\subsection{BERTScore}
-Il BERTScore \`e una metrica che utilizza il modello BERT per calcolare la similarit\`a tra due testi.\\
-In particolare, il BERTScore calcola la similarit\`a tra i vettori di embedding delle parole nei riassunti generati e quelli nei riassunti di riferimento, tenendo conto del contesto semantico delle parole.\\
-La Figura \ref{fig:bert_score_comparison} mostra i valori di BERTScore per i diversi modelli. Anche in questo caso, il modello Seq2SeqBiLSTM ottiene risultati migliori, suggerendo una maggiore capacit\`a di catturare la similarit\`a semantica tra i riassunti generati e quelli di riferimento.
+\subsection{BERT Score}
+BERT score is a metric that uses the BERT model to calculate the similarity between two texts.\\
+In particular, BERT score calculates the similarity between the embedding vectors of the words in the generated summaries and those in the reference summaries, taking into account the semantic context of the words.\\
+Figure \ref{fig:bert_score_comparison} shows the BERT score values for the different models. Again, the Seq2SeqBiLSTM model achieves better results, suggesting a greater ability to capture the semantic similarity between the generated summaries and the reference ones.
 
 \begin{figure}[H]
     \centering
@@ -119,23 +119,23 @@ La Figura \ref{fig:bert_score_comparison} mostra i valori di BERTScore per i div
     \bertsubimg{0.45}{Seq2SeqGRU}{bert_seq2seq_gru}
     \hfill
 
-    \caption{Confronto del BERTScore tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
+    \caption{BERT score comparison between Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM and Seq2SeqGRU architectures.}
     \label{fig:bert_score_comparison}
 \end{figure}
 
 \subsection{My Evaluation}
-La metrica \texttt{myevaluation} \`e stata progettata per valutare la qualit\`a dei riassunti generati in modo pi\`u dettagliato.\\
-Essa tiene conto di diversi fattori e ciuscuno di essi ha uno specifico peso in base alla sua importanza.\\
-La formula con cui viene calcolata la metrica \texttt{myevaluation} \`e la seguente:
+The \texttt{myevaluation} metric was designed to evaluate the quality of the generated summaries in a more detailed way.\\
+It takes into account several factors, each of which has a specific weight based on its importance.\\
+The formula used to calculate the \texttt{myevaluation} metric is as follows:
 \[
     \texttt{MyEval} = cs\_PS\_OS \cdot W_{cs\_PS\_OS} + keyword\_overlap \cdot W_{keyword\_overlap} + bert\_score \cdot W_{bert\_score}
 \]
-Dove:
+Where:
 \begin{itemize}
-    \item $cs\_PS\_OS$ \`e la similarit\`a cosenica tra il riassunto generato e quello originale
-    \item $keyword\_overlap$ \`e la percentuale di parole chiave presenti nel riassunto generato rispetto a quelle nel riassunto originale
-    \item $bert\_score$ \`e il punteggio BERTScore tra il riassunto generato e quello originale
-    \item $W_{cs\_PS\_OS}$, $W_{keyword\_overlap}$ e $W_{bert\_score}$ sono i pesi associati a ciascun fattore
+    \item $cs\_PS\_OS$ is the cosine similarity between the generated summary and the original one
+    \item $keyword\_overlap$ is the percentage of keywords present in the generated summary compared to those in the original summary
+    \item $bert\_score$ is the BERT score between the generated summary and the original one
+    \item $W_{cs\_PS\_OS}$, $W_{keyword\_overlap}$ and $W_{bert\_score}$ are the weights associated with each factor
           \begin{itemize}
               \item $W_{cs\_PS\_OS} = 0.07$
               \item $W_{keyword\_overlap} = 0.03$
@@ -143,8 +143,8 @@ Dove:
           \end{itemize}
 \end{itemize}
 
-La Figura \ref{fig:myevaluation_comparison} mostra i risultati della metrica \texttt{myevaluation} per i diversi modelli.\\
-Il modello Seq2SeqBiLSTM ottiene i punteggi pi\`u alti, suggerendo una qualit\`a superiore dei riassunti generati rispetto agli altri modelli.
+Figure \ref{fig:myevaluation_comparison} shows the results of the \texttt{myevaluation} metric for the different models.\\
+The Seq2SeqBiLSTM model achieves the highest scores, suggesting a superior quality of the generated summaries compared to the other models.
 \begin{figure}[H]
     \centering
     \myevalsubimg{0.45}{Seq2SeqLSTM}{myeval_seq2seq_lstm}
@@ -158,18 +158,18 @@ Il modello Seq2SeqBiLSTM ottiene i punteggi pi\`u alti, suggerendo una qualit\`a
     \myevalsubimg{0.45}{Seq2SeqGRU}{myeval_seq2seq_gru}
     \hfill
 
-    \caption{Confronto della metrica \texttt{myevaluation} tra i modelli Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM e Seq2SeqGRU.}
+    \caption{Comparison of the \texttt{myevaluation} metric between Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM and Seq2SeqGRU architectures.}
     \label{fig:myevaluation_comparison}
 \end{figure}
 
-\subsection{Confronto tra le Architetture}
-Di seguito viene riportata una tabella comparativa (figura \ref{fig:models_comparison_instances}) tra i vari modelli implementati, con i rispettivi risultati ottenuti al termine dell'addestramento.\\
-Per ogni classe di modello sono stati effettuati numerosi tentativi e test, riportati in seguito in una tabella comparativa le varie istanze di configurazione e i risultati ottenuti.\\
-Possiamo subito notare che il modello Seq2SeqBiLSTM ha ottenuto i risultati migliori in quasi tutte le metriche.
+\subsection{Architectures Comparison}
+Below is a comparative table (Figure \ref{fig:models_comparison_instances}) between the various implemented models, with their respective results obtained at the end of training.\\
+For each model class, numerous attempts and tests were conducted, which are reported later in a comparative table of the various configuration instances and the results obtained.\\
+We can immediately see that the Seq2SeqBiLSTM model achieved the best results in almost all metrics.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{media/models_comparison_instances.png}
-    \caption{Comparazione delle istanze dei modelli}
+    \caption{Comparative analysis of model instances}
     \label{fig:models_comparison_instances}
 \end{figure}
 

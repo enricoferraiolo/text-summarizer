@@ -1,6 +1,6 @@
 \subsection{Seq2SeqLSTMGlove}
-La classe \texttt{Seq2SeqLSTMGlove} implementa un'architettura simile al modello Seq2SeqLSTM, utilizzando i vettori di embedding GloVe preaddestrati per la rappresentazione delle parole.\\
-Più precisamente vengono scaricati e utilizzati i vettori di embedding GloVe preaddestrati da \href{https://nlp.stanford.edu/projects/glove/}{Stanford NLP Group} da 100 dimensioni, anche se la classe consente di scambiare facilmente i vettori con quelli di dimensione diversa.\\
+The \texttt{Seq2SeqLSTMGlove} class implements an architecture similar to the Seq2SeqLSTM model, using pre-trained GloVe embedding vectors for word representation.\\
+More precisely, pre-trained GloVe embedding vectors from \href{https://nlp.stanford.edu/projects/glove/}{Stanford NLP Group} with 100 dimensions are downloaded and used, although the class allows for easy swapping of vectors with those of different dimensions.\\
 
 \training{Adam}{0.001}{512}{256}{0.2}{0.2}{0.2}{0.2}{256}{50}{Seq2SeqLSTMGlove}{seq2seqlstmglove_loss_plot}
 \risultati{1.63}{1.97}{0.66}{0.64}

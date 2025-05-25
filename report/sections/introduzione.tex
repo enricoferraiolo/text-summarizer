@@ -1,23 +1,23 @@
-\section{Introduzione}
-L'obiettivo principale del progetto è generare riassunti concisi e significativi a partire da recensioni di prodotti più lunghe, mantenendo il significato del testo originale.\\
-Il progetto si articola nelle seguenti fasi:
+\section{Introduction}
+The main goal of this project is to generate concise and meaningful summaries from longer product reviews, while preserving the original meaning of the text.\\
+The project is structured in the following phases:
 \begin{itemize}
-    \item \textbf{Raccolta e preparazione dei dati:} selezione e pre-elaborazione di un dataset di recensioni di prodotti, con particolare attenzione alla pulizia e alla normalizzazione del testo.
-    \item \textbf{Progettazione e implementazione di architetture di reti neurali:} studio e sviluppo di modelli basati su meccanismi di attenzione per la sintesi testuale.
-    \item \textbf{Addestramento e inferenza:} realizzazione di pipeline per l'addestramento dei modelli e per l'esecuzione delle operazioni di sintesi su nuovi testi.
-    \item \textbf{Valutazione sperimentale:} analisi comparativa delle prestazioni dei modelli mediante metriche standardizzate, al fine di identificare le soluzioni ottimali.
+    \item \textbf{Data Collection and Preparation:} selection and preprocessing of a dataset of product reviews, with particular attention to text cleaning and normalization.
+    \item \textbf{Design and Implementation of Neural Network Architectures:} study and development of models based on attention mechanisms for text summarization.
+    \item \textbf{Training and Inference:} implementation of pipelines for model training and for performing summarization operations on new texts.
+    \item \textbf{Experimental Evaluation:} comparative analysis of model performance using standardized metrics, in order to identify optimal solutions.
 \end{itemize}
-Questo documento vuole illustrare le scelte progettuali e le metodologie adottate per la realizzazione del progetto, nonché i risultati sperimentali ottenuti.
-\textit{Text-Summarizer} è un framework Python per la sintesi automatica di testi, progettato per essere modulare e facilmente estendibile.
+This document aims to illustrate the design choices and methodologies adopted for the realization of the project, as well as the experimental results obtained.
+\textit{Text-Summarizer} is a Python framework for \textbf{automatic text summarization}, designed to be \textit{modular and easily extensible}.
 
-\subsection{Struttura del progetto}
-Il progetto è strutturato in diverse sezioni, ognuna delle quali affronta un aspetto specifico del lavoro svolto.\\
-La cartella principale contiene i file e le cartelle necessarie per l'esecuzione del progetto:
+\subsection{Project Structure}
+The project is structured into several sections, each addressing a specific aspect of the work carried out.\\
+The main folder contains the files and directories necessary for the execution of the project:
 \begin{itemize}
-    \item \textbf{architectures}: cartella contenente le implementazioni delle architetture dei modelli di sintesi automatica;
-    \item \textbf{report}: cartella contenente il report finale del progetto;
-    \item \textbf{results}: cartella contenente i risultati ottenuti durante l'addestramento e la valutazione dei modelli;
-    \item \textbf{\texttt{requirements.txt}}: file contenente le librerie necessarie per l'esecuzione del progetto;
-    \item \textbf{\texttt{text\_summarizer\_training.ipynb}}: notebook Python contenente il codice per l'addestramento e la valutazione dei modelli;
-    \item \textbf{\texttt{text\_summarizer\_inference.ipynb}}: notebook Python contenente il codice per l'inferenza dei modelli.
+    \item \textbf{architectures}: folder containing the implementations of the architectures of the automatic summarization models;
+    \item \textbf{report}: folder containing the final report of the project;
+    \item \textbf{results}: folder containing the results obtained during the training and evaluation of the models;
+    \item \textbf{\texttt{requirements.txt}}: file containing the libraries required for the execution of the project;
+    \item \textbf{\texttt{text\_summarizer\_training.ipynb}}: Python notebook containing the code for training and evaluating the models;
+    \item \textbf{\texttt{text\_summarizer\_inference.ipynb}}: Python notebook containing the code for model inference.
 \end{itemize}

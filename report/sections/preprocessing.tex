@@ -1,76 +1,76 @@
-\section{Preprocessing dei Dati}
-Il preprocessing dei dati è una fase critica per garantire la qualità e l'efficacia dei modelli di summarization, infatti è fondamentale pulire e filtrare i dati in modo accurato.\\
-Sul dataset, per l'appunto, sono stati eseguiti diversi passaggi di pulizia e filtraggio dei dati per garantire qualità e coerenza del modello durante l'addestramento.\\
-Vediamo di seguito gli step effettutati durante questa fase:
-\subsection{Pulizia del Testo}
-Sono stati applicati i seguenti step di preprocessing:
+\section{Data Preprocessing}
+Data preprocessing is a critical step to ensure the quality and effectiveness of summarization models. It is essential to clean and filter the data accurately.\\
+Several cleaning and filtering operations were performed on the dataset to ensure data quality and consistency during model training.\\
+Below are the steps carried out in this phase:
+\subsection{Text Cleaning}
+The following preprocessing steps were applied:
 
 \begin{enumerate}
-    \item \textbf{Conversione del testo in minuscolo}
+    \item \textbf{Lowercasing the text}
     \begin{itemize}
-        \item Questa conversione garantisce l'uniformità del testo, evitando che la stessa parola venga considerata diversa solo per la presenza di maiuscole.\\Ad esempio, "Home", "HOME" e "home" vengono trattate come la stessa parola, riducendo la dimensionalità del vocabolario e migliorando l'efficienza dell'addestramento.
+        \item This conversion ensures uniformity in the text, preventing the same word from being considered different solely due to the presence of uppercase letters.\\For example, "Home", "HOME", and "home" are treated as the same word, reducing vocabulary dimensionality and improving training efficiency.
     \end{itemize}
 
-    \item \textbf{Rimozione dei tag HTML}
+    \item \textbf{Removing HTML tags}
     \begin{itemize}
-        \item Le recensioni potrebbero contenere tag HTML residui dal formato web originale. 
-        Questi elementi non contribuiscono al significato semantico del testo e potrebbero interferire con l'apprendimento del modello, pertanto vengono rimossi.
+        \item Reviews may contain residual HTML tags from the original web format. 
+        These elements do not contribute to the semantic meaning of the text and may interfere with model learning, so they are removed.
     \end{itemize}
 
-    \item \textbf{Espansione delle contrazioni}
+    \item \textbf{Expanding contractions}
     \begin{itemize}
-        \item Le contrazioni nella lingua inglese (come "don't", "I'm", "we're") vengono espanse nelle loro forme complete ("do not", "I am", "we are").\\
-        Questo processo vuole standardizzare e garantire coerenza in tutto il testo e aiuta il modello a catturare meglio le relazioni semantiche, eliminando variazioni non necessarie della stessa espressione.
+        \item Contractions in the English language (such as "don't", "I'm", "we're") are expanded to their full forms ("do not", "I am", "we are").\\
+        This process aims to standardize and ensure consistency throughout the text and helps the model better capture semantic relationships by eliminating unnecessary variations of the same expression.
     \end{itemize}
 
-    \item \textbf{Rimozione del genitivo sassone ('s)}
+    \item \textbf{Removing possessive forms ('s)}
     \begin{itemize}
-        \item La forma possessiva in inglese non altera sostanzialmente il significato della frase ai fini del riassunto.\\ 
-        La sua rimozione semplifica il testo e riduce ulteriormente la dimensione del vocabolario, permettendo al modello di concentrarsi sui concetti principali.
+        \item The possessive form in English does not substantially alter the meaning of the sentence for summarization purposes.\\
+        Its removal simplifies the text and further reduces vocabulary size, allowing the model to focus on key concepts.
     \end{itemize}
 
-    \item \textbf{Eliminazione del testo tra parentesi}
+    \item \textbf{Removing text in parentheses}
     \begin{itemize}
-        \item Il testo tra parentesi spesso contiene informazioni supplementari che non sono generalmente essenziali per il riassunto.\\ 
-        La rimozione aiuta a mantenere il focus sulle informazioni principali della recensione.
+        \item Text within parentheses often contains supplementary information that is not generally essential for the summary.\\
+        Removal helps maintain focus on the main information in the review.
     \end{itemize}
 
-    \item \textbf{Rimozione della punteggiatura e caratteri speciali}
+    \item \textbf{Removing punctuation and special characters}
     \begin{itemize}
-        \item La punteggiatura e i caratteri speciali, pur essendo importanti per la leggibilità umana, possono introdurre rumore nell'addestramento del modello.\\
-        La rimozione semplifica il testo mantenendo intatto il contenuto semantico essenziale per la generazione del riassunto.
+        \item Punctuation and special characters, while important for human readability, can introduce noise into model training.\\
+        Their removal simplifies the text while preserving the essential semantic content needed for summary generation.
     \end{itemize}
 
-    \item \textbf{Eliminazione delle stopwords}
+    \item \textbf{Removing stopwords}
     \begin{itemize}
-        \item Le stopwords sono parole molto comuni (come "the", "is", "at", "which") che appaiono frequentemente ma portano poco significato semantico.\\
-        La loro rimozione riduce significativamente la dimensionalità del problema senza perdere informazioni cruciali per il riassunto, permettendo al modello di concentrarsi sulle parole più significative.
+        \item Stopwords are very common words (such as "the", "is", "at", "which") that appear frequently but carry little semantic meaning.\\
+        Their removal significantly reduces the dimensionality of the problem without losing crucial information for the summary, allowing the model to focus on the most meaningful words.
     \end{itemize}
 
-    \item \textbf{Rimozione delle parole troppo corte}
+    \item \textbf{Removing very short words}
     \begin{itemize}
-        \item Le parole molto corte (solitamente di una o due lettere) spesso non contribuiscono al significato del testo.\\
-        La loro rimozione aiuta a ridurre ulteriormente il rumore nei dati, mantenendo solo i termini più significativi per l'analisi.
+        \item Very short words (usually one or two letters) often do not contribute to the meaning of the text.\\
+        Their removal helps further reduce noise in the data, keeping only the most significant terms for analysis.
     \end{itemize}
 \end{enumerate}
 
-\subsection{Filtraggio dei Dati}
-Dopo l'analisi statistica del dataset, sono stati applicati i seguenti vincoli:
+\subsection{Data Filtering}
+After a statistical analysis of the dataset, the following constraints were applied:
 \begin{itemize}
-    \item Lunghezza massima delle recensioni: 30 parole
-    \item Lunghezza massima dei riassunti: 8 parole
+    \item Maximum length of reviews: 30 words
+    \item Maximum length of summaries: 8 words
 \end{itemize}
 
-Questi limiti sono stati determinati attraverso un'analisi statistica della distribuzione delle lunghezze nel dataset, come possiamo vedere nella figura \ref{fig:dataset_length_distribuition}.
+These limits were determined through statistical analysis of the length distributions in the dataset, as shown in Figure \ref{fig:dataset_length_distribuition}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{media/dataset_length_distribuition.png}
-    \caption{A sinistra la distribuzione delle lunghezze delle recensioni, a destra la distribuzione delle lunghezze dei riassunti}
+    \caption{On the left, the distribution of review lengths; on the right, the distribution of summary lengths}
     \label{fig:dataset_length_distribuition}
 \end{figure}
-Infatti, come si può notare dai due grafici, la maggior parte delle recensioni e dei riassunti ha lunghezze inferiori ai limiti stabiliti, quindi questi vincoli permettono di mantenere la maggior parte dei dati del dataset.
+Indeed, as can be seen from the two graphs, most reviews and summaries have lengths below the established limits, so these constraints allow for the retention of most of the dataset's data.
 
-\subsection{Tokenizzazione e Token Speciali}
-Per preparare i dati per i modelli ho aggiunto i token speciali \texttt{"sostok"} e \texttt{"eostok"} per indicare l'inizio e la fine di una sequenza, in modo da facilitare la tokenizzazione e la fase di addestramento.\\
-Inoltre, ho effettuato la tokenizzazione separatamente per le recensioni (testo di input) e i riassunti (testo di output) per garantire che il modello possa apprendere correttamente la relazione tra i due.
-I due tokenizer servono a creare il vocabolario per le recensioni e per i riassunti, in modo da poter convertire i testi in sequenze di token.
+\subsection{Tokenization and Special Tokens}
+To prepare the data for the models, I added the special tokens \texttt{"sostok"} and \texttt{"eostok"} to indicate the beginning and end of a sequence, facilitating tokenization and the training phase.\\
+Additionally, I performed tokenization separately for reviews (input text) and summaries (output text) to ensure that the model can correctly learn the relationship between the two.
+The two tokenizers are used to create the vocabulary for reviews and for summaries, allowing the conversion of texts into sequences of tokens.
