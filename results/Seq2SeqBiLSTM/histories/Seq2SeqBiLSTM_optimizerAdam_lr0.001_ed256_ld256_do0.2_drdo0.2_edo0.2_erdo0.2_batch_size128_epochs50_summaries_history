@@ -1,6 +1,4 @@
-
 Evaluation for Seq2SeqBiLSTM_optimizerAdam_lr0.001_ed256_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
 Mean ROUGE scores: {'mean_rouge1': np.float64(0.15377950937950938), 'mean_rouge2': np.float64(0.035), 'mean_rougeL': np.float64(0.15344617604617605)}
-Mean WER score: 1.1152214285714286
 Mean Cosine Similarity: 0.40173012018203735
-Mean My Evaluation: 0.8146300810137527
+Mean My Evaluation: 0.8146300804773109

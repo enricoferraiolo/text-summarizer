@@ -1,12 +1,4 @@
-
 Evaluation for Seq2SeqGRU_optimizerAdam_lr0.001_ed256_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
 Mean ROUGE scores: {'mean_rouge1': np.float64(0.14737316017316016), 'mean_rouge2': np.float64(0.030985714285714283), 'mean_rougeL': np.float64(0.1467898268398268)}
-Mean WER score: 1.1447833333333333
 Mean Cosine Similarity: 0.40486666560173035
-Mean My Evaluation: 0.8142949773722892
-
-Evaluation for Seq2SeqGRU_optimizerAdam_lr0.001_ed256_ld256_do0.2_drdo0.2_edo0.2_erdo0.2_batch_size128_epochs50_summaries.csv:
-Mean ROUGE scores: {'mean_rouge1': np.float64(0.14737316017316016), 'mean_rouge2': np.float64(0.030985714285714283), 'mean_rougeL': np.float64(0.1467898268398268)}
-Mean WER score: 1.1447833333333333
-Mean Cosine Similarity: 0.40486666560173035
-Mean My Evaluation: 0.8142949772650009
+Mean My Evaluation: 0.8142949793034797
