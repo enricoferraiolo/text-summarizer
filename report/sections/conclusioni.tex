@@ -2,7 +2,7 @@
 \subsection{Final Considerations}
 The work carried out led to the development of an automatic summarization system capable of generating coherent summaries from food reviews. The system was designed to ensure ease of extension and adaptability to different types of tasks, thus increasing its versatility and potential applicability in varied contexts.\\
 During the project, several automatic summarization models were implemented, including Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM, and Seq2SeqGRU.
-The results were evaluated through numerous metrics, such as ROUGE, Word Error Rate (WER), Cosine Similarity, BERT score, and \texttt{MyEvaluation}. In particular,
+The results were evaluated through numerous metrics, such as ROUGE, Cosine Similarity, BERT score, and \texttt{MyEvaluation}. In particular,
 BERT score proved to be the most representative metric of summary quality, as it considers the semantic context and similarity of words.\\
 
 Furthermore, the \texttt{MyEvaluation} metric provided a more detailed assessment of summary quality, integrating various factors and assigning each a weight based on its relevance. Experimental results indicate that the \textbf{Seq2SeqBiLSTM} model achieved the best performance on almost all metrics,
@@ -18,7 +18,6 @@ The \textbf{Seq2SeqBiLSTM} architecture achieved excellent results, obtaining on
         ROUGE-1             & 0.16            \\
         ROUGE-2             & 0.03            \\
         ROUGE-L             & 0.16            \\
-        WER                 & 1.09            \\
         Cosine similarity   & 41\%            \\
         BERT score           & 87\%            \\
         MyEvaluation        & 82\%            \\

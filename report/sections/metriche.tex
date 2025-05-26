@@ -1,5 +1,5 @@
 \section{Evaluation Metrics}
-In this section, the performance of the models is analyzed through the graphs of the main evaluation metrics: ROUGE \cite{lin-2004-rouge}, WER \cite{roy2021semanticwerunifiedmetricevaluation}, cosine similarity, and BERT score \cite{zhang2020bertscoreevaluatingtextgeneration}.\\
+In this section, the performance of the models is analyzed through the graphs of the main evaluation metrics: ROUGE \cite{lin-2004-rouge}, cosine similarity, and BERT score \cite{zhang2020bertscoreevaluatingtextgeneration}.\\
 Additionally, a custom metric \texttt{myevaluation} was also used, which will be discussed later.\\
 These metrics were chosen to accurately measure the quality of the generated summaries by comparing them with the reference summaries.\\
 The evaluations were conducted using the test dataset, which was not used during the model training phase.\\
@@ -57,27 +57,27 @@ The graphs in Figure \ref{fig:rouge_comparison} compare the performance in terms
     \label{fig:rouge_comparison}
 \end{figure}
 
-\subsection{WER (Word Error Rate)}
-The WER is a metric that calculates the error rate between two sequences of words.\\
-In particular, the WER calculates the number of insertion, deletion, and substitution operations needed to transform one word sequence into another.\\
+% \subsection{WER (Word Error Rate)}
+% The WER is a metric that calculates the error rate between two sequences of words.\\
+% In particular, the WER calculates the number of insertion, deletion, and substitution operations needed to transform one word sequence into another.\\
 
-The WER comparison, shown in Figure \ref{fig:wer_comparison}, highlights that the Seq2Seq3BiLSTM model achieves better results, indicating a greater accuracy in word generation, although the difference with the Seq2SeqBiLSTM architecture is not significant.\\
+% The WER comparison, shown in Figure \ref{fig:wer_comparison}, highlights that the Seq2Seq3BiLSTM model achieves better results, indicating a greater accuracy in word generation, although the difference with the Seq2SeqBiLSTM architecture is not significant.\\
 
-\begin{figure}[H]
-    \centering
-    \wersubimg{0.45}{Seq2SeqLSTM}{wer_seq2seq_lstm}
-    \hfill
-    \wersubimg{0.45}{Seq2SeqBiLSTM}{wer_seq2seq_bilstm}
-    \hfill
-    \wersubimg{0.45}{Seq2Seq3BiLSTM}{wer_seq2seq_3bilstm}
-    \hfill
-    %\wersubimg{0.45}{Seq2SeqLSTMGlove}{wer_seq2seq_lstm_glove}
-    %\hfill
-    \wersubimg{0.45}{Seq2SeqGRU}{wer_seq2seq_gru}
+% \begin{figure}[H]
+%     \centering
+%     \wersubimg{0.45}{Seq2SeqLSTM}{wer_seq2seq_lstm}
+%     \hfill
+%     \wersubimg{0.45}{Seq2SeqBiLSTM}{wer_seq2seq_bilstm}
+%     \hfill
+%     \wersubimg{0.45}{Seq2Seq3BiLSTM}{wer_seq2seq_3bilstm}
+%     \hfill
+%     %\wersubimg{0.45}{Seq2SeqLSTMGlove}{wer_seq2seq_lstm_glove}
+%     %\hfill
+%     \wersubimg{0.45}{Seq2SeqGRU}{wer_seq2seq_gru}
 
-    \caption{WER scores comparison between Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM and Seq2SeqGRU architectures.}
-    \label{fig:wer_comparison}
-\end{figure}
+%     \caption{WER scores comparison between Seq2SeqLSTM, Seq2SeqBiLSTM, Seq2Seq3BiLSTM and Seq2SeqGRU architectures.}
+%     \label{fig:wer_comparison}
+% \end{figure}
 
 
 \subsection{Cosine Similarity}
