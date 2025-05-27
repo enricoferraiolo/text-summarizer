@@ -7,7 +7,7 @@ Text-Summarizer is an academic project developed for the Natural Language Proces
 ## 🔑 Key Features
 - Multiple model architectures based on LSTM and GRU with attention mechanisms
 - Data preprocessing pipeline for text cleaning and tokenization
-- Comprehensive evaluation using various metrics (ROUGE, WER, BERT Score, etc.)
+- Comprehensive evaluation using various metrics (ROUGE, BERT Score, etc.)
 - Inference capabilities for generating summaries from new inputs
 - Visualization tools for analyzing model performance
 
@@ -94,7 +94,6 @@ The inference process is implemented in the `text_summarizer_inference.ipynb` no
 ### Evaluation Metrics
 The models are evaluated using multiple metrics to provide a comprehensive assessment of their performance:
 - **ROUGE 1**, **ROUGE 2**, **ROUGE L** (Recall-Oriented Understudy for Gisting Evaluation) for measuring n-gram overlap
-- **WER** (Word Error Rate) Measures the minimum number of edits required to transform the predicted summary into the reference summary
 - **Cosine Similarity**: Using sentence embeddings to measure semantic similarity.
 - **BERT Score**: Measures the similarity between predicted and reference summaries using BERT embeddings.
 - **Custom Evaluation**: Combines multiple metrics with weighted importance.
@@ -104,7 +103,6 @@ After the training process, the models are evaluated on the validation set using
 Each model's is inferred on the validation set and the results are saved in a CSV file. The evaluation metrics are calculated and saved in a separate subdirectory for each model.
 The evaluation results include:
 - ROUGE scores
-- WER scores
 - BERT scores
 - Cosine similarity scores
 - Custom evaluation scores
