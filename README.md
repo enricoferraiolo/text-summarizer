@@ -111,8 +111,6 @@ The project implements several sequence-to-sequence (Seq2Seq) architectures, all
 *   **[`Seq2SeqBiLSTM`](architectures/Seq2SeqBiLSTM.py)**: Employs a Bidirectional LSTM encoder for richer context capture, coupled with an attention mechanism and LSTM decoder.
 *   **[`Seq2Seq3BiLSTM`](architectures/Seq2Seq3BiLSTM.py)**: Features a deeper encoder with three stacked Bidirectional LSTMs and an attention-based LSTM decoder.
 *   **[`Seq2SeqLSTMGlove`](architectures/Seq2SeqLSTMGlove.py)**: An LSTM-based Seq2Seq model that initializes its embedding layer with pre-trained GloVe word embeddings.
-*   **[`Seq2SeqLSTMTransformer`](architectures/Seq2SeqLSTMTransformer.py)**: (If implemented) Combines LSTM components with Transformer-style attention or layers.
-*   **[`Seq2SeqBiLSTMImproved`](architectures/Seq2SeqBiLSTMImproved.py)**: (If implemented) An enhanced version of the `Seq2SeqBiLSTM` model, potentially with different layer configurations or attention mechanisms.
 
 The attention mechanism is implemented in [attention.py](attention.py).
 
